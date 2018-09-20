@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.6"
+before_install:
+  - pip install pytest pytest-cov
+  - pip install coveralls
+install:
+  - pip install numpy
+  - pip install pygame
+  - pip install pycodestyle
+  - pip install -e .
+script:
+  - pytest --cov=graphtool
+  - pycodestyle graphtool tests
+after_success:
+  - coveralls
