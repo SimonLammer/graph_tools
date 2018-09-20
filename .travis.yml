@@ -10,7 +10,7 @@ install:
   - pip install pycodestyle
   - pip install -e .
 script:
-  - pytest --cov=graphtool
+  - pytest test/*.py
   - pycodestyle graphtool tests
 after_success:
   - coveralls
