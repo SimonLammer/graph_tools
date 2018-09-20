@@ -10,7 +10,7 @@ install:
   - pip install pygame
   - pip install -e .
 script:
-  - pytest test/*.py
+  - pytest --cov=graphtool
   - pycodestyle graphtool tests
 after_success:
   - coveralls
