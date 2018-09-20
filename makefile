@@ -5,8 +5,10 @@ install:
 	pip3 install -e .
 
 pep8:
-	autopep8 --in-place graphtool/*.py tests/*.py
+	autopep8 --in-place graphtool/*.py
+	autopep8 --in-place tests/*.py
 
 test:
-	pytest --cov=graphtool
-  pycodestyle graphtool tests
+	pytest tests/*.py
+	pycodestyle graphtool/*.py
+	pycodestyle tests/*.py
