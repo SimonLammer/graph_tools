@@ -28,5 +28,22 @@ def depth_first_search(init_node, functors):
     return dfs(init_node)
 
 
-def BreathFirstSearch(graph, init_node):
+def topological_sort(graph):
+    degrees = {vertex: 0 for vertex in graph.vertices()}
+    for edge in graph.edges():
+        degrees[edge.out] += 1
+    stack = [vertex for (vertex, degree) in degrees if degree == 0]
+    total_order = []
+    while not stack.empty():
+        vertex = stack.pop()
+        for neighbour in vertex.neighbours():
+            degrees[neighbour] -= 1
+            if degrees[neighbour] == 0:
+                stack.append(neighbour)
+        total_order.append(vertex)
+    if len(graph.vertices()) != len(total_order):
+        raise "Cycles found in the graph"
+    return total_order
+
+def breath_first_search():
     pass
