@@ -1,5 +1,5 @@
 import graphtool.graph
-
+import queue
 
 def tree_builder():
     def pre_functor(node):
@@ -48,7 +48,7 @@ def topological_sort(graph):
 
 def breath_first_search(init_node):
     visited = set()
-    waiting = Queue.LifoQueue()
+    waiting = queue.LifoQueue()
     visited.add(init_node)
     waiting.put(init_node)
     while not queue.empty():
