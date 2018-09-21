@@ -1,17 +1,22 @@
 import graphtool.graph
 
+
 def tree_builder():
     def pre_functor(node):
-        return graph.Vertex(data = node)
+        return graph.Vertex(data=node)
+
     def neighbour_functor(state, answer):
         state.add_neighbour(answer)
+
     def post_functor(state):
         return state
     return pre_functor, neighbour_functor, post_functor
 
+
 def depth_first_search(init_node, functors):
     pre_functor, neighbour_functor, post_functor = functors
     visited = set()
+
     def dfs(node):
         visited.add(node)
         state = pre_functor(node)
@@ -22,11 +27,12 @@ def depth_first_search(init_node, functors):
         return post_functor(state)
     return dfs(init_node)
 
+
 def topological_sort(graph):
-    degrees = {vertex:0 for vertex in graph.vertices()}
+    degrees = {vertex: 0 for vertex in graph.vertices()}
     for edge in graph.edges():
         degrees[edge.out] += 1
-    stack = [vertex for (vertex,degree) in degrees if degree == 0]
+    stack = [vertex for (vertex, degree) in degrees if degree == 0]
     total_order = []
     while not stack.empty():
         vertex = stack.pop()
@@ -38,6 +44,7 @@ def topological_sort(graph):
     if len(graph.vertices()) != len(total_order):
         raise "Cycles found in the graph"
     return total_order
+
 
 def BreathFirstSearch(graph, init_node):
     pass
