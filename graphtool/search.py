@@ -45,6 +45,5 @@ def topological_sort(graph):
         raise "Cycles found in the graph"
     return total_order
 
-
-def BreathFirstSearch(graph, init_node):
+def breath_first_search():
     pass
