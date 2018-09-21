@@ -45,5 +45,15 @@ def topological_sort(graph):
         raise "Cycles found in the graph"
     return total_order
 
-def breath_first_search():
-    pass
+
+def breath_first_search(init_node):
+    visited = set()
+    waiting = Queue.LifoQueue()
+    visited.add(init_node)
+    waiting.put(init_node)
+    while not queue.empty():
+        node = waiting.get()
+        for neighbour in node.neighbours():
+            if neighbour not in visited:
+                visited.add(neighbour)
+                waiting.put(neighbour)
