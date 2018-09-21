@@ -9,6 +9,7 @@ class Vertex:
     def add_neighbours(self, neighbour):
         self.neighbours.append(neighbour)
 
+
 class Edge:
     pass
 
