@@ -4,14 +4,20 @@ class Vertex:
         self.data = data
         if neighbours is None:
             self.neighbours = []
+        else:
+            self.neighbours = neighbours
         return self
 
-    def add_neighbours(self, neighbour):
+    def add_neighbour(self, neighbour):
         self.neighbours.append(neighbour)
 
 
 class Edge:
-    pass
+    def __init__(self, start=None, end=None, data=None):
+        self.data = data
+        self.start = start
+        self.end = end
+        return self
 
 
 class Graph:
