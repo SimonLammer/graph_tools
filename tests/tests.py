@@ -49,3 +49,6 @@ def test_find_isolated_vertices():
 def test_density():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert graph1.density() == 1
+    graph2 = Graph.empty(2)
+    assert graph2.density() == 0
+

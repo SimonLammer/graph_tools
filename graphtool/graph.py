@@ -154,8 +154,9 @@ class Graph:
         self._edges = set()
         for a in self.vertices():
             for b in self._dict[a]:
-                self._edges.add(Edge(start=min(hash(a), hash(b)),
-                                     end=max(hash(a), hash(b))))
+                if(hash(b) < hash(a)):
+                    continue
+                self._edges.add(Edge(start=a, end=b))
 
     def edges(self):
         """
@@ -216,7 +217,7 @@ class Graph:
 
     def degree_sequence(self):
         degree_list = self.vertex_degree()
-        degree_list.sort()
+        degree_list.sort(reverse=True)
         return degree_list
 
     def find_isolated_vertices(self):
