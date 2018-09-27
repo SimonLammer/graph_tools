@@ -111,6 +111,9 @@ class Graph:
         degree_list.sort()
         return degree_list
 
+    def find_isolated_vertices(self):
+        return [v for v in self.vertices() if len(self._dict[v]) == 0]
+
     def is_erdos_gallai(self):
         """
         Returns True if and only if the graph respects the Erdös-Gallai
