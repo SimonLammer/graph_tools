@@ -26,25 +26,28 @@ class Edge:
             two names of vertices
         - Edge(a,b) where a and b are either Vertex objects or vertices' names
         """
-        self.data = kwargs.get("data",None)
-        self.oriented = kwargs.get("oriented",False)
-        print(args)
-        if len(args)==1 and isinstance(args[0],Edge):
+        self.data = kwargs.get("data", None)
+        self.oriented = kwargs.get("oriented", False)
+        if len(args) == 1 and isinstance(args[0], Edge):
             self.start = args[0].start
             self.end = args[0].end
             self.data = args[0].data
             self.oriented = args[0].oriented
         else:
-            a,b = None,None
-            if len(args)==1:
-                a,b = args[0][0], args[0][1]
-            elif len(args)==2:
-                a,b = args[0],args[1]
+            a, b = None, None
+            if len(args) == 0:
+                a, b = kwargs.get("start", None), kwargs.get("end", None)
+                if a is None or b is None:
+                    raise Exception("Invalid argument")
+            elif len(args) == 1:
+                a, b = args[0][0], args[0][1]
+            elif len(args) == 2:
+                a, b = args[0], args[1]
             else:
                 raise Exception("Too many arguments : only 2 were expected")
-            if not isinstance(a,Vertex):
+            if not isinstance(a, Vertex):
                 a = Vertex(a)
-            if not isinstance(b,Vertex):
+            if not isinstance(b, Vertex):
                 b = Vertex(b)
             self.start = a
             self.end = b
@@ -183,11 +186,14 @@ class Graph:
         """
         if not isinstance(v, Vertex):
             v = Vertex(v)
-
+        print("begin", self._dict)
         if v in self._dict:
-            del self._dict[v]
+            self._dict.pop(v, None)
+        print("middle", self._dict)
         for x in self._dict:
-            self._dict[x].remove(v)
+            print(x)
+            self._dict[x].discard(v)
+        print("end", self._dict)
 
     def add_edge(self, *args):
         """
@@ -208,8 +214,8 @@ class Graph:
         args = Edge | (Vertex, Vertex) | (name, name)
         """
         e = Edge(args)
-        self._dict[e.start].remove(e.end)
-        self._dict[e.end].remove(e.start)
+        self._dict[e.start].discard(e.end)
+        self._dict[e.end].discard(e.start)
 
     # ---------------- Stats computations -----------------------------
     def vertex_degree(self):
