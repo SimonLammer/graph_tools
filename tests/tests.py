@@ -1,4 +1,5 @@
 import pytest
+import graphtool
 
 
 def test_test():
