@@ -63,18 +63,19 @@ class Graph:
     the class OrientedGraph
     """
 
-    def __init__(self, _graph_dict, oriented=False):
+    def __init__(self, _graph_dict):
         """
         Initialization function. Is not meant to be called as it is.
         """
         self._dict = _graph_dict
+        self._edges = None
 
     def __eq__(self, other):
         return self._dict == other._dict
 
     # --------------- Initialization methods --------------------------
     @staticmethod
-    def from_edge_list(l, oriented=False):
+    def from_edge_list(l):
         if isinstance(l, str):
             # Load from a file
             edges = []
@@ -82,11 +83,10 @@ class Graph:
                 for s in f.readlines():
                     s = s.strip().split()
                     a, b = Vertex(s[0]), Vertex(s[1])
-                    edges.append(Edge(a, b, oriented))
+                    edges.append(Edge(a, b))
         else:
             edges = l
         graph_dict = dict()
-        oriented = False
         for edge in edges:
             if edge.start not in graph_dict:
                 graph_dict[edge.start] = set([edge.end])
@@ -145,13 +145,19 @@ class Graph:
         return self._dict.keys()
 
     def _generate_edges(self):
-        return []
+        self._edges = set()
+        for a in self.vertices():
+            for b in self._dict[a]:
+                self._edges.add(Edge(start=min(hash(a), hash(b)),
+                                     end=max(hash(a), hash(b))))
 
     def edges(self):
         """
         Returns an iterator over the edges of a the graph
         """
-        return []
+        if self._edges is None:
+            self._generate_edges()
+        return self._edges
 
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v):
@@ -211,10 +217,10 @@ class Graph:
         return [v.name for v in self.vertices() if len(self._dict[v]) == 0]
 
     def density(self):
-        edge_number = sum(self.vertex_degree())/2
-
-        vertex_number = len(self.vertices())
-        return edge_number / (vertex_number**2 / 2)
+        e_nb = len(self.edges())
+        v_nb = len(self.vertices())
+        possible_edges = v_nb*(v_nb-1)/2
+        return e_nb / possible_edges
 
     def is_erdos_gallai(self):
         """
