@@ -12,3 +12,6 @@ test: install
 	pytest tests/*.py
 	pycodestyle graphtool/*.py
 	pycodestyle tests/*.py
+
+clean:
+	rm -f Pipfile Pipfile.lock

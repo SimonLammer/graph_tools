@@ -1,6 +1,18 @@
 import graphtool.graph
 
 
+def no_pre_functor(node):
+    return None
+
+
+def no_neighbour_functor(state, answer):
+    return None
+
+
+def no_post_functor(state):
+    return None
+
+
 def tree_builder():
     def pre_functor(node):
         return graph.Vertex(data=node)
@@ -44,6 +56,25 @@ def topological_sort(graph):
     if len(graph.vertices()) != len(total_order):
         raise "Cycles found in the graph"
     return total_order
+
+
+def get_connected_components(graph):
+    seen = set()
+    components = [[]]
+
+    def pre_functor(node):
+        components[-1].append(node)
+        seen.add(node)
+
+    def explore_components(node):
+        functors = (pre_functor, no_neighbour_functor, no_post_functor)
+        return depth_first_search(node, functors)
+    for vertex in graph.vertices():
+        if vertex not in seen:
+            component = []
+            explore_components(vertex)
+            components.append(component)
+    return components
 
 
 def breath_first_search():
