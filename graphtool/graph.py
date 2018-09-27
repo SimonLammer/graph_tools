@@ -216,6 +216,10 @@ class Graph:
         return self._dict.keys()
 
     def _generate_edges(self):
+        """
+        Generated the set of edges of the graph.
+        This set is then stored into the self._edges attribute
+        """
         self._edges = set()
         for a in self.vertices():
             for b in self._dict[a]:
@@ -246,16 +250,13 @@ class Graph:
         """
         v := Vertex | name
         """
+        self._edges = None  # reset edges set
         if not isinstance(v, Vertex):
             v = Vertex(v)
-        print("begin", self._dict)
         if v in self._dict:
             self._dict.pop(v, None)
-        print("middle", self._dict)
         for x in self._dict:
-            print(x)
             self._dict[x].discard(v)
-        print("end", self._dict)
 
     def add_edge(self, *args):
         """
@@ -270,6 +271,8 @@ class Graph:
             self._dict[e.end] = set([e.start])
         else:
             self._dict[e.end].add(e.start)
+        if self._edges is not None:
+            self._edges.add(e)
 
     def remove_edge(self, *args):
         """
@@ -278,6 +281,8 @@ class Graph:
         e = Edge(args)
         self._dict[e.start].discard(e.end)
         self._dict[e.end].discard(e.start)
+        if self._edges is not None:
+            self._edges.discard(e)
 
     # ---------------- Stats computations -----------------------------
     def vertex_degree(self):
