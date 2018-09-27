@@ -128,8 +128,9 @@ class Graph:
         self._edges = set()
         for a in self.vertices():
             for b in self._dict[a]:
-                self._edges.add(Edge(start=min(hash(a), hash(b)),
-                                     end=max(hash(a), hash(b))))
+                if(hash(b) < hash(a)):
+                    continue
+                self._edges.add(Edge(start=a, end=b))
 
     def edges(self):
         """
