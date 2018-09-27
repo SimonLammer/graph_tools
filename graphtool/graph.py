@@ -48,6 +48,9 @@ class Graph:
         """
         self._dict = _graph_dict
 
+    def __eq__(self,other):
+        return self._dict == other._dict
+        
     # --------------- Initialization methods --------------------------
     @staticmethod
     def from_edge_list(l, oriented=False):
@@ -87,6 +90,16 @@ class Graph:
             # Load from a file
             pass
         return Graph({})
+
+    @staticmethod
+    def empty(n):
+        """
+        Returns the graph of n vertices without edges
+        """
+        graph_dict = dict()
+        for i in range(n):
+            graph_dict[Vertex(str(i))]=set()
+        return Graph(graph_dict)
 
     @staticmethod
     def cycle(n):
