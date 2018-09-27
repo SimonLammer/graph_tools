@@ -29,6 +29,29 @@ def test_graph_from_edge_list():
     assert (graph1 == triangle())
 
 
+def test_export_as_edge_list():
+    graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    graph1.export_as_edge_list("graph_examples/triangle_edge_list.txt")
+    graph2 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    assert graph1 == graph2
+
+
+def test_export_as_adjacency_list():
+    graph1 = Graph.from_adjacency_dict("graph_examples/triangle_adjacency.txt")
+    graph1.export_as_adjacency_dict("graph_examples/triangle_adjacency.txt")
+    graph2 = Graph.from_adjacency_dict(
+        "graph_examples/triangle_adjacency.txt")
+    assert graph1 == graph2
+
+
+def test_export_as_adjacency_matrix():
+    graph1 = Graph.from_adjacency_matrix("graph_examples/triangle_matrix.txt")
+    graph1.export_as_adjacency_matrix("graph_examples/triangle_matrix.txt")
+    graph2 = Graph.from_adjacency_matrix(
+        "graph_examples/triangle_matrix.txt")
+    assert graph1 == graph2
+
+
 def test_graph_from_adjacency_dict():
     graph1 = Graph.from_adjacency_dict("graph_examples/triangle_adjacency.txt")
     assert (graph1 == triangle())
@@ -58,6 +81,11 @@ def test_cycle():
 
 def test_clique():
     assert Graph.clique(3) == triangle()
+
+
+def test_erdos_renyi():
+    assert Graph.erdos_renyi(10, 0) == Graph.empty(10)
+    assert Graph.erdos_renyi(10, 1) == Graph.clique(10)
 
 
 def test_add_vertex_edges():

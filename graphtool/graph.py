@@ -8,7 +8,7 @@ class Vertex:
         return self.name == other.name
 
     def __str__(self):
-        return "V("+str(self.name)+")"
+        return str(self.name)
 
     def __repr__(self):
         return "V("+str(self.name)+")"
@@ -73,12 +73,13 @@ class Graph:
     the class OrientedGraph
     """
 
-    def __init__(self, _graph_dict, _edges=None):
+    def __init__(self, _graph_dict, _edges=None, _matrix=None):
         """
         Initialization function. Is not meant to be called as it is.
         """
         self._dict = _graph_dict
         self._edges = _edges
+        self._matrix = _matrix
 
     def __eq__(self, other):
         return self._dict == other._dict
@@ -189,23 +190,44 @@ class Graph:
     @staticmethod
     def erdos_renyi(n, p):
         """
-        TODO
+        Generates a graph through the Erdös-Renyi model.
+        n = number of vertices
+        Each edge of the graph is present with probability p
         """
-        return Graph({})
+        p = min(max(p, 0), 1)
+        from random import random
+        g = Graph.empty(n)
+        for i in range(n):
+            for j in range(i):
+                if random() <= p:
+                    g.add_edge(str(i), str(j))
+        return g
 
     # ------------- Exportation methods -----------------
 
     def export_as_edge_list(self, filename: str):
-        # TODO
-        return
+        with open(filename, 'w') as f:
+            for e in self.edges():
+                f.write(str(e.start)+" "+str(e.end)+"\n")
 
     def export_as_adjacency_dict(self, filename: str):
-        # TODO
-        return
+        with open(filename, 'w') as f:
+            for v in self._dict:
+                f.write(str(v)+" ")
+                for neigh in self._dict[v]:
+                    f.write(str(neigh)+" ")
+                f.write("\n")
 
     def export_as_adjacency_matrix(self, filename: str):
-        # TODO
-        return
+        with open(filename, 'w') as f:
+            mat = self.adjacency_matrix()
+            n = len(mat)
+            for i in range(n):
+                string = ""
+                for j in range(n):
+                    string += str(mat[i][j])+" "
+                string += "\n"
+                f.write(string)
 
     # ---------------- Getters and setters -----------------------------
 
@@ -235,14 +257,33 @@ class Graph:
             self._generate_edges()
         return self._edges
 
+    def _generate_adjacency(self):
+        n = len(self._dict)  # number of vertices
+        numbering = dict([(x, i) for (i, x) in enumerate(self._dict.keys())])
+        # assign a number between 0 and n to all vertices
+        self._matrix = [[0 for j in range(n)] for i in range(n)]
+        if self._edges is not None:
+            for e in self.edges():
+                a, b = numbering[e.start], numbering[e.end]
+                self._matrix[a][b] = e.weight
+        else:  # matrix cannot be weighted
+            for e in self.edges():
+                a, b = numbering[e.start], numbering[e.end]
+                self._matrix[a][b] = 1
+
+    def adjacency_matrix(self):
+        if self._matrix is None:
+            self._generate_adjacency()
+        return self._matrix
+
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v):
         """
         v := Vertex | name
         """
+        self._matrix = None  # reset matrix
         if not isinstance(v, Vertex):
             v = Vertex(v)
-
         if v not in self._dict:
             self._dict[v] = set()
 
@@ -251,6 +292,7 @@ class Graph:
         v := Vertex | name
         """
         self._edges = None  # reset edges set
+        self._matrix = None  # reset adjacency
         if not isinstance(v, Vertex):
             v = Vertex(v)
         if v in self._dict:
