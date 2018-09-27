@@ -42,7 +42,7 @@ class Graph:
     Data are stored as adjacency lists stored in a dictionnary
     """
 
-    def __init__(self, _graph_dict):
+    def __init__(self, _graph_dict, oriented = False):
         """
         Initialization function. Is not meant to be called as it is.
         """
@@ -50,7 +50,7 @@ class Graph:
 
     def __eq__(self,other):
         return self._dict == other._dict
-        
+
     # --------------- Initialization methods --------------------------
     @staticmethod
     def from_edge_list(l, oriented=False):
@@ -65,6 +65,7 @@ class Graph:
         else:
             edges = l
         graph_dict = dict()
+        oriented = False
         for edge in edges:
             if edge.start not in graph_dict:
                 graph_dict[edge.start] = set([edge.end])
@@ -75,6 +76,8 @@ class Graph:
                     graph_dict[edge.end] = set([edge.start])
                 else:
                     graph_dict[edge.end].add(edge.start)
+            else:
+                oriented = True
         return Graph(graph_dict)
 
     @staticmethod
@@ -155,6 +158,15 @@ class Graph:
         degree_list = self.vertex_degree()
         degree_list.sort()
         return degree_list
+
+    def find_isolated_vertices(self):
+        return [v for v in self.vertices() if len(self._dict[v]) == 0]
+
+    def density(self):
+        edge_number = sum(self.vertex_degree())/2
+
+        vertex_number = len(self.vertices())
+        return edge_number / (vertex_number**2 / 2)
 
     def is_erdos_gallai(self):
         """
