@@ -15,6 +15,15 @@ def test_test():
     assert True
 
 
+def test_edge():
+    edge1 = Edge("a", "b")
+    edge2 = Edge(Vertex("a"), Vertex("b"))
+    edge3 = Edge(edge1)
+    assert edge1 == edge2
+    assert edge2 == edge3
+    assert edge1 == edge3
+
+
 def test_graph_from_edge_list():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     graph2 = triangle()
@@ -29,6 +38,13 @@ def test_add_vertex_edges():
     graph1.add_edge("0", "2")
     graph1.add_edge("1", "2")
     assert graph1 == triangle()
+
+
+def test_add_only_edges():
+    graph1 = Graph.empty(1)
+    graph1.add_edge("0", "1")
+    graph1.add_edge("1", "2")
+    graph1.add_edge("0", "2")
 
 
 def test_remove_vertex_edges():
