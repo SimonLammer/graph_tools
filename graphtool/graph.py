@@ -24,6 +24,25 @@ class Edge:
         self.end = end
         self.oriented = oriented
 
+    @staticmethod
+    def build(*args):
+        """
+        args = Edge | (Vertex, Vertex) | (name, name)
+
+        TODO : integrate into the __init__ method by using *rags and *kwargs
+        """
+        if len(*args)==1:
+            assert isinstance(args[0], Edge)
+            return args[0]
+        else:
+            assert len(args)==2
+            a,b = args[0],args[1]
+            if not isinstance(a,Vertex):
+                a = Vertex(a)
+            if not isinstance(b,Vertex):
+                b = Vertex(b)
+            return Edge(a,b)
+
     def __eq__(self, other):
         if self.oriented:
             return self.stat == other.start and self.end == other.end
@@ -39,16 +58,18 @@ class Edge:
 class Graph:
     """
     A class representing a graph.
-    Data are stored as adjacency lists stored in a dictionnary
+    Data are stored as adjacency lists stored in a dictionnaryself.
+    Edges in the class graph are not oriented. For oriented edges, please use
+    the class OrientedGraph
     """
 
-    def __init__(self, _graph_dict, oriented = False):
+    def __init__(self, _graph_dict, oriented=False):
         """
         Initialization function. Is not meant to be called as it is.
         """
         self._dict = _graph_dict
 
-    def __eq__(self,other):
+    def __eq__(self, other):
         return self._dict == other._dict
 
     # --------------- Initialization methods --------------------------
@@ -71,13 +92,10 @@ class Graph:
                 graph_dict[edge.start] = set([edge.end])
             else:
                 graph_dict[edge.start].add(edge.end)
-            if not edge.oriented:
-                if edge.end not in graph_dict:
-                    graph_dict[edge.end] = set([edge.start])
-                else:
-                    graph_dict[edge.end].add(edge.start)
+            if edge.end not in graph_dict:
+                graph_dict[edge.end] = set([edge.start])
             else:
-                oriented = True
+                graph_dict[edge.end].add(edge.start)
         return Graph(graph_dict)
 
     @staticmethod
@@ -101,7 +119,7 @@ class Graph:
         """
         graph_dict = dict()
         for i in range(n):
-            graph_dict[Vertex(str(i))]=set()
+            graph_dict[Vertex(str(i))] = set()
         return Graph(graph_dict)
 
     @staticmethod
@@ -136,19 +154,49 @@ class Graph:
         return []
 
     # ---------------  Modification of the data ------------------------
-    def add_vertex(self, vertex):
-        if vertex not in self._dict:
-            self._dict[vertex] = []
+    def add_vertex(self, v):
+        """
+        v := Vertex | name
+        """
+        if not isinstance(v, Vertex):
+            v = Vertex(v)
 
-    def remove_vertex(self, vertex):
-        if vertex in self._dict:
-            del self._dict[vertex]
+        if v not in self._dict:
+            self._dict[v] = set()
 
-    def add_edge(self, edge):
-        pass
+    def remove_vertex(self, v):
+        """
+        v := Vertex | name
+        """
+        if not isinstance(v, Vertex):
+            v = Vertex(v)
 
-    def remove_edge(self, edge):
-        pass
+        if v in self._dict:
+            del self._dict[v]
+        for x in self._dict:
+            self._dict[x].remove(v)
+
+    def add_edge(self, *args):
+        """
+        args = Edge | (Vertex, Vertex) | (name, name)
+        """
+        e = Edge.build(args)
+        if e.start not in self._dict:
+            self._dict[e.start] = set([e.end])
+        else:
+            self._dict[e.start].add(e.end)
+        if e.end not in self._dict:
+            self._dict[e.end] = set([e.start])
+        else:
+            self._dict[e.end].add(e.start)
+
+    def remove_edge(self, *args):
+        """
+        args = Edge | (Vertex, Vertex) | (name, name)
+        """
+        e = Edge.build(args)
+        self._dict[e.start].remove(e.end)
+        self._dict[e.end].remove(e.start)
 
     # ---------------- Stats computations -----------------------------
     def vertex_degree(self):
@@ -160,7 +208,7 @@ class Graph:
         return degree_list
 
     def find_isolated_vertices(self):
-        return [v for v in self.vertices() if len(self._dict[v]) == 0]
+        return [v.name for v in self.vertices() if len(self._dict[v]) == 0]
 
     def density(self):
         edge_number = sum(self.vertex_degree())/2
@@ -175,3 +223,10 @@ class Graph:
         See https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
         """
         return False
+
+
+class OrientedGraph:
+    """
+    TODO
+    """
+    pass
