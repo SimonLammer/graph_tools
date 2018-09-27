@@ -28,6 +28,7 @@ class Edge:
         """
         self.data = kwargs.get("data", None)
         self.oriented = kwargs.get("oriented", False)
+        self.weight = kwargs.get("weight", 1)
         if len(args) == 1 and isinstance(args[0], Edge):
             self.start = args[0].start
             self.end = args[0].end
@@ -72,12 +73,12 @@ class Graph:
     the class OrientedGraph
     """
 
-    def __init__(self, _graph_dict):
+    def __init__(self, _graph_dict, _edges=None):
         """
         Initialization function. Is not meant to be called as it is.
         """
         self._dict = _graph_dict
-        self._edges = None
+        self._edges = _edges
 
     def __eq__(self, other):
         return self._dict == other._dict
@@ -109,17 +110,48 @@ class Graph:
 
     @staticmethod
     def from_adjacency_dict(d):
-        if isinstance(d, str):
-            # Load from a file
-            pass
-        return Graph(d)
+        if isinstance(d, str):  # Load from a file
+            graph_dict = dict()
+            with open(d, 'r') as f:
+                for line in f.readlines():
+                    line = line.strip().split()
+                    v, adj_list = Vertex(line[0]), line[1:]
+                    for adj in adj_list:
+                        adj = Vertex(adj)
+                        if v in graph_dict:
+                            graph_dict[v].add(adj)
+                        else:
+                            graph_dict[v] = set([adj])
+                        if adj in graph_dict:
+                            graph_dict[adj].add(v)
+                        else:
+                            graph_dict[adj] = set([v])
+            return Graph(graph_dict)
+        else:
+            return Graph(d)
 
     @staticmethod
     def from_adjacency_matrix(m):
-        if isinstance(m, str):
-            # Load from a file
-            pass
-        return Graph({})
+        adj_mat = None
+        if isinstance(m, str):  # Load from a file
+            with open(m, 'r') as f:
+                adj_mat = [l.strip().split() for l in f.readlines()]
+        else:
+            adj_mat = m
+        n = len(adj_mat)
+        graph_dict = dict()
+        edges = set()
+        for i in range(n):
+            v = Vertex(str(i))
+            graph_dict[v] = set()
+        for i in range(n):
+            for j in range(n):
+                vi, vj = Vertex(str(i)), Vertex(str(j))
+                if float(adj_mat[i][j]) != 0:
+                    graph_dict[vi].add(vj)
+                    graph_dict[vj].add(vi)
+                    edges.add(Edge(vi, vj, weight=float(adj_mat[i][j])))
+        return Graph(graph_dict, edges)
 
     @staticmethod
     def empty(n):
@@ -133,11 +165,26 @@ class Graph:
 
     @staticmethod
     def cycle(n):
-        return Graph({})
+        """
+        Builds the cycle of size n, with vertex i being linked to
+        vertices (i+1)%n and (i-1)%n
+        """
+        g = Graph.empty(n)
+        for i in range(n-1):
+            g.add_edge(str(i), str(i+1))
+        g.add_edge(str(n-1), "0")
+        return g
 
     @staticmethod
     def clique(n):
-        return Graph({})
+        """
+        Builds the fully connected graph of size n
+        """
+        g = Graph.empty(n)
+        for i in range(n):
+            for j in range(i):
+                g.add_edge(str(i), str(j))
+        return g
 
     @staticmethod
     def erdos_renyi(n, p):
@@ -146,7 +193,22 @@ class Graph:
         """
         return Graph({})
 
+    # ------------- Exportation methods -----------------
+
+    def export_as_edge_list(self, filename: str):
+        # TODO
+        return
+
+    def export_as_adjacency_dict(self, filename: str):
+        # TODO
+        return
+
+    def export_as_adjacency_matrix(self, filename: str):
+        # TODO
+        return
+
     # ---------------- Getters and setters -----------------------------
+
     def vertices(self):
         """
         Returns an iterator over the vertices of the graph
