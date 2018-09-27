@@ -18,30 +18,36 @@ class Vertex:
 
 
 class Edge:
-    def __init__(self, start=None, end=None, oriented=False, data=None):
-        self.data = data
-        self.start = start
-        self.end = end
-        self.oriented = oriented
-
-    @staticmethod
-    def build(*args):
+    def __init__(self, *args, **kwargs):
         """
-        args = Edge | (Vertex, Vertex) | (name, name)
-
-        TODO : integrate into the __init__ method by using *rags and *kwargs
+        Different ways to initialize an Edge:
+        - Edge(edge)
+        - Edge(iterable of length 2) containing either two Vertex objects or
+            two names of vertices
+        - Edge(a,b) where a and b are either Vertex objects or vertices' names
         """
-        if len(*args)==1:
-            assert isinstance(args[0], Edge)
-            return args[0]
+        self.data = kwargs.get("data",None)
+        self.oriented = kwargs.get("oriented",False)
+        print(args)
+        if len(args)==1 and isinstance(args[0],Edge):
+            self.start = args[0].start
+            self.end = args[0].end
+            self.data = args[0].data
+            self.oriented = args[0].oriented
         else:
-            assert len(args)==2
-            a,b = args[0],args[1]
+            a,b = None,None
+            if len(args)==1:
+                a,b = args[0][0], args[0][1]
+            elif len(args)==2:
+                a,b = args[0],args[1]
+            else:
+                raise Exception("Too many arguments : only 2 were expected")
             if not isinstance(a,Vertex):
                 a = Vertex(a)
             if not isinstance(b,Vertex):
                 b = Vertex(b)
-            return Edge(a,b)
+            self.start = a
+            self.end = b
 
     def __eq__(self, other):
         if self.oriented:
@@ -186,7 +192,7 @@ class Graph:
         """
         args = Edge | (Vertex, Vertex) | (name, name)
         """
-        e = Edge.build(args)
+        e = Edge(args)
         if e.start not in self._dict:
             self._dict[e.start] = set([e.end])
         else:
@@ -200,7 +206,7 @@ class Graph:
         """
         args = Edge | (Vertex, Vertex) | (name, name)
         """
-        e = Edge.build(args)
+        e = Edge(args)
         self._dict[e.start].remove(e.end)
         self._dict[e.end].remove(e.start)
 
