@@ -211,7 +211,7 @@ class Graph:
 
     def degree_sequence(self):
         degree_list = self.vertex_degree()
-        degree_list.sort()
+        degree_list.sort(reverse=True)
         return degree_list
 
     def find_isolated_vertices(self):
