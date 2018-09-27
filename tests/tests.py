@@ -20,19 +20,21 @@ def test_graph_from_edge_list():
     graph2 = triangle()
     assert (graph1._dict == graph2._dict)
 
+
 def test_add_vertex_edges():
     graph1 = Graph.empty(1)
-    graph1.add_vertex(1)
-    graph1.add_vertex(2)
-    graph1.add_edge(0,1)
-    graph1.add_edge(0,2)
-    graph1.add_edge(1,2)
+    graph1.add_vertex("1")
+    graph1.add_vertex("2")
+    graph1.add_edge("0", "1")
+    graph1.add_edge("0", "2")
+    graph1.add_edge("1", "2")
     assert graph1 == triangle()
+
 
 def test_remove_vertex_edges():
     graph1 = triangle()
-    graph1.remove_edge("0","1")
-    graph1.remove_edge("0","2")
+    graph1.remove_edge("0", "1")
+    graph1.remove_edge("0", "2")
     graph1.remove_vertex("1")
     assert graph1 == empty(3)
 
@@ -40,6 +42,8 @@ def test_remove_vertex_edges():
 def test_find_isolated_vertices():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert graph1.find_isolated_vertices() == []
+    graph2 = Graph.empty(2)
+    assert graph2.find_isolated_vertices() == ["0","1"]
 
 
 def test_density():
