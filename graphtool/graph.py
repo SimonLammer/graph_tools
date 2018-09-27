@@ -4,6 +4,18 @@ class Vertex:
         self.name = name
         self.data = data
 
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __str__(self):
+        return "V("+str(self.name)+")"
+
+    def __repr__(self):
+        return "V("+str(self.name)+")"
+
+    def __hash__(self):
+        return hash(self.name)
+
 
 class Edge:
     def __init__(self, start=None, end=None, oriented=False, data=None):
@@ -16,6 +28,12 @@ class Edge:
         if self.oriented:
             return self.stat == other.start and self.end == other.end
         return {self.start, self.end} == {other.start, other.end}
+
+    def __repr__(self):
+        return "Edge("+str(self.start)+", "+str(self.end)+")"
+
+    def __hash__(self):
+        return hash((self.start, self.end, self.oriented))
 
 
 class Graph:
@@ -35,30 +53,30 @@ class Graph:
     @staticmethod
     def from_edge_list(l, oriented=False):
         if isinstance(l, str):
-            print(l)
-            edges = []
             # Load from a file
+            edges = []
             with open(l, 'r') as f:
                 for s in f.readlines():
                     s = s.strip().split()
-                    edges.append(Edge(Vertex(s[0]), Vertex(s[1]), oriented))
+                    a, b = Vertex(s[0]), Vertex(s[1])
+                    edges.append(Edge(a, b, oriented))
         else:
             edges = l
         graph_dict = dict()
         oriented = False
         for edge in edges:
             if edge.start not in graph_dict:
-                graph_dict[edge.start] = [edge.end]
+                graph_dict[edge.start] = set([edge.end])
             else:
-                graph_dict[edge.start].append(edge.end)
+                graph_dict[edge.start].add(edge.end)
             if not edge.oriented:
                 if edge.end not in graph_dict:
-                    graph_dict[edge.end] = [edge.start]
+                    graph_dict[edge.end] = set([edge.start])
                 else:
-                    graph_dict[edge.end].append(edge.start)
+                    graph_dict[edge.end].add(edge.start)
             else:
                 oriented = True
-        return Graph(graph_dict, oriented)
+        return Graph(graph_dict)
 
     @staticmethod
     def from_adjacency_dict(d):
@@ -75,7 +93,18 @@ class Graph:
         return Graph({})
 
     @staticmethod
+    def cycle(n):
+        return Graph({})
+
+    @staticmethod
+    def clique(n):
+        return Graph({})
+
+    @staticmethod
     def erdos_renyi(n, p):
+        """
+        TODO
+        """
         return Graph({})
 
     # ---------------- Getters and setters -----------------------------
@@ -84,6 +113,9 @@ class Graph:
         Returns an iterator over the vertices of the graph
         """
         return self._dict.keys()
+
+    def _generate_edges(self):
+        return []
 
     def edges(self):
         """
