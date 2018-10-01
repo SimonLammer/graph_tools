@@ -276,6 +276,11 @@ class Graph:
             self._generate_adjacency()
         return self._matrix
 
+    def get_neighbours(self, v):
+        if not isinstance(v, Vertex):
+            v = Vertex(v)
+        return graph._dict[v]
+
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v):
         """
@@ -350,7 +355,15 @@ class Graph:
         property.
         See https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
         """
-        return False
+        sequence = self.degree_sequence()
+        degree_sum = sum(sequence)
+        n = len(self._dict)
+        for k in range(1, n+1):
+            comp = sum([min(k,sequence[i]) for i in range(k+1,n+1)])
+            if degree_sum > k*(k-1) + comp:
+                return False
+        return True
+
 
 
 class OrientedGraph:
