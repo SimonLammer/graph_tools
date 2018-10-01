@@ -21,7 +21,7 @@ def clustering_coeff(graph):
                     connected_triplets += 1
                 if len(intersect) == 3:
                     triangles += 1
-    if connected_triplets==0:
+    if connected_triplets == 0:
         return 0
     return 3*triangles/connected_triplets
 
