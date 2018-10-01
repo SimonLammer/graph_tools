@@ -16,7 +16,7 @@ def shortestPath(graph, vi, vj):
 def diameter(graph):
     """
     Return the diameter of the graph.
-    The diameter is defined as the longest shortest path among all pairs of vertices.
-    It is by convention infinite for non-connected graphs
+    The diameter is defined as the longest shortest path among all pairs of
+    vertices. It is by convention infinite for non-connected graphs
     """
     return 0
