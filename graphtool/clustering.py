@@ -1,10 +1,26 @@
 import graphtool.graph
 
 
+def is_erdos_gallai(sequence):
+    """
+    Returns True if and only if the graph respects the Erdös-Gallai
+    property.
+    See https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
+    """
+    degree_sum = sum(sequence)
+    n = len(sequence)
+    for k in range(1, n+1):
+        comp = sum([min(k, sequence[i]) for i in range(k+1, n+1)])
+        if degree_sum > k*(k-1) + comp:
+            return False
+    return True
+
+
 def clustering_coeff(graph):
     """
     Returns the clustering coefficient of a given graph.
-    The clustering coefficient is defined by 3*{number of triangles}/{number of}
+    The clustering coefficient is defined by
+        3*{number of triangles}/{number of connected triplets}
     """
     v = graph.vertices()
     e = graph.edges()

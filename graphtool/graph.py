@@ -349,21 +349,6 @@ class Graph:
         possible_edges = v_nb*(v_nb-1)/2
         return e_nb / possible_edges
 
-    def is_erdos_gallai(self):
-        """
-        Returns True if and only if the graph respects the Erdös-Gallai
-        property.
-        See https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
-        """
-        sequence = self.degree_sequence()
-        degree_sum = sum(sequence)
-        n = len(self._dict)
-        for k in range(1, n+1):
-            comp = sum([min(k, sequence[i]) for i in range(k+1, n+1)])
-            if degree_sum > k*(k-1) + comp:
-                return False
-        return True
-
 
 class OrientedGraph:
     """
