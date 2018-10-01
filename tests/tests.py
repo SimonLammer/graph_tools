@@ -6,7 +6,7 @@ from graphtool.graph import *
 
 def triangle():
     a, b, c = Vertex("0"), Vertex("1"), Vertex("2")
-    return Graph.from_edge_list([Edge(a, b), Edge(a, c), Edge(b, c)])
+    return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
 
 # ------ tests ------
 
@@ -26,8 +26,66 @@ def test_edge():
 
 def test_graph_from_edge_list():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
-    graph2 = triangle()
-    assert (graph1._dict == graph2._dict)
+    assert (graph1 == triangle())
+
+
+def test_export_as_edge_list():
+    graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    graph1.export_as_edge_list("graph_examples/triangle_edge_list.txt")
+    graph2 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    assert graph1 == graph2
+
+
+def test_export_as_adjacency_list():
+    graph1 = Graph.from_adjacency_dict("graph_examples/triangle_adjacency.txt")
+    graph1.export_as_adjacency_dict("graph_examples/triangle_adjacency.txt")
+    graph2 = Graph.from_adjacency_dict(
+        "graph_examples/triangle_adjacency.txt")
+    assert graph1 == graph2
+
+
+def test_export_as_adjacency_matrix():
+    graph1 = Graph.from_adjacency_matrix("graph_examples/triangle_matrix.txt")
+    graph1.export_as_adjacency_matrix("graph_examples/triangle_matrix.txt")
+    graph2 = Graph.from_adjacency_matrix(
+        "graph_examples/triangle_matrix.txt")
+    assert graph1 == graph2
+
+
+def test_graph_from_adjacency_dict():
+    graph1 = Graph.from_adjacency_dict("graph_examples/triangle_adjacency.txt")
+    assert (graph1 == triangle())
+
+
+def test_graph_from_adjacency_matrix():
+    graph1 = Graph.from_adjacency_matrix("graph_examples/triangle_matrix.txt")
+    print(graph1._dict)
+    print(triangle()._dict)
+    assert (graph1 == triangle())
+
+
+def test_all_import():
+    graph_edge = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    graph_adj = Graph.from_adjacency_dict(
+        "graph_examples/triangle_adjacency.txt")
+    graph_mat = Graph.from_adjacency_matrix(
+        "graph_examples/triangle_matrix.txt")
+    assert graph_edge == graph_adj
+    assert graph_adj == graph_mat
+    assert graph_mat == graph_edge
+
+
+def test_cycle():
+    assert Graph.cycle(3) == triangle()
+
+
+def test_clique():
+    assert Graph.clique(3) == triangle()
+
+
+def test_erdos_renyi():
+    assert Graph.erdos_renyi(10, 0) == Graph.empty(10)
+    assert Graph.erdos_renyi(10, 1) == Graph.clique(10)
 
 
 def test_add_vertex_edges():
