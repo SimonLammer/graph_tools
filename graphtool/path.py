@@ -1,5 +1,6 @@
 from queue import PriorityQueue
 
+
 def all_shortest_paths(graph):
     """
     Floyd-Warshall algorithm.
@@ -14,12 +15,12 @@ def all_shortest_paths(graph):
         shortest path from vertex i to vertex j
     """
     adj = graph.adjacency_matrix()
+    n = len(adj)
     for i in range(n):
         for j in range(n):
-            if adj[i][j]==0:
-                adj[i][j]=float("inf")
-    n = len(adj)
-    for i in range(n);
+            if adj[i][j] == 0:
+                adj[i][j] = float("inf")
+    for i in range(n):
         for j in range(n):
             for k in range(n):
                 adj[i][j] = min(adj[i][j], adj[i][k]+adj[k][j])
@@ -43,16 +44,16 @@ def shortest_path(graph, v_start, v_end):
 
     Returns
     -------
-    The length l and the sequence of vertices of (one of the) shortest paths
-    from v_start to v_end
+        The length l and the sequence of vertices of (one of the) shortest
+        paths from v_start to v_end
     """
-    return 0,[]
+    return 0, []
 
 
 def diameter(graph):
     """
-    The diameter is defined as the longest shortest path among all pairs of vertices.
-    It is by convention infinite for non-connected graphs
+    The diameter is defined as the longest shortest path among all pairs
+    of vertices. It is by convention infinite for non-connected graphs
 
     Parameters
     ----------
@@ -69,6 +70,6 @@ def diameter(graph):
     mini = float("inf")
     for i in range(n):
         for j in range(n):
-            if paths[i][j]<=mini:
+            if paths[i][j] <= mini:
                 mini = paths[i][j]
     return mini
