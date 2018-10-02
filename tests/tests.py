@@ -1,5 +1,7 @@
 import pytest
 from graphtool.graph import *
+from graphtool.search import *
+from graphtool.path import *
 
 # ----- utility ------
 
@@ -125,3 +127,8 @@ def test_density():
     assert graph1.density() == 1
     graph2 = Graph.empty(2)
     assert graph2.density() == 0
+
+
+def test_diameter():
+    assert diameter(triangle()) == 1
+    assert diameter(Graph.empty(2)) == float("inf")

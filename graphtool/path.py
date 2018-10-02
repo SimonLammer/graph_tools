@@ -1,22 +1,74 @@
+from queue import PriorityQueue
 
-def allShortestPaths(graph):
+
+def all_shortest_paths(graph):
     """
-    Floyd-Warshall algorithm
+    Floyd-Warshall algorithm.
+
+    Parameters
+    ----------
+        'graph' : a Graph object
+
+    Returns
+    -------
+        A matrix M (list of list) where M[i][j] = the length of the
+        shortest path from vertex i to vertex j
     """
-    pass
+    adj = graph.adjacency_matrix()
+    n = len(adj)
+    for i in range(n):
+        for j in range(n):
+            if adj[i][j] == 0:
+                adj[i][j] = float("inf")
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                adj[i][j] = min(adj[i][j], adj[i][k]+adj[k][j])
+    return adj
 
 
-def shortestPath(graph, vi, vj):
+def shortest_path(graph, v_start, v_end):
     """
     Dijsktra's algorithm
+
+    Parameters
+    ----------
+        'graph' : a Graph object
+            graph on which to perform the search
+
+        'v_start' : a Vertex object
+            Starting point of the algorithm
+
+        'v_end' : a Vertex object
+            Target point of the algorithm
+
+    Returns
+    -------
+        The length l and the sequence of vertices of (one of the) shortest
+        paths from v_start to v_end
     """
-    pass
+    return 0, []
 
 
 def diameter(graph):
     """
-    Return the diameter of the graph.
-    The diameter is defined as the longest shortest path among all pairs of
-    vertices. It is by convention infinite for non-connected graphs
+    The diameter is defined as the longest shortest path among all pairs
+    of vertices. It is by convention infinite for non-connected graphs
+
+    Parameters
+    ----------
+        'graph' : a Graph object
+            The graph on which to perform the algorithm
+
+    Returns
+    -------
+        The diameter of the graph.
     """
-    return 0
+    paths = all_shortest_paths(graph)
+    n = len(paths)
+    mini = float("inf")
+    for i in range(n):
+        for j in range(n):
+            if paths[i][j] <= mini:
+                mini = paths[i][j]
+    return mini
