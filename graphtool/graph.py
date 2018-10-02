@@ -276,6 +276,11 @@ class Graph:
             self._generate_adjacency()
         return self._matrix
 
+    def get_neighbours(self, v):
+        if not isinstance(v, Vertex):
+            v = Vertex(v)
+        return graph._dict[v]
+
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v):
         """
@@ -343,14 +348,6 @@ class Graph:
         v_nb = len(self.vertices())
         possible_edges = v_nb*(v_nb-1)/2
         return e_nb / possible_edges
-
-    def is_erdos_gallai(self):
-        """
-        Returns True if and only if the graph respects the Erdös-Gallai
-        property.
-        See https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
-        """
-        return False
 
 
 class OrientedGraph:
