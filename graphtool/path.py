@@ -63,7 +63,6 @@ def diameter(graph):
     Returns
     -------
         The diameter of the graph.
-
     """
     paths = all_shortest_paths(graph)
     n = len(paths)
