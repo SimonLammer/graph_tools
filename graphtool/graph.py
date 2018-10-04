@@ -372,6 +372,7 @@ class OrientedGraph:
     def __init__(self):
         pass
 
+    """
     @staticmethod
     def erdos_renyi_edge(N, V):
         adj = [[0 for i in range(N)] for j in range(N)]
@@ -385,3 +386,4 @@ class OrientedGraph:
         adj = [[1 if uniform(0, 1) < p else 0 for i in range(N)]
                for j in range(N)]
         return Graph.from_adjacency_matrix(adj)
+    """
