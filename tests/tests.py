@@ -2,6 +2,8 @@ import pytest
 from graphtool.graph import *
 from graphtool.search import *
 from graphtool.path import *
+from graphtool.generator import *
+
 
 # ----- utility ------
 
@@ -132,3 +134,9 @@ def test_density():
 def test_diameter():
     assert diameter(triangle()) == 1
     assert diameter(Graph.empty(2)) == float("inf")
+
+
+def test_random_graph_generator():
+    graph1 = generate_random_graph(100, 250)
+    assert len(graph1.edges()) == 250
+    assert len(graph1.vertices()) == 100
