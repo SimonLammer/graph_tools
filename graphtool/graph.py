@@ -196,9 +196,13 @@ class Graph:
         n = number of vertices
         Each edge of the graph is present with probability p
         """
-        adj = [[1 if uniform(0, 1) < p else 0 for i in range(N)]
-               for j in range(N)]
-        return Graph.from_adjacency_matrix(adj)
+        p = min(max(p, 0), 1)
+        g = Graph.empty(n)
+        for i in range(n):
+            for j in range(i):
+                if random() <= p:
+                    g.add_edge(str(i), str(j))
+        return g
 
     @staticmethod
     def erdos_renyi_edge(n, l):
@@ -213,7 +217,6 @@ class Graph:
             (a, b) = possible_edges.pop(randint(0, len(possible_edges) - 1))
             adj[a][b] = 1
         return Graph.from_adjacency_matrix(adj)
-        
     # ------------- Exportation methods -----------------
 
     def export_as_edge_list(self, filename: str):
@@ -365,4 +368,20 @@ class OrientedGraph:
     """
     TODO
     """
-    pass
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def erdos_renyi_edge(N, V):
+        adj = [[0 for i in range(N)] for j in range(N)]
+        possible_edges = [(i, j) for j in range(N) for i in range(j)]
+        for i in range(V):
+            (a, b) = possible_edges.pop(randint(0, len(possible_edges) - 1))
+            adj[a][b] = 1
+        return Graph.from_adjacency_matrix(adj)
+
+    def erdos_renyi_proba(N, p):
+        adj = [[1 if uniform(0, 1) < p else 0 for i in range(N)]
+               for j in range(N)]
+        return Graph.from_adjacency_matrix(adj)
