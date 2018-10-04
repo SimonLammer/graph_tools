@@ -1,3 +1,5 @@
+from random import random, randint, uniform
+
 
 class Vertex:
     def __init__(self, name=None, data=None):
@@ -188,21 +190,30 @@ class Graph:
         return g
 
     @staticmethod
-    def erdos_renyi(n, p):
+    def erdos_renyi_proba(n, p):
         """
         Generates a graph through the Erdös-Renyi model.
         n = number of vertices
         Each edge of the graph is present with probability p
         """
-        p = min(max(p, 0), 1)
-        from random import random
-        g = Graph.empty(n)
-        for i in range(n):
-            for j in range(i):
-                if random() <= p:
-                    g.add_edge(str(i), str(j))
-        return g
+        adj = [[1 if uniform(0, 1) < p else 0 for i in range(N)]
+               for j in range(N)]
+        return Graph.from_adjacency_matrix(adj)
 
+    @staticmethod
+    def erdos_renyi_edge(n, l):
+        """
+        Generates a graph through the Erdös-Renyi model.
+        n = number of vertices
+        l = number of edges
+        """
+        adj = [[0 for i in range(n)] for j in range(n)]
+        possible_edges = [(i, j) for j in range(n) for i in range(j)]
+        for i in range(l):
+            (a, b) = possible_edges.pop(randint(0, len(possible_edges) - 1))
+            adj[a][b] = 1
+        return Graph.from_adjacency_matrix(adj)
+        
     # ------------- Exportation methods -----------------
 
     def export_as_edge_list(self, filename: str):
