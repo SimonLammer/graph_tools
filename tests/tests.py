@@ -138,5 +138,7 @@ def test_diameter():
 
 def test_random_graph_generator():
     graph1 = generate_random_graph(100, 250)
+    graph2 = generate_random_graph_proba(100, 0.5)
     assert len(graph1.edges()) == 250
     assert len(graph1.vertices()) == 100
+    assert len(graph2.vertices()) == 100
