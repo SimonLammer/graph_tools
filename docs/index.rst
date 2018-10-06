@@ -7,7 +7,7 @@ GraphTool is a graph utility library. Its goal is to implement classical graph a
    :maxdepth: 2
    :caption: Contents:
 
-   installation
+   Installation
    The graph class
    Search
    Path
