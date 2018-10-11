@@ -2,6 +2,7 @@ from random import random, randint, uniform
 from .vertex_edge import Vertex, Edge
 from ._parsing import *
 
+
 class OrientedGraph:
     """
     TODO

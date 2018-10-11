@@ -2,6 +2,7 @@ from random import random, randint, uniform
 from .vertex_edge import Vertex, Edge
 from ._parsing import *
 
+
 class Graph:
     """
     A class representing a graph.
@@ -23,7 +24,7 @@ class Graph:
 
     # --------------- Initialization methods --------------------------
     @staticmethod
-    def from_edge_list(l, vertex_data:str = None, edge_data:str = None):
+    def from_edge_list(l, vertex_data: str = None, edge_data: str = None):
         """
         Imports a graph from a txt file containing an edge list
 
@@ -54,7 +55,7 @@ class Graph:
         return Graph(graph_dict)
 
     @staticmethod
-    def from_adjacency_dict(d, vertex_data:str = None, edge_data:str = None):
+    def from_adjacency_dict(d, vertex_data: str = None, edge_data: str = None):
         """
         Imports a graph from a txt file containing an adjacency list
 
@@ -83,7 +84,7 @@ class Graph:
             return Graph(d)
 
     @staticmethod
-    def from_adjacency_matrix(m, vertex_data:str = None, edge_data:str = None):
+    def from_adjacency_matrix(m, vertex_data: str = None, edge_data: str = None):
         """
         Imports a graph from a txt file containing an adjacency matrx
 
@@ -113,7 +114,7 @@ class Graph:
         return Graph(graph_dict, edges)
 
     @staticmethod
-    def empty(n:int):
+    def empty(n: int):
         """
         Builds the graph of n vertices an no edges
 
@@ -127,7 +128,7 @@ class Graph:
         return Graph(graph_dict)
 
     @staticmethod
-    def cycle(n:int):
+    def cycle(n: int):
         """
         Builds the cycle of size n, with vertex i being linked to
         vertices (i+1)%n and (i-1)%n
@@ -143,7 +144,7 @@ class Graph:
         return g
 
     @staticmethod
-    def clique(n:int):
+    def clique(n: int):
         """
         Builds the fully connected graph of size n, that is the graph of n
         vertices and all possible n(n-1)/2 edges
@@ -159,7 +160,7 @@ class Graph:
         return g
 
     @staticmethod
-    def erdos_renyi_proba(n:int, p:float):
+    def erdos_renyi_proba(n: int, p: float):
         """
         Generates a graph through the Erdös-Renyi model.
 
@@ -184,7 +185,7 @@ class Graph:
         return g
 
     @staticmethod
-    def erdos_renyi_edge(n:int, l:int):
+    def erdos_renyi_edge(n: int, l: int):
         """
         Generates a graph through the Erdös-Renyi model with fixed number
         of edges

@@ -2,6 +2,7 @@ class Vertex:
     """
     Documentation TODO
     """
+
     def __init__(self, name=None, data=None):
         self.name = name
         self.data = data
