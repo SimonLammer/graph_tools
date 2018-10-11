@@ -76,6 +76,31 @@ def shortest_path(graph, v_start, v_end, heuristic):
     return dist[v_end], recover(v_end)
 
 
+def dijkstra(graph, v_start, v_end):
+    """
+    A* algorithm
+
+    Parameters
+    ----------
+        'graph' : a Graph object
+            graph on which to perform the search
+
+        'v_start' : a Vertex object
+            Starting point of the algorithm
+
+        'v_end' : a Vertex object
+            Target point of the algorithm
+
+    Returns
+    -------
+        The length l and the sequence of vertices of (one of the) shortest
+        paths from v_start to v_end
+    """
+    def no_heuristic(a, b):
+        return 0
+    return shortest_path(graph, v_start, v_end, no_heuristic)
+
+
 def diameter(graph):
     """
     The diameter is defined as the longest shortest path among all pairs
