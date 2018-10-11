@@ -78,7 +78,7 @@ def shortest_path(graph, v_start, v_end, heuristic):
 
 def dijkstra(graph, v_start, v_end):
     """
-    A* algorithm
+    Dijkstra's algorithm
 
     Parameters
     ----------
