@@ -88,7 +88,14 @@ class Graph:
 
     # --------------- Initialization methods --------------------------
     @staticmethod
-    def from_edge_list(l):
+    def from_edge_list(l, vertex_data:str = None, edge_data:str = None):
+        """
+        Imports a graph from a txt file containing an edge list
+
+        Returns
+        -------
+        A new Graph object
+        """
         if isinstance(l, str):
             # Load from a file
             edges = []
@@ -112,7 +119,14 @@ class Graph:
         return Graph(graph_dict)
 
     @staticmethod
-    def from_adjacency_dict(d):
+    def from_adjacency_dict(d, vertex_data:str = None, edge_data:str = None):
+        """
+        Imports a graph from a txt file containing an adjacency list
+
+        Returns
+        -------
+        A new Graph object
+        """
         if isinstance(d, str):  # Load from a file
             graph_dict = dict()
             with open(d, 'r') as f:
@@ -134,7 +148,14 @@ class Graph:
             return Graph(d)
 
     @staticmethod
-    def from_adjacency_matrix(m):
+    def from_adjacency_matrix(m, vertex_data:str = None, edge_data:str = None):
+        """
+        Imports a graph from a txt file containing an adjacency matrx
+
+        Returns
+        -------
+        A new Graph object
+        """
         adj_mat = None
         if isinstance(m, str):  # Load from a file
             with open(m, 'r') as f:
@@ -157,9 +178,13 @@ class Graph:
         return Graph(graph_dict, edges)
 
     @staticmethod
-    def empty(n):
+    def empty(n:int):
         """
-        Returns the graph of n vertices without edges
+        Builds the graph of n vertices an no edges
+
+        Returns
+        -------
+        A new Graph Object
         """
         graph_dict = dict()
         for i in range(n):
@@ -167,10 +192,14 @@ class Graph:
         return Graph(graph_dict)
 
     @staticmethod
-    def cycle(n):
+    def cycle(n:int):
         """
         Builds the cycle of size n, with vertex i being linked to
         vertices (i+1)%n and (i-1)%n
+
+        Returns
+        -------
+        A new Graph Object
         """
         g = Graph.empty(n)
         for i in range(n-1):
@@ -179,9 +208,14 @@ class Graph:
         return g
 
     @staticmethod
-    def clique(n):
+    def clique(n:int):
         """
-        Builds the fully connected graph of size n
+        Builds the fully connected graph of size n, that is the graph of n
+        vertices and all possible n(n-1)/2 edges
+
+        Returns
+        -------
+        A new Graph Object
         """
         g = Graph.empty(n)
         for i in range(n):
@@ -190,11 +224,21 @@ class Graph:
         return g
 
     @staticmethod
-    def erdos_renyi_proba(n, p):
+    def erdos_renyi_proba(n:int, p:float):
         """
         Generates a graph through the Erdös-Renyi model.
-        n = number of vertices
-        Each edge of the graph is present with probability p
+
+        Parameters
+        ----------
+        'n' : int
+            Number of vertices
+
+        'p' : float between 0 and 1
+            The probability for each edge to be present in the graph
+
+        Returns
+        -------
+        A new Graph Object
         """
         p = min(max(p, 0), 1)
         g = Graph.empty(n)
@@ -205,11 +249,22 @@ class Graph:
         return g
 
     @staticmethod
-    def erdos_renyi_edge(n, l):
+    def erdos_renyi_edge(n:int, l:int):
         """
-        Generates a graph through the Erdös-Renyi model.
-        n = number of vertices
-        l = number of edges
+        Generates a graph through the Erdös-Renyi model with fixed number
+        of edges
+
+        Parameters
+        ----------
+        'n' : int
+            Number of vertices
+
+        'l' : int
+            Number of edges
+
+        Returns
+        -------
+        A new Graph Object
         """
         adj = [[0 for i in range(n)] for j in range(n)]
         possible_edges = [(i, j) for j in range(n) for i in range(j)]
@@ -219,12 +274,28 @@ class Graph:
         return Graph.from_adjacency_matrix(adj)
     # ------------- Exportation methods -----------------
 
-    def export_as_edge_list(self, filename: str):
+    def export_as_edge_list(self, filename: str) -> None:
+        """
+        Exports the graph in form of an edge list
+
+        Parameters
+        ----------
+        'filename' : string
+            the relative path of the file to write back the data
+        """
         with open(filename, 'w') as f:
             for e in self.edges():
                 f.write(str(e.start)+" "+str(e.end)+"\n")
 
-    def export_as_adjacency_dict(self, filename: str):
+    def export_as_adjacency_dict(self, filename: str) -> None:
+        """
+        Exports the graph in form of an adjacency list
+
+        Parameters
+        ----------
+        'filename' : string
+            the relative path of the file to write back the data
+        """
         with open(filename, 'w') as f:
             for v in self._dict:
                 f.write(str(v)+" ")
@@ -232,7 +303,15 @@ class Graph:
                     f.write(str(neigh)+" ")
                 f.write("\n")
 
-    def export_as_adjacency_matrix(self, filename: str):
+    def export_as_adjacency_matrix(self, filename: str) -> None:
+        """
+        Exports the graph in form of an adjacency matrix
+
+        Parameters
+        ----------
+        'filename' : string
+            the relative path of the file to write back the data
+        """
         with open(filename, 'w') as f:
             mat = self.adjacency_matrix()
             n = len(mat)
@@ -247,13 +326,17 @@ class Graph:
 
     def vertices(self):
         """
-        Returns an iterator over the vertices of the graph
+        Getter on the vertices of the graph
+
+        Returns
+        -------
+        An iterator over the vertices of the graph
         """
         return self._dict.keys()
 
     def _generate_edges(self):
         """
-        Generated the set of edges of the graph.
+        Generates the set of edges of the graph.
         This set is then stored into the self._edges attribute
         """
         self._edges = set()
@@ -265,13 +348,21 @@ class Graph:
 
     def edges(self):
         """
-        Returns an iterator over the edges of a the graph
+        Getter on the edges of the graph
+
+        Returns
+        -------
+        An iterator over the edges of a the graph
         """
         if self._edges is None:
             self._generate_edges()
         return self._edges
 
     def _generate_adjacency(self):
+        """
+        Generates the adjacency matrix of the graph.
+        This matrix is then stored into the self._matrix attribute
+        """
         n = len(self._dict)  # number of vertices
         numbering = dict([(x, i) for (i, x) in enumerate(self._dict.keys())])
         # assign a number between 0 and n to all vertices
@@ -286,6 +377,14 @@ class Graph:
                 self._matrix[a][b] = 1
 
     def adjacency_matrix(self):
+        """
+        Computes and return the adjacency matrix of the graph.
+
+        Returns
+        -------
+        A numpy array of shape (N*N) where N is the number of vertices
+        in the graph
+        """
         if self._matrix is None:
             self._generate_adjacency()
         return self._matrix
@@ -296,19 +395,32 @@ class Graph:
         return graph._dict[v]
 
     # ---------------  Modification of the data ------------------------
-    def add_vertex(self, v):
+    def add_vertex(self, v) -> None:
         """
-        v := Vertex | name
+        Adds a new vertex to the graph
+
+        Parameters
+        ----------
+        'v' : a Vertex object or a name for a Vertex
+            If a name is provided, the method will build a Vertex with the name
+            field being v.
         """
-        self._matrix = None  # reset matrix
+        self._matrix = None  # reset adjacency matrix
         if not isinstance(v, Vertex):
             v = Vertex(v)
         if v not in self._dict:
             self._dict[v] = set()
 
-    def remove_vertex(self, v):
+    def remove_vertex(self, v) -> None:
         """
-        v := Vertex | name
+        Removes a vertex from the graph. If the given vertex is not present,
+        this method does not do anything.
+
+        Parameters
+        ----------
+        'v' : a Vertex object or a name for a Vertex
+            If a name is provided, the method will build a Vertex with the name
+            field being v.
         """
         self._edges = None  # reset edges set
         self._matrix = None  # reset adjacency
@@ -321,7 +433,14 @@ class Graph:
 
     def add_edge(self, *args):
         """
-        args = Edge | (Vertex, Vertex) | (name, name)
+        Adds an edge in the graph. If one or both ends of the edge are not
+        present in the graph, the coresponding vertices are added.
+
+        Parameters
+        ----------
+        'args' : Edge | (Vertex, Vertex) | (name, name)
+            The data needed to generate the edge. Can be directly an Edge
+            object, or any pair of Vertex or vertex names.
         """
         e = Edge(args)
         if e.start not in self._dict:
@@ -337,7 +456,13 @@ class Graph:
 
     def remove_edge(self, *args):
         """
-        args = Edge | (Vertex, Vertex) | (name, name)
+        Removes an edge from the graph.
+
+        Parameters
+        ----------
+        'args' : Edge | (Vertex, Vertex) | (name, name)
+            The data needed to generate the edge. Can be directly an Edge
+            object, or any pair of Vertex or vertex names.
         """
         e = Edge(args)
         self._dict[e.start].discard(e.end)
@@ -347,17 +472,48 @@ class Graph:
 
     # ---------------- Stats computations -----------------------------
     def vertex_degree(self):
+        """
+        Returns the list of degrees of the vertices in the graph.
+
+        Returns
+        -------
+        A list of integers
+        """
         return [len(self._dict[v]) for v in self.vertices()]
 
     def degree_sequence(self):
+        """
+        Returns the list of degrees of the vertices in the graph sorted in
+        decreasing order
+
+        Returns
+        -------
+        A list of integers sorted in decreasing order
+        """
         degree_list = self.vertex_degree()
         degree_list.sort(reverse=True)
         return degree_list
 
     def find_isolated_vertices(self):
+        """
+        Returns the list of isolated vertices, that is vertices with degree 0
+
+        Returns
+        -------
+        A list of the names of vertices that have zero degree
+        """
         return [v.name for v in self.vertices() if len(self._dict[v]) == 0]
 
     def density(self):
+        """
+        Computes the density of the graph, defined as the proportion of edges
+            = {number of edges}/{total possible number of edges}
+            = 2*{number of edges}/(N(N-1))
+
+        Returns
+        -------
+        The density of the graph
+        """
         e_nb = len(self.edges())
         v_nb = len(self.vertices())
         possible_edges = v_nb*(v_nb-1)/2
