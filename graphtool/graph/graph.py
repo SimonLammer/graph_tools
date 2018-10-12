@@ -14,6 +14,10 @@ class Graph:
     def __init__(self, _graph_dict, _edges=None, _matrix=None):
         """
         Initialization function. Is not meant to be called as it is.
+
+        self._dict : Vertex -> set of neighbours vertices
+        self._edges : Vertex pair -> corresponding Edge
+        self._matrix : adjacency matrix
         """
         self._dict = _graph_dict
         self._edges = _edges
@@ -21,6 +25,9 @@ class Graph:
 
     def __eq__(self, other):
         return self._dict == other._dict
+
+    def __str__(self):
+        return str(self._dict)
 
     # --------------- Initialization methods --------------------------
     @staticmethod
@@ -32,18 +39,42 @@ class Graph:
         -------
         A new Graph object
         """
+        if vertex_data is not None:
+            vertex_data = parse_node_data(vertex_data)
+        if edge_data is not None:
+            edge_data = parse_edge_data(edge_data)
+
+        edges = dict()
         if isinstance(l, str):
             # Load from a file
-            edges = []
             with open(l, 'r') as f:
                 for s in f.readlines():
                     s = s.strip().split()
-                    a, b = Vertex(s[0]), Vertex(s[1])
-                    edges.append(Edge(a, b))
+                    xa, xb = int(s[0]), int(s[1])
+                    if vertex_data is None:
+                        a, b = Vertex(xa), Vertex(xb)
+                    else:
+                        a, b = vertex_data[xa], vertex_data[xb]
+                    if edge_data is None:
+                        e = Edge(a, b)
+                        edges[(a, b)] = e
+                        edges[(b, a)] = e
+                    else:
+                        e = edge_data.get((a, b), None)
+                        if e is None:
+                            e = edge_data.get((b, a), None)
+                        if e is None:
+                            e = Edge(a, b)
+                        edges[(a, b)] = e
+                        edges[(b, a)] = e
         else:
-            edges = l
+            for e in l:
+                e = Edge(e)
+                edges[(e["start"], e["end"])] = e
+                edges[(e["end"], e["start"])] = e
         graph_dict = dict()
-        for edge in edges:
+        for key in edges:
+            edge = edges[key]
             if edge.start not in graph_dict:
                 graph_dict[edge.start] = set([edge.end])
             else:
@@ -52,7 +83,7 @@ class Graph:
                 graph_dict[edge.end] = set([edge.start])
             else:
                 graph_dict[edge.end].add(edge.start)
-        return Graph(graph_dict)
+        return Graph(graph_dict, _edges=edges)
 
     @staticmethod
     def from_adjacency_dict(d, vertex_data: str = None, edge_data: str = None):
@@ -63,14 +94,20 @@ class Graph:
         -------
         A new Graph object
         """
+        if vertex_data is not None:
+            vertex_data = parse_node_data(vertex_data)
+        if edge_data is not None:
+            edges_data = parse_edge_data(edge_data)
+
         if isinstance(d, str):  # Load from a file
             graph_dict = dict()
             with open(d, 'r') as f:
                 for line in f.readlines():
                     line = line.strip().split()
-                    v, adj_list = Vertex(line[0]), line[1:]
+                    v = Vertex(int(line[0]))
+                    adj_list = line[1:]
                     for adj in adj_list:
-                        adj = Vertex(adj)
+                        adj = Vertex(int(adj))
                         if v in graph_dict:
                             graph_dict[v].add(adj)
                         else:
@@ -84,7 +121,8 @@ class Graph:
             return Graph(d)
 
     @staticmethod
-    def from_adjacency_matrix(m, vertex_data: str = None, edge_data: str = None):
+    def from_adjacency_matrix(m, vertex_data: str = None,
+                              edge_data: str = None):
         """
         Imports a graph from a txt file containing an adjacency matrx
 
@@ -92,6 +130,11 @@ class Graph:
         -------
         A new Graph object
         """
+        if vertex_data is not None:
+            vertex_data = parse_node_data(vertex_data)
+        if edge_data is not None:
+            edge_data = parse_edge_data(edge_data)
+
         adj_mat = None
         if isinstance(m, str):  # Load from a file
             with open(m, 'r') as f:
@@ -100,18 +143,32 @@ class Graph:
             adj_mat = m
         n = len(adj_mat)
         graph_dict = dict()
-        edges = set()
+        edges = dict()
         for i in range(n):
-            v = Vertex(str(i))
+            v = Vertex(i)
             graph_dict[v] = set()
         for i in range(n):
             for j in range(n):
-                vi, vj = Vertex(str(i)), Vertex(str(j))
+                if vertex_data is None:
+                    vi, vj = Vertex(i), Vertex(j)
+                else:
+                    vi, vj = vertex_data[i], vertex_data[j]
                 if float(adj_mat[i][j]) != 0:
                     graph_dict[vi].add(vj)
                     graph_dict[vj].add(vi)
-                    edges.add(Edge(vi, vj, weight=float(adj_mat[i][j])))
-        return Graph(graph_dict, edges)
+                    if edge_data is not None:
+                        e = edge_data.get((vi, vj), None)
+                        if e is None:
+                            e = edge_data.get((vj, vi), None)
+                        if e is None:
+                            e = Edge(vi, vj)
+                        edges[(i, j)] = e
+                        edges[(j, i)] = e
+                    else:
+                        e = Edge(vi, vj)
+                        edges[(i, j)] = e
+                        edges[(j, i)] = e
+        return Graph(graph_dict, _edges=edges)
 
     @staticmethod
     def empty(n: int):
@@ -124,7 +181,7 @@ class Graph:
         """
         graph_dict = dict()
         for i in range(n):
-            graph_dict[Vertex(str(i))] = set()
+            graph_dict[Vertex(i)] = set()
         return Graph(graph_dict)
 
     @staticmethod
@@ -138,9 +195,8 @@ class Graph:
         A new Graph Object
         """
         g = Graph.empty(n)
-        for i in range(n-1):
-            g.add_edge(str(i), str(i+1))
-        g.add_edge(str(n-1), "0")
+        for i in range(n):
+            g.add_edge(i, (i+1) % n)
         return g
 
     @staticmethod
@@ -156,7 +212,7 @@ class Graph:
         g = Graph.empty(n)
         for i in range(n):
             for j in range(i):
-                g.add_edge(str(i), str(j))
+                g.add_edge(i, j)
         return g
 
     @staticmethod
@@ -181,7 +237,7 @@ class Graph:
         for i in range(n):
             for j in range(i):
                 if random() <= p:
-                    g.add_edge(str(i), str(j))
+                    g.add_edge(i, j)
         return g
 
     @staticmethod
@@ -275,12 +331,14 @@ class Graph:
         Generates the set of edges of the graph.
         This set is then stored into the self._edges attribute
         """
-        self._edges = set()
+        self._edges = dict()
         for a in self.vertices():
             for b in self._dict[a]:
                 if(hash(b) < hash(a)):
                     continue
-                self._edges.add(Edge(start=a, end=b))
+                e = Edge(a, b)
+                self._edges[(a, b)] = e
+                self._edges[(b, a)] = e
 
     def edges(self):
         """
@@ -292,7 +350,7 @@ class Graph:
         """
         if self._edges is None:
             self._generate_edges()
-        return self._edges
+        return set(self._edges.values())  # merge (i,j) and (j,i)
 
     def _generate_adjacency(self):
         """
@@ -300,17 +358,11 @@ class Graph:
         This matrix is then stored into the self._matrix attribute
         """
         n = len(self._dict)  # number of vertices
-        numbering = dict([(x, i) for (i, x) in enumerate(self._dict.keys())])
         # assign a number between 0 and n to all vertices
         self._matrix = [[0 for j in range(n)] for i in range(n)]
-        if self._edges is not None:
-            for e in self.edges():
-                a, b = numbering[e.start], numbering[e.end]
-                self._matrix[a][b] = e.weight
-        else:  # matrix cannot be weighted
-            for e in self.edges():
-                a, b = numbering[e.start], numbering[e.end]
-                self._matrix[a][b] = 1
+        for u in self._dict:
+            for v in self._dict[u]:
+                self._matrix[u.id][v.id] = 1
 
     def adjacency_matrix(self):
         """
@@ -337,12 +389,13 @@ class Graph:
 
         Parameters
         ----------
-        'v' : a Vertex object or a name for a Vertex
-            If a name is provided, the method will build a Vertex with the name
-            field being v.
+        'v' : a Vertex object or a integer for a Vertex id
+            If an integer is provided, the method will build a Vertex with the
+            id field being v.
         """
         self._matrix = None  # reset adjacency matrix
         if not isinstance(v, Vertex):
+            assert isinstance(v, int)
             v = Vertex(v)
         if v not in self._dict:
             self._dict[v] = set()
@@ -354,13 +407,14 @@ class Graph:
 
         Parameters
         ----------
-        'v' : a Vertex object or a name for a Vertex
-            If a name is provided, the method will build a Vertex with the name
-            field being v.
+        'v' : a Vertex object or a integer for a Vertex id
+            If an integer is provided, the method will build a Vertex with the
+            id field being v.
         """
         self._edges = None  # reset edges set
         self._matrix = None  # reset adjacency
         if not isinstance(v, Vertex):
+            assert isinstance(v, int)
             v = Vertex(v)
         if v in self._dict:
             self._dict.pop(v, None)
@@ -388,7 +442,8 @@ class Graph:
         else:
             self._dict[e.end].add(e.start)
         if self._edges is not None:
-            self._edges.add(e)
+            self._edges[(e.start, e.end)] = e
+            self._edges[(e.end, e.start)] = e
 
     def remove_edge(self, *args):
         """
@@ -404,7 +459,8 @@ class Graph:
         self._dict[e.start].discard(e.end)
         self._dict[e.end].discard(e.start)
         if self._edges is not None:
-            self._edges.discard(e)
+            del self._edges[(e.start, e.end)]
+            del self._edges[(e.end, e.start)]
 
     # ---------------- Stats computations -----------------------------
     def vertex_degree(self):
@@ -438,7 +494,7 @@ class Graph:
         -------
         A list of the names of vertices that have zero degree
         """
-        return [v.name for v in self.vertices() if len(self._dict[v]) == 0]
+        return [v["name"] for v in self.vertices() if len(self._dict[v]) == 0]
 
     def density(self):
         """

@@ -1,23 +1,34 @@
 class Vertex:
     """
-    Documentation TODO
+    'id' : integer
+
+    'data' : dict
     """
 
-    def __init__(self, name=None, data=None):
-        self.name = name
-        self.data = data
+    def __init__(self, id: int, data: dict = None):
+        self.id = id
+        if data is None:
+            self.data = dict({"name": str(self.id)})
+        else:
+            self.data = data
+            if "name" not in self.data:
+                self.data["name"] = str(self.id)
+            self.id = self.data.get("id", self.id)
 
     def __eq__(self, other):
-        return self.name == other.name
+        return self.id == other.id
 
     def __str__(self):
-        return str(self.name)
+        return self.data["name"]
 
     def __repr__(self):
-        return "V("+str(self.name)+")"
+        return "V("+str(self.id)+")"
+
+    def __getitem__(self, attr):
+        return self.data[attr]
 
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.id)
 
 
 class Edge:
@@ -29,9 +40,8 @@ class Edge:
             two names of vertices
         - Edge(a,b) where a and b are either Vertex objects or vertices' names
         """
-        self.data = kwargs.get("data", None)
+        self.data = kwargs.get("data", dict())
         self.oriented = kwargs.get("oriented", False)
-        self.weight = kwargs.get("weight", 1)
         if len(args) == 1 and isinstance(args[0], Edge):
             self.start = args[0].start
             self.end = args[0].end
@@ -40,7 +50,13 @@ class Edge:
         else:
             a, b = None, None
             if len(args) == 0:
+                # start and end are either specified as own kwargs or as
+                # a key in data dict
                 a, b = kwargs.get("start", None), kwargs.get("end", None)
+                if a is None:
+                    a = self.data.get("start", None)
+                if b is None:
+                    b = self.data.get("end", None)
                 if a is None or b is None:
                     raise Exception("Invalid argument")
             elif len(args) == 1:
@@ -55,11 +71,16 @@ class Edge:
                 b = Vertex(b)
             self.start = a
             self.end = b
+            self.data["start"] = a
+            self.data["end"] = b
 
     def __eq__(self, other):
         if self.oriented:
             return self.stat == other.start and self.end == other.end
         return {self.start, self.end} == {other.start, other.end}
+
+    def __getitem__(self, attr):
+        return self.data[attr]
 
     def __repr__(self):
         return "Edge("+str(self.start)+", "+str(self.end)+")"

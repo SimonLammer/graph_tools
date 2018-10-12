@@ -1,0 +1,4 @@
+id(INT), name(STR), weight(FLOAT), posx(FLOAT), posy(FLOAT)
+0,zero,10,1,2
+1,un,5,3,4
+2,deux,42,0,4

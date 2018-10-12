@@ -8,7 +8,7 @@ from graphtool.path import *
 
 
 def triangle():
-    a, b, c = Vertex("0"), Vertex("1"), Vertex("2")
+    a, b, c = Vertex(0), Vertex(1), Vertex(2)
     return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
 
 # ------ tests ------
@@ -19,8 +19,8 @@ def test_test():
 
 
 def test_edge():
-    edge1 = Edge("a", "b")
-    edge2 = Edge(Vertex("a"), Vertex("b"))
+    edge1 = Edge(0, 1)
+    edge2 = Edge(Vertex(0), Vertex(1))
     edge3 = Edge(edge1)
     assert edge1 == edge2
     assert edge2 == edge3
@@ -57,6 +57,8 @@ def test_export_as_adjacency_matrix():
 
 def test_graph_from_adjacency_dict():
     graph1 = Graph.from_adjacency_dict("graph_examples/triangle_adjacency.txt")
+    print(graph1._dict)
+    print(triangle()._dict)
     assert (graph1 == triangle())
 
 
@@ -78,6 +80,24 @@ def test_all_import():
     assert graph_mat == graph_edge
 
 
+def test_all_import_with_data():
+    graph_edge = Graph.from_edge_list(
+        "graph_examples/triangle_edge_list.txt",
+        vertex_data="graph_examples/triangle_vertex_data.csv",
+        edge_data="graph_examples/triangle_edge_data.csv")
+    graph_adj = Graph.from_adjacency_dict(
+        "graph_examples/triangle_adjacency.txt",
+        vertex_data="graph_examples/triangle_vertex_data.csv",
+        edge_data="graph_examples/triangle_edge_data.csv")
+    graph_mat = Graph.from_adjacency_matrix(
+        "graph_examples/triangle_matrix.txt",
+        vertex_data="graph_examples/triangle_vertex_data.csv",
+        edge_data="graph_examples/triangle_edge_data.csv")
+    assert graph_edge == graph_adj
+    assert graph_adj == graph_mat
+    assert graph_mat == graph_edge
+
+
 def test_cycle():
     assert Graph.cycle(3) == triangle()
 
@@ -88,26 +108,26 @@ def test_clique():
 
 def test_add_vertex_edges():
     graph1 = Graph.empty(1)
-    graph1.add_vertex("1")
-    graph1.add_vertex("2")
-    graph1.add_edge("0", "1")
-    graph1.add_edge("0", "2")
-    graph1.add_edge("1", "2")
+    graph1.add_vertex(1)
+    graph1.add_vertex(2)
+    graph1.add_edge(0, 1)
+    graph1.add_edge(0, 2)
+    graph1.add_edge(1, 2)
     assert graph1 == triangle()
 
 
 def test_add_only_edges():
     graph1 = Graph.empty(1)
-    graph1.add_edge("0", "1")
-    graph1.add_edge("1", "2")
-    graph1.add_edge("0", "2")
+    graph1.add_edge(0, 1)
+    graph1.add_edge(1, 2)
+    graph1.add_edge(0, 2)
 
 
 def test_remove_vertex_edges():
     graph1 = triangle()
-    graph1.remove_edge("0", "1")
-    graph1.remove_edge("0", "2")
-    graph1.remove_vertex("2")
+    graph1.remove_edge(0, 1)
+    graph1.remove_edge(0, 2)
+    graph1.remove_vertex(2)
     assert graph1 == Graph.empty(2)
 
 
