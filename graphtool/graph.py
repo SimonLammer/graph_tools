@@ -293,7 +293,7 @@ class Graph:
     def get_neighbours(self, v):
         if not isinstance(v, Vertex):
             v = Vertex(v)
-        return graph._dict[v]
+        return self._dict[v]
 
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v):

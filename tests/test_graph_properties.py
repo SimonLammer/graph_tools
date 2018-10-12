@@ -16,6 +16,11 @@ def test_find_isolated_vertices():
     assert set(graph2.find_isolated_vertices()) == set(["0", "1"])
 
 
+def test_neighbours():
+    graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    assert {str(v) for v in graph1.get_neighbours("0")} == {"1", "2"}
+
+
 def test_density():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert graph1.density() == 1
