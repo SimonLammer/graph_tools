@@ -73,6 +73,8 @@ class Edge:
             self.end = b
             self.data["start"] = a
             self.data["end"] = b
+            if "weight" not in self.data:
+                self.data["weight"] = 1
 
     def __eq__(self, other):
         if self.oriented:
@@ -87,3 +89,11 @@ class Edge:
 
     def __hash__(self):
         return hash((self.start, self.end, self.oriented))
+
+    def other(self, v):
+        if self.start == v:
+            return self.end
+        elif self.end == v:
+            return self.start
+        raise Exception("Error in Edge.other method : \n\
+            Vertex {} is not incident to edge {}".format(v, self))

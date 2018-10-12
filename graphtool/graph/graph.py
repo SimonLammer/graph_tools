@@ -378,9 +378,45 @@ class Graph:
         return self._matrix
 
     def get_neighbours(self, v):
+        """
+        Returns the vertices that are adjacent to v
+
+        Parameters
+        ----------
+        'v' : A Vertex object or an integer (vertex id)
+            The vertex from which to extract the neighbourhood
+
+        Returns
+        -------
+        The set of neighbours of v
+        """
+
         if not isinstance(v, Vertex):
+            assert isinstance(v, int)
             v = Vertex(v)
-        return graph._dict[v]
+        return self._dict[v]
+
+    def get_neighbours_edge(self, v):
+        """
+        Returns the edges of the graph that are incident to v
+
+        Parameters
+        ----------
+        'v' : A Vertex object or an integer (vertex id)
+            The vertex from which to extract the neighbourhood
+
+        Returns
+        -------
+        The set of neighbours of v
+        """
+        if not isinstance(v, Vertex):
+            assert isinstance(v, int)
+            v = Vertex(v)
+        output = set()
+        for e in self.edges():
+            if e.start == v or e.end == v:
+                output.add(e)
+        return output
 
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v) -> None:
@@ -494,7 +530,7 @@ class Graph:
         -------
         A list of the names of vertices that have zero degree
         """
-        return [v["name"] for v in self.vertices() if len(self._dict[v]) == 0]
+        return [v for v in self.vertices() if len(self._dict[v]) == 0]
 
     def density(self):
         """

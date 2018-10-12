@@ -4,12 +4,10 @@ from graphtool.search import *
 from graphtool.path import *
 
 
+@pytest.fixture
 def triangle():
     a, b, c = Vertex(0), Vertex(1), Vertex(2)
     return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
-
-def test_test():
-    assert True
 
 
 def test_edge():
@@ -21,9 +19,9 @@ def test_edge():
     assert edge1 == edge3
 
 
-def test_graph_from_edge_list():
+def test_graph_from_edge_list(triangle):
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
-    assert (graph1 == triangle())
+    assert (graph1 == triangle)
 
 
 def test_export_as_edge_list():
@@ -49,18 +47,14 @@ def test_export_as_adjacency_matrix():
     assert graph1 == graph2
 
 
-def test_graph_from_adjacency_dict():
+def test_graph_from_adjacency_dict(triangle):
     graph1 = Graph.from_adjacency_dict("graph_examples/triangle_adjacency.txt")
-    print(graph1._dict)
-    print(triangle()._dict)
-    assert (graph1 == triangle())
+    assert (graph1 == triangle)
 
 
-def test_graph_from_adjacency_matrix():
+def test_graph_from_adjacency_matrix(triangle):
     graph1 = Graph.from_adjacency_matrix("graph_examples/triangle_matrix.txt")
-    print(graph1._dict)
-    print(triangle()._dict)
-    assert (graph1 == triangle())
+    assert (graph1 == triangle)
 
 
 def test_all_import():

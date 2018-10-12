@@ -4,6 +4,20 @@ from graphtool.search import *
 from graphtool.path import *
 
 
+@pytest.fixture
+def triangle():
+    a, b, c = Vertex(0), Vertex(1), Vertex(2)
+    return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
+
+
+def test_cycle(triangle):
+    assert Graph.cycle(3) == triangle
+
+
+def test_clique(triangle):
+    assert Graph.clique(3) == triangle
+
+
 def test_random_graph_generator():
     assert Graph.erdos_renyi_proba(10, 0) == Graph.empty(10)
     assert Graph.erdos_renyi_proba(10, 1) == Graph.clique(10)

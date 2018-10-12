@@ -1,4 +1,7 @@
 from heapq import *
+from .graph.vertex_edge import Vertex, Edge
+from .graph.graph import Graph
+from .graph.orientedGraph import OrientedGraph
 
 
 def all_shortest_paths(graph):
@@ -51,8 +54,9 @@ def shortest_path(graph, v_start, v_end, heuristic):
         paths from v_start to v_end
     """
     heap = [(0, 0, v_start, None)]
-    dist = dict()
-    origin = dict()
+    dist = dict([(x, -1) for x in graph.vertices()])
+    dist[v_start] = 0
+    origin = dict([(x, None) for x in graph.vertices()])
     t = 0
     while not (len(heap) == 0) and v_end not in dist:
         weight, node, _, father = heappop(heap)
@@ -63,8 +67,8 @@ def shortest_path(graph, v_start, v_end, heuristic):
         for neighbour in graph.get_neighbours(node):
             if dist[neighbour] == -1:
                 t += 1
-                newweight = weight + h(neighbour, v_end)
-                heappush((newweight, t, neighbour, node))
+                newweight = weight + heuristic(neighbour, v_end)
+                heappush(heap, (newweight, t, neighbour, node))
 
     def recover(node):
         ans = []
