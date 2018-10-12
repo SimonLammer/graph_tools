@@ -1,0 +1,4 @@
+start(INT), end(INT), name(STR), weight(FLOAT)
+0, 1, tata, 1.2
+1, 2, toto, 3.14
+2, 0, tutu, 59.666

@@ -4,6 +4,7 @@ install:
 
 pep8:
 	autopep8 --in-place graphtool/*.py
+	autopep8 --in-place graphtool/graph/*.py
 	autopep8 --in-place tests/*.py
 
 test: install
