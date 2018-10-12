@@ -1,4 +1,4 @@
-from queue import PriorityQueue
+from heapq import *
 
 
 def all_shortest_paths(graph):
@@ -27,9 +27,58 @@ def all_shortest_paths(graph):
     return adj
 
 
-def shortest_path(graph, v_start, v_end):
+def shortest_path(graph, v_start, v_end, heuristic):
     """
-    Dijsktra's algorithm
+    A* algorithm
+
+    Parameters
+    ----------
+        'graph' : a Graph object
+            graph on which to perform the search
+
+        'v_start' : a Vertex object
+            Starting point of the algorithm
+
+        'v_end' : a Vertex object
+            Target point of the algorithm
+
+        'heuristic' : a function (Vertex a, Vertex b) -> weight
+            Evaluate the distance from a to b
+
+    Returns
+    -------
+        The length l and the sequence of vertices of (one of the) shortest
+        paths from v_start to v_end
+    """
+    heap = [(0, 0, v_start, None)]
+    dist = dict()
+    origin = dict()
+    t = 0
+    while not heap.empty() and v_end not in dict:
+        weight, node, _, father = heappop(heap)
+        if node in dist:
+            continue
+        dist[node] = weight
+        origin[node] = father
+        for edge in graph.get_edges(node):
+            neighbour = edge.end,
+            if dist[neighbour] == -1:
+                t += 1
+                newweight = weight + h(neighbour, v_end) + edge.weight
+                heappush((newweight, t, neighbour, node))
+
+    def recover(node):
+        ans = []
+        while origin[node] is not None:
+            ans.append(node)
+            node = origin[node]
+        return ans
+    return dist[v_end], recover(v_end)
+
+
+def dijkstra(graph, v_start, v_end):
+    """
+    Dijkstra's algorithm
 
     Parameters
     ----------
@@ -47,7 +96,9 @@ def shortest_path(graph, v_start, v_end):
         The length l and the sequence of vertices of (one of the) shortest
         paths from v_start to v_end
     """
-    return 0, []
+    def no_heuristic(a, b):
+        return 0
+    return shortest_path(graph, v_start, v_end, no_heuristic)
 
 
 def diameter(graph):

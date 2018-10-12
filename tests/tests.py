@@ -135,7 +135,7 @@ def test_find_isolated_vertices():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert graph1.find_isolated_vertices() == []
     graph2 = Graph.empty(2)
-    assert graph2.find_isolated_vertices() == ["0", "1"]
+    assert set(graph2.find_isolated_vertices()) == set(["0", "1"])
 
 
 def test_density():
