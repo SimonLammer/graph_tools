@@ -1,22 +1,28 @@
 from ..graph import *
 
-
 def is_erdos_gallai(sequence):
     """
     Returns True if and only if the graph respects the Erdös-Gallai
     property.
     See https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Gallai_theorem
     """
-    degree_sum = sum(sequence)
+    assert len(sequence)>0
+    if sum(sequence)%2==1:
+        return False
     n = len(sequence)
-    for k in range(1, n+1):
-        comp = sum([min(k, sequence[i]) for i in range(k+1, n+1)])
-        if degree_sum > k*(k-1) + comp:
+    degree_sum=0
+    min_sum = [0]*n
+    min_sum[n-1]=min(n,sequence[n-1])
+    for k in range(n-2,-1,-1):
+        min_sum[k] = min_sum[k+1]+min(sequence[k],k+1)
+    for k in range(n-1):
+        degree_sum += sequence[k]
+        if degree_sum > k*(k+1) + min_sum[k+1]:
             return False
-    return True
+    degree_sum += sequence[n-1]
+    return degree_sum <= n*(n-1)
 
-
-def clustering_coeff(graph):
+def global_clustering_coeff(graph):
     """
     Returns the clustering coefficient of a given graph.
     The clustering coefficient is defined by

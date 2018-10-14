@@ -126,3 +126,19 @@ def diameter(graph):
             if paths[i][j] <= mini:
                 mini = paths[i][j]
     return mini
+
+def biggest_component_diameter(graph):
+    """
+    Computes the diameter of the biggest component of the graph
+
+    Parameters
+    ----------
+        'graph' : a Graph object
+            The graph on which to perform the algorithm
+
+    Returns
+    -------
+        The diameter of the biggest component of the graph
+    """
+    comp_list = get_connected_components(graph)
+    return diameter(comp_list[0])
