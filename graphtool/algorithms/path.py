@@ -1,6 +1,7 @@
 from heapq import *
 from ..graph import *
 
+
 def all_shortest_paths(graph):
     """
     Floyd-Warshall algorithm.

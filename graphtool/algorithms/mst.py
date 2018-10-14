@@ -2,6 +2,7 @@
 
 from ..graph import *
 
+
 def MST(graph, algo='Kruskal'):
     if algo.lower() == 'prim':
         return prim(graph)

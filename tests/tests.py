@@ -3,7 +3,6 @@ from graphtool.algorithms import *
 from graphtool.graph import *
 
 
-
 # ----- utility ------
 
 

@@ -1,5 +1,6 @@
 from ..graph import *
 
+
 def is_erdos_gallai(sequence):
     """
     Returns True if and only if the graph respects the Erdös-Gallai
