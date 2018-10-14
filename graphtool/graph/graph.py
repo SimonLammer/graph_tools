@@ -35,6 +35,7 @@ class Graph:
         """
         return len(self._dict)
     # --------------- Initialization methods --------------------------
+
     @staticmethod
     def from_edge_list(l, vertex_data: str = None, edge_data: str = None):
         """

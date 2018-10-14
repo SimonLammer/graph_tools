@@ -127,6 +127,7 @@ def diameter(graph):
                 mini = paths[i][j]
     return mini
 
+
 def biggest_component_diameter(graph):
     """
     Computes the diameter of the biggest component of the graph
@@ -144,7 +145,7 @@ def biggest_component_diameter(graph):
     n = 0
     biggest = -1
     for i in range(len(comp_list)):
-        if len(comp_list[i])>n:
-            n=len(comp_list[i])
-            biggest=i
+        if len(comp_list[i]) > n:
+            n = len(comp_list[i])
+            biggest = i
     return diameter(comp_list[biggest])
