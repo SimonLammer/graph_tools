@@ -7,7 +7,7 @@ pep8:
 	autopep8 --in-place graphtool/graph/*.py
 	autopep8 --in-place tests/*.py
 
-test: install
+test:
 	#pipenv install -e .
 	#pipenv run pytest tests/*.py
 	pytest tests/*.py

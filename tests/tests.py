@@ -1,7 +1,7 @@
 import pytest
+from graphtool.algorithms import *
 from graphtool.graph import *
-from graphtool.search import *
-from graphtool.path import *
+
 
 
 # ----- utility ------
