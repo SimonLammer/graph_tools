@@ -1,5 +1,4 @@
 import pytest
-from graphtool.algorithms import *
 from graphtool.graph import *
 
 
