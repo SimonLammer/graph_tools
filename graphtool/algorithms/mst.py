@@ -22,12 +22,18 @@ def kruskal(graph):
         return father[node]
 
     def merge(v1, v2):
-        father[v2] = v1
-        if weight[v1] == weight[v2]:
-            weight[v1] += 1
-        return merge(v2, v1)
+        f1 = father[v1]
+        f2 = father[v2]
+        if f1 != f2:
+            if weight[f1]<weight[f2]:
+                father[f1]=f2
+            elif weight[f1]>weight[f2]:
+                father[f2]=f1
+            else: # weight[f1] = weight[f2]
+                weight[f1] += 1
+                father[f2]=f1
 
-    edges = graph.edges()
+    edges = list(graph.edges())
     edges.sort()
     mst = []
     for e in edges:

@@ -9,6 +9,11 @@ def triangle():
     return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
 
 
+def test_adjacency(triangle):
+    expected = [[0, 1, 1], [1, 0, 1], [1, 1, 0]]
+    assert triangle.adjacency_matrix() == expected
+
+
 def test_find_isolated_vertices():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert graph1.find_isolated_vertices() == []
@@ -31,3 +36,9 @@ def test_density():
 def test_diameter(triangle):
     assert diameter(triangle) == 1
     assert diameter(Graph.empty(2)) == float("inf")
+
+
+"""
+def test_diameter2(triangle):
+    assert diameter(triangle)==biggest_component_diameter(triangle)
+"""

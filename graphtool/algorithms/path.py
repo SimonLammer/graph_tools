@@ -1,7 +1,9 @@
 from heapq import *
+from copy import copy
 from ..graph.vertex_edge import Vertex, Edge
 from ..graph.graph import Graph
 from ..graph.orientedGraph import OrientedGraph
+from .search import get_connected_components
 
 
 def all_shortest_paths(graph):
@@ -17,11 +19,11 @@ def all_shortest_paths(graph):
         A matrix M (list of list) where M[i][j] = the length of the
         shortest path from vertex i to vertex j
     """
-    adj = graph.adjacency_matrix()
+    adj = copy(graph.adjacency_matrix())
     n = len(adj)
     for i in range(n):
         for j in range(n):
-            if adj[i][j] == 0:
+            if adj[i][j] == 0 and i != j:
                 adj[i][j] = float("inf")
     for i in range(n):
         for j in range(n):
@@ -120,16 +122,19 @@ def diameter(graph):
     """
     paths = all_shortest_paths(graph)
     n = len(paths)
-    mini = float("inf")
+    maxi = -float("inf")
     for i in range(n):
         for j in range(n):
-            if paths[i][j] <= mini:
-                mini = paths[i][j]
-    return mini
+            if paths[i][j] >= maxi:
+                maxi = paths[i][j]
+    return maxi
 
 
 def biggest_component_diameter(graph):
     """
+
+    TODO
+
     Computes the diameter of the biggest component of the graph
 
     Parameters
@@ -148,4 +153,4 @@ def biggest_component_diameter(graph):
         if len(comp_list[i]) > n:
             n = len(comp_list[i])
             biggest = i
-    return diameter(comp_list[biggest])
+    return 0  # diameter(comp_list[biggest])

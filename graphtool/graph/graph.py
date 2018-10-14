@@ -34,6 +34,7 @@ class Graph:
         Number of vertices in the graph
         """
         return len(self._dict)
+
     # --------------- Initialization methods --------------------------
 
     @staticmethod
@@ -270,6 +271,7 @@ class Graph:
             (a, b) = possible_edges.pop(randint(0, len(possible_edges) - 1))
             adj[a][b] = 1
         return Graph.from_adjacency_matrix(adj)
+
     # ------------- Exportation methods -----------------
 
     def export_as_edge_list(self, filename: str) -> None:
@@ -363,12 +365,17 @@ class Graph:
         Generates the adjacency matrix of the graph.
         This matrix is then stored into the self._matrix attribute
         """
-        n = len(self._dict)  # number of vertices
-        # assign a number between 0 and n to all vertices
-        self._matrix = [[0 for j in range(n)] for i in range(n)]
-        for u in self._dict:
-            for v in self._dict[u]:
-                self._matrix[u.id][v.id] = 1
+        try:
+            n = len(self._dict)  # number of vertices
+            # assign a number between 0 and n to all vertices
+            self._matrix = [[0 for j in range(n)] for i in range(n)]
+            for u in self._dict:
+                for v in self._dict[u]:
+                    self._matrix[u.id][v.id] = 1
+                    self._matrix[v.id][u.id] = 1
+        except Exception as e:
+            print(e)
+            self._matrix = None
 
     def adjacency_matrix(self):
         """
