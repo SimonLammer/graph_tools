@@ -1,7 +1,7 @@
 from heapq import *
-from .graph.vertex_edge import Vertex, Edge
-from .graph.graph import Graph
-from .graph.orientedGraph import OrientedGraph
+from ..graph.vertex_edge import Vertex, Edge
+from ..graph.graph import Graph
+from ..graph.orientedGraph import OrientedGraph
 
 
 def all_shortest_paths(graph):

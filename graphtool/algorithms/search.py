@@ -1,4 +1,4 @@
-import graphtool.graph
+from ..graph import *
 
 
 def no_pre_functor(node):

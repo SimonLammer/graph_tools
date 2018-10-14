@@ -1,4 +1,4 @@
-import graphtool.graph
+from ..graph import *
 
 
 def is_erdos_gallai(sequence):
