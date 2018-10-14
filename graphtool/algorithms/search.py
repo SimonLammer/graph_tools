@@ -25,14 +25,14 @@ def tree_builder():
     return pre_functor, neighbour_functor, post_functor
 
 
-def depth_first_search(init_node, functors):
+def depth_first_search(graph, init_node, functors):
     pre_functor, neighbour_functor, post_functor = functors
     visited = set()
 
     def dfs(node):
         visited.add(node)
         state = pre_functor(node)
-        for neighbour in node.neighbours():
+        for neighbour in graph.get_neighbours(node):
             if neighbour not in visited:
                 answer = dfs(neighbour)
                 neighbour_functor(state, answer)
@@ -48,7 +48,7 @@ def topological_sort(graph):
     total_order = []
     while not stack.empty():
         vertex = stack.pop()
-        for neighbour in vertex.neighbours():
+        for neighbour in grah.get_neighbours(vertex):
             degrees[neighbour] -= 1
             if degrees[neighbour] == 0:
                 stack.append(neighbour)
@@ -60,15 +60,16 @@ def topological_sort(graph):
 
 def get_connected_components(graph):
     seen = set()
-    components = [[]]
+    components = []
 
     def pre_functor(node):
-        components[-1].append(node)
+        component.append(node)
         seen.add(node)
 
     def explore_components(node):
         functors = (pre_functor, no_neighbour_functor, no_post_functor)
-        return depth_first_search(node, functors)
+        return depth_first_search(graph, node, functors)
+
     for vertex in graph.vertices():
         if vertex not in seen:
             component = []

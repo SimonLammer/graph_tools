@@ -29,6 +29,11 @@ class Graph:
     def __str__(self):
         return str(self._dict)
 
+    def __len__(self):
+        """
+        Number of vertices in the graph
+        """
+        return len(self._dict)
     # --------------- Initialization methods --------------------------
     @staticmethod
     def from_edge_list(l, vertex_data: str = None, edge_data: str = None):

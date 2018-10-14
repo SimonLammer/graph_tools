@@ -141,4 +141,10 @@ def biggest_component_diameter(graph):
         The diameter of the biggest component of the graph
     """
     comp_list = get_connected_components(graph)
-    return diameter(comp_list[0])
+    n = 0
+    biggest = -1
+    for i in range(len(comp_list)):
+        if len(comp_list[i])>n:
+            n=len(comp_list[i])
+            biggest=i
+    return diameter(comp_list[biggest])
