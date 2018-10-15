@@ -24,15 +24,6 @@ def is_erdos_gallai(sequence):
     return degree_sum <= n*(n-1)
 
 
-def get_number_of_triangles(graph):
-    """
-    The number of triangles is trace(A^3)/6 where A is the adjacency matrix
-    """
-    A = graph.adjacency_matrix()
-    A = A*A*A
-    return sum(A[i, i] for i in range(len(A)))
-
-
 def global_clustering_coeff(graph):
     """
     Returns the clustering coefficient of a given graph.

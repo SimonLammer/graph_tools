@@ -12,7 +12,7 @@ def test_shortest_path():
         graph = Graph.from_edge_list("graph_examples/"+g)
         adj = all_shortest_paths(graph)
         N = len(adj)
-        for a in range(40):
+        for a in range(10):
             i = random.randint(0, N-1)
             j = random.randint(0, N-1)
             length, fullpath = shortest_path(graph,
@@ -28,7 +28,7 @@ def test_dijsktra():
         graph = Graph.from_edge_list("graph_examples/"+g)
         adj = all_shortest_paths(graph)
         N = len(adj)
-        for a in range(40):
+        for a in range(10):
             i = random.randint(0, N-1)
             j = random.randint(0, N-1)
             assert adj[i][j] == dijkstra(graph,
