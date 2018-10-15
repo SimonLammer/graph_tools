@@ -19,7 +19,7 @@ def test_edge():
 
 
 def test_add_vertex_edges(triangle):
-    graph1 = Graph.empty(1)
+    graph1 = GraphGenerator.empty(1)
     graph1.add_vertex(1)
     graph1.add_vertex(2)
     graph1.add_edge(0, 1)
@@ -29,7 +29,7 @@ def test_add_vertex_edges(triangle):
 
 
 def test_add_only_edges(triangle):
-    graph1 = Graph.empty(1)
+    graph1 = GraphGenerator.empty(1)
     graph1.add_edge(0, 1)
     graph1.add_edge(1, 2)
     graph1.add_edge(0, 2)
@@ -41,4 +41,4 @@ def test_remove_vertex_edges(triangle):
     graph1.remove_edge(0, 1)
     graph1.remove_edge(0, 2)
     graph1.remove_vertex(2)
-    assert graph1 == Graph.empty(2)
+    assert graph1 == GraphGenerator.empty(2)

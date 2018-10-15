@@ -8,7 +8,7 @@ class OrientedGraph:
     TODO
     """
 
-    def __init__(self):
+    def __init__(self, _dict, _edges = None, _adjacency = None):
         pass
 
     """

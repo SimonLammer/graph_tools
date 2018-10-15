@@ -10,7 +10,7 @@ def triangle():
 
 
 def test_connected_components(triangle):
-    g = Graph.empty(3)
+    g = GraphGenerator.empty(3)
     g.add_edge(0, 1)
     assert len(get_connected_components(g)) == 2
     assert len(get_connected_components(triangle)) == 1
