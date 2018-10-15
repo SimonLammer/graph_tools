@@ -27,7 +27,7 @@ def kruskal(graph):
             if weight[f1] == weight[f2]:
                 weight[f1] += 1
         else:
-            pass#merge(f2, f1)
+            merge(f2, f1)
 
     edges = list(graph.edges())
     edges.sort()
