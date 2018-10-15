@@ -56,7 +56,7 @@ def shortest_path(graph, v_start, v_end, heuristic):
         paths from v_start to v_end
     """
     heap = [(0, 0, v_start, None)]
-    dist = dict([(x, -1) for x in graph.vertices()])
+    dist = dict([(x, float("inf")) for x in graph.vertices()])
     dist[v_start] = 0
     origin = dict([(x, None) for x in graph.vertices()])
     t = 0
@@ -67,7 +67,7 @@ def shortest_path(graph, v_start, v_end, heuristic):
         dist[node] = weight
         origin[node] = father
         for neighbour in graph.get_neighbours(node):
-            if dist[neighbour] == -1:
+            if dist[neighbour] == float("inf"):
                 t += 1
                 newweight = weight + heuristic(neighbour, v_end)
                 heappush(heap, (newweight, t, neighbour, node))
