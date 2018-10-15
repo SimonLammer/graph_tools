@@ -42,4 +42,23 @@ def kruskal(graph):
 
 
 def Prim(graph):
-    pass
+    heap = [(0, 0, graph.vertices[0], None)]
+    dist = dict()
+    origin = dict()
+    t = 0
+    mst = []
+    while len(heap) != 0:
+        weight, _, node, edgemst = heappop(heap)
+        if node in dist:
+            continue
+        dist[node] = weight
+        origin[node] = edge.other(node)
+        if edge is not None:
+            mst.append(edge)
+        for edge in graph.get_neighbours_edge(node):
+            neighbour = edge.other(node)
+            if neighbour not in dist:
+                t += 1
+                realweight = edge["weight"]
+                heappush(heap, (realweight, t, neighbour, edge))
+    return mst
