@@ -1,5 +1,9 @@
 from heapq import *
-from ..graph import *
+from copy import copy
+from ..graph.vertex_edge import Vertex, Edge
+from ..graph.graph import Graph
+from ..graph.orientedGraph import OrientedGraph
+from .search import get_connected_components
 
 
 def all_shortest_paths(graph):
@@ -15,15 +19,15 @@ def all_shortest_paths(graph):
         A matrix M (list of list) where M[i][j] = the length of the
         shortest path from vertex i to vertex j
     """
-    adj = graph.adjacency_matrix()
+    adj = copy(graph.adjacency_matrix())
     n = len(adj)
     for i in range(n):
         for j in range(n):
-            if adj[i][j] == 0:
+            if adj[i][j] == 0 and i != j:
                 adj[i][j] = float("inf")
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
                 adj[i][j] = min(adj[i][j], adj[i][k]+adj[k][j])
     return adj
 
@@ -44,36 +48,39 @@ def shortest_path(graph, v_start, v_end, heuristic):
             Target point of the algorithm
 
         'heuristic' : a function (Vertex a, Vertex b) -> weight
-            Evaluate the distance from a to b
+            Evaluate the remaining distance from a to b
 
     Returns
     -------
         The length l and the sequence of vertices of (one of the) shortest
         paths from v_start to v_end
     """
-    heap = [(0, 0, v_start, None)]
+    heap = [(0, 0, 0, v_start, None)]
     dist = dict()
     origin = dict()
     t = 0
-    while not heap.empty() and v_end not in dict:
-        weight, node, _, father = heappop(heap)
+    while len(heap) != 0 and v_end not in dist:
+        _, weight, _, node, father = heappop(heap)
         if node in dist:
             continue
         dist[node] = weight
         origin[node] = father
-        for edge in graph.get_edges(node):
-            neighbour = edge.end,
-            if dist[neighbour] == -1:
+        for edge in graph.get_neighbours_edge(node):
+            neighbour = edge.other(node)
+            if neighbour not in dist:
                 t += 1
-                newweight = weight + h(neighbour, v_end) + edge.weight
-                heappush((newweight, t, neighbour, node))
+                realweight = weight + edge["weight"]
+                fakeweight = realweight + heuristic(neighbour, v_end)
+                heappush(heap, (fakeweight, realweight, t, neighbour, node))
 
     def recover(node):
         ans = []
-        while origin[node] is not None:
+        while node is not None:
             ans.append(node)
             node = origin[node]
-        return ans
+        return ans[::-1]
+    if v_end not in dist:
+        return float("inf"), []
     return dist[v_end], recover(v_end)
 
 
@@ -118,9 +125,35 @@ def diameter(graph):
     """
     paths = all_shortest_paths(graph)
     n = len(paths)
-    mini = float("inf")
+    maxi = -float("inf")
     for i in range(n):
         for j in range(n):
-            if paths[i][j] <= mini:
-                mini = paths[i][j]
-    return mini
+            if paths[i][j] >= maxi:
+                maxi = paths[i][j]
+    return maxi
+
+
+def biggest_component_diameter(graph):
+    """
+
+    TODO
+
+    Computes the diameter of the biggest component of the graph
+
+    Parameters
+    ----------
+        'graph' : a Graph object
+            The graph on which to perform the algorithm
+
+    Returns
+    -------
+        The diameter of the biggest component of the graph
+    """
+    comp_list = get_connected_components(graph)
+    n = 0
+    biggest = -1
+    for i in range(len(comp_list)):
+        if len(comp_list[i]) > n:
+            n = len(comp_list[i])
+            biggest = i
+    return 0  # diameter(comp_list[biggest])

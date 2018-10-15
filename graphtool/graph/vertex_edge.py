@@ -3,6 +3,8 @@ class Vertex:
     'id' : integer
 
     'data' : dict
+
+    A vertex is designed as an integer on which we build additionnal data
     """
 
     def __init__(self, id: int, data: dict = None):
@@ -17,6 +19,9 @@ class Vertex:
 
     def __eq__(self, other):
         return self.id == other.id
+
+    def __lt__(self, other):
+        return self.id < other.id
 
     def __str__(self):
         return self.data["name"]
@@ -73,11 +78,23 @@ class Edge:
             self.end = b
             self.data["start"] = a
             self.data["end"] = b
+            if "weight" not in self.data:
+                self.data["weight"] = 1
 
     def __eq__(self, other):
         if self.oriented:
             return self.stat == other.start and self.end == other.end
         return {self.start, self.end} == {other.start, other.end}
+
+    def __lt__(self, other):
+        if "weight" in self.data and "weight" in other.data:
+            return self.data["weight"] < other.data["weight"]
+        return True
+
+    def __gt(self, other):
+        if "weight" in self.data and "weight" in other.data:
+            return self.data["weight"] > other.data["weight"]
+        return True
 
     def __getitem__(self, attr):
         return self.data[attr]
@@ -87,3 +104,11 @@ class Edge:
 
     def __hash__(self):
         return hash((self.start, self.end, self.oriented))
+
+    def other(self, v):
+        if self.start == v:
+            return self.end
+        elif self.end == v:
+            return self.start
+        raise Exception("Error in Edge.other method : \n\
+            Vertex {} is not incident to edge {}".format(v, self))

@@ -1,4 +1,3 @@
-from random import random, randint, uniform
 from .vertex_edge import Vertex, Edge
 from ._parsing import *
 
@@ -29,7 +28,14 @@ class Graph:
     def __str__(self):
         return str(self._dict)
 
+    def __len__(self):
+        """
+        Number of vertices in the graph
+        """
+        return len(self._dict)
+
     # --------------- Initialization methods --------------------------
+
     @staticmethod
     def from_edge_list(l, vertex_data: str = None, edge_data: str = None):
         """
@@ -170,100 +176,6 @@ class Graph:
                         edges[(j, i)] = e
         return Graph(graph_dict, _edges=edges)
 
-    @staticmethod
-    def empty(n: int):
-        """
-        Builds the graph of n vertices an no edges
-
-        Returns
-        -------
-        A new Graph Object
-        """
-        graph_dict = dict()
-        for i in range(n):
-            graph_dict[Vertex(i)] = set()
-        return Graph(graph_dict)
-
-    @staticmethod
-    def cycle(n: int):
-        """
-        Builds the cycle of size n, with vertex i being linked to
-        vertices (i+1)%n and (i-1)%n
-
-        Returns
-        -------
-        A new Graph Object
-        """
-        g = Graph.empty(n)
-        for i in range(n):
-            g.add_edge(i, (i+1) % n)
-        return g
-
-    @staticmethod
-    def clique(n: int):
-        """
-        Builds the fully connected graph of size n, that is the graph of n
-        vertices and all possible n(n-1)/2 edges
-
-        Returns
-        -------
-        A new Graph Object
-        """
-        g = Graph.empty(n)
-        for i in range(n):
-            for j in range(i):
-                g.add_edge(i, j)
-        return g
-
-    @staticmethod
-    def erdos_renyi_proba(n: int, p: float):
-        """
-        Generates a graph through the Erdös-Renyi model.
-
-        Parameters
-        ----------
-        'n' : int
-            Number of vertices
-
-        'p' : float between 0 and 1
-            The probability for each edge to be present in the graph
-
-        Returns
-        -------
-        A new Graph Object
-        """
-        p = min(max(p, 0), 1)
-        g = Graph.empty(n)
-        for i in range(n):
-            for j in range(i):
-                if random() <= p:
-                    g.add_edge(i, j)
-        return g
-
-    @staticmethod
-    def erdos_renyi_edge(n: int, l: int):
-        """
-        Generates a graph through the Erdös-Renyi model with fixed number
-        of edges
-
-        Parameters
-        ----------
-        'n' : int
-            Number of vertices
-
-        'l' : int
-            Number of edges
-
-        Returns
-        -------
-        A new Graph Object
-        """
-        adj = [[0 for i in range(n)] for j in range(n)]
-        possible_edges = [(i, j) for j in range(n) for i in range(j)]
-        for i in range(l):
-            (a, b) = possible_edges.pop(randint(0, len(possible_edges) - 1))
-            adj[a][b] = 1
-        return Graph.from_adjacency_matrix(adj)
     # ------------- Exportation methods -----------------
 
     def export_as_edge_list(self, filename: str) -> None:
@@ -357,12 +269,17 @@ class Graph:
         Generates the adjacency matrix of the graph.
         This matrix is then stored into the self._matrix attribute
         """
-        n = len(self._dict)  # number of vertices
-        # assign a number between 0 and n to all vertices
-        self._matrix = [[0 for j in range(n)] for i in range(n)]
-        for u in self._dict:
-            for v in self._dict[u]:
-                self._matrix[u.id][v.id] = 1
+        try:
+            n = len(self._dict)  # number of vertices
+            # assign a number between 0 and n to all vertices
+            self._matrix = [[0 for j in range(n)] for i in range(n)]
+            for u in self._dict:
+                for v in self._dict[u]:
+                    self._matrix[u.id][v.id] = 1
+                    self._matrix[v.id][u.id] = 1
+        except Exception as e:
+            print(e)
+            self._matrix = None
 
     def adjacency_matrix(self):
         """
@@ -378,9 +295,48 @@ class Graph:
         return self._matrix
 
     def get_neighbours(self, v):
+        """
+        Returns the vertices that are adjacent to v
+
+        Parameters
+        ----------
+        'v' : A Vertex object or an integer (vertex id)
+            The vertex from which to extract the neighbourhood
+
+        Returns
+        -------
+        The set of neighbours of v
+        """
+
         if not isinstance(v, Vertex):
+            assert isinstance(v, int)
             v = Vertex(v)
-        return graph._dict[v]
+        return self._dict[v]
+
+    def get_neighbours_edge(self, v):
+        """
+        Returns the edges of the graph that are incident to v
+
+        Parameters
+        ----------
+        'v' : A Vertex object or an integer (vertex id)
+            The vertex from which to extract the neighbourhood
+
+        Returns
+        -------
+        The set of neighbours of v
+        """
+        if not isinstance(v, Vertex):
+            assert isinstance(v, int)
+            v = Vertex(v)
+        if self._edges is None:
+            return set([Edge(v, u) for u in self._dict[v]])
+        else:
+            output = set()
+            for e in self.edges():
+                if e.start == v or e.end == v:
+                    output.add(e)
+            return output
 
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v) -> None:
@@ -494,7 +450,7 @@ class Graph:
         -------
         A list of the names of vertices that have zero degree
         """
-        return [v["name"] for v in self.vertices() if len(self._dict[v]) == 0]
+        return [v for v in self.vertices() if len(self._dict[v]) == 0]
 
     def density(self):
         """
