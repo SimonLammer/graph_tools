@@ -334,7 +334,7 @@ class Graph:
         else:
             output = set()
             for e in self.edges():
-                if e.start == v:
+                if e.start == v or e.end == v:
                     output.add(e)
             return output
 
