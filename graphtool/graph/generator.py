@@ -1,4 +1,4 @@
-from random import random, randint, uniform
+from random import random, randint, uniform, shuffle
 from .vertex_edge import Vertex,Edge
 from .graph import Graph
 from .orientedGraph import OrientedGraph
@@ -107,17 +107,32 @@ class GraphGenerator:
         """
         TODO
         """
-        assert 1==0
         if sum(seq)%2!=0:
             raise Exception("The sum of degrees should be even!")
-        return Graph({})
+        k_tot = sum(seq)
+        n = len(seq)
+        G = GraphGenerator.empty(n)
+        for i in range(n):
+            for j in range(i):
+                if seq[i]*seq[j]/k_tot>random():
+                    G.add_edge(i,j)
+        return G
 
     @staticmethod
     def molloy_reed(seq):
         """
         TODO
         """
-        assert 1==0
         if sum(seq)%2!=0:
             raise Exception("The sum of degrees should be even!")
-        return Graph({})
+        n = len(seq)
+        G = GraphGenerator.empty(n)
+        seq2 = []
+        for i in range(n):
+            seq2 += [i]*seq[i]
+        m = len(seq2)//2
+        shuffle(seq2)
+        for i in range(m):
+            if seq2[2*i] != seq2[2*i+1]:
+                G.add_edge(seq2[2*i], seq2[2*i+1])
+        return G
