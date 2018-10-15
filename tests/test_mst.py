@@ -11,4 +11,4 @@ def triangle():
 
 def test_mst(triangle):
     assert len(MST(triangle))==2
-    assert len(MST(Graph.clique(100)))==99
+    assert len(MST(GraphGenerator.clique(100)))==99
