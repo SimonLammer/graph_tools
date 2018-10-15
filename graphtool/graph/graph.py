@@ -330,11 +330,11 @@ class Graph:
             assert isinstance(v, int)
             v = Vertex(v)
         if self._edges is None:
-            return [Edge(v,u) for u in self._dict[v]]
+            return set([Edge(v,u) for u in self._dict[v]])
         else:
             output = set()
             for e in self.edges():
-                if e.start == v:
+                if e.start == v or e.end == v:
                     output.add(e)
             return output
 
