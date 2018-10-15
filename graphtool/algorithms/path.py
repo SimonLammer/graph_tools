@@ -48,7 +48,7 @@ def shortest_path(graph, v_start, v_end, heuristic):
             Target point of the algorithm
 
         'heuristic' : a function (Vertex a, Vertex b) -> weight
-            Evaluate the distance from a to b
+            Evaluate the remaining distance from a to b
 
     Returns
     -------
@@ -56,20 +56,21 @@ def shortest_path(graph, v_start, v_end, heuristic):
         paths from v_start to v_end
     """
     heap = [(0, 0, v_start, None)]
-    dist = dict([(x, float("inf")) for x in graph.vertices()])
+    dist = dict()
     dist[v_start] = 0
-    origin = dict([(x, None) for x in graph.vertices()])
+    origin = dict()
     t = 0
-    while not (len(heap) == 0) and v_end not in dist:
-        weight, node, _, father = heappop(heap)
+    while len(heap) != 0 and v_end not in dist:
+        weight, _, node, father = heappop(heap)
         if node in dist:
             continue
         dist[node] = weight
         origin[node] = father
-        for neighbour in graph.get_neighbours(node):
-            if dist[neighbour] == float("inf"):
+        for edge in graph.get_neighbours_edge(node):
+            neighbour = edge.end
+            if neighbour not in dist:
                 t += 1
-                newweight = weight + heuristic(neighbour, v_end)
+                newweight = weight + edge.weight + heuristic(neighbour, v_end)
                 heappush(heap, (newweight, t, neighbour, node))
 
     def recover(node):
