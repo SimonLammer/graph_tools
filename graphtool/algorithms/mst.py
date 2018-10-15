@@ -23,11 +23,11 @@ def kruskal(graph):
 
     def merge(f1, f2):
         if weight[f1] >= weight[f2]:
-            father[f1] = f2
+            father[f2] = f1
             if weight[f1] == weight[f2]:
                 weight[f1] += 1
         else:
-            return merge(f2, f1)
+            pass#merge(f2, f1)
 
     edges = list(graph.edges())
     edges.sort()
