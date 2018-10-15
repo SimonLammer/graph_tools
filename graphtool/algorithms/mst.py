@@ -1,6 +1,7 @@
 # Minimum spanning tree algorithms
 
 from ..graph import *
+from heapq import *
 
 
 def MST(graph, algo='Kruskal'):
@@ -41,10 +42,9 @@ def kruskal(graph):
     return mst
 
 
-def Prim(graph):
-    heap = [(0, 0, graph.vertices[0], None)]
+def prim(graph):
+    heap = [(0, 0, next(iter(graph.vertices())), None)]
     dist = dict()
-    origin = dict()
     t = 0
     mst = []
     while len(heap) != 0:
@@ -52,9 +52,8 @@ def Prim(graph):
         if node in dist:
             continue
         dist[node] = weight
-        origin[node] = edge.other(node)
-        if edge is not None:
-            mst.append(edge)
+        if edgemst is not None:
+            mst.append(edgemst)
         for edge in graph.get_neighbours_edge(node):
             neighbour = edge.other(node)
             if neighbour not in dist:
