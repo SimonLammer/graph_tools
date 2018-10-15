@@ -329,11 +329,14 @@ class Graph:
         if not isinstance(v, Vertex):
             assert isinstance(v, int)
             v = Vertex(v)
-        output = set()
-        for e in self.edges():
-            if e.start == v or e.end == v:
-                output.add(e)
-        return output
+        if self._edges is None:
+            return [Edge(v,u) for u in self._dict[v]]
+        else:
+            output = set()
+            for e in self.edges():
+                if e.start == v:
+                    output.add(e)
+            return output
 
     # ---------------  Modification of the data ------------------------
     def add_vertex(self, v) -> None:
