@@ -101,3 +101,23 @@ class GraphGenerator:
             (a, b) = possible_edges.pop(randint(0, len(possible_edges) - 1))
             adj[a][b] = 1
         return Graph.from_adjacency_matrix(adj)
+
+    @staticmethod
+    def chung_lu(seq):
+        """
+        TODO
+        """
+        assert 1==0
+        if sum(seq)%2!=0:
+            raise Exception("The sum of degrees should be even!")
+        return Graph({})
+
+    @staticmethod
+    def molloy_reed(seq):
+        """
+        TODO
+        """
+        assert 1==0
+        if sum(seq)%2!=0:
+            raise Exception("The sum of degrees should be even!")
+        return Graph({})
