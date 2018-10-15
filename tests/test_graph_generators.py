@@ -26,12 +26,14 @@ def test_random_graph_generator():
     assert len(graph1.vertices()) == 100
     assert len(graph2.vertices()) == 100
 
+
 def test_chung_lu():
-    seq = [1,1]
-    assert len(GraphGenerator.chung_lu(seq))==2
-    seq = [2,2,2]
-    assert len(GraphGenerator.chung_lu(seq))==3
+    seq = [1, 1]
+    assert len(GraphGenerator.chung_lu(seq)) == 2
+    seq = [2, 2, 2]
+    assert len(GraphGenerator.chung_lu(seq)) == 3
+
 
 def test_molloy_reed():
-    seq = [1,1,2,2,4]
-    assert len(GraphGenerator.molloy_reed(seq))==5
+    seq = [1, 1, 2, 2, 4]
+    assert len(GraphGenerator.molloy_reed(seq)) == 5

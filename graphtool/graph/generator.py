@@ -1,5 +1,5 @@
 from random import random, randint, uniform, shuffle
-from .vertex_edge import Vertex,Edge
+from .vertex_edge import Vertex, Edge
 from .graph import Graph
 from .orientedGraph import OrientedGraph
 
@@ -108,15 +108,15 @@ class GraphGenerator:
         """
         TODO
         """
-        if sum(seq)%2!=0:
+        if sum(seq) % 2 != 0:
             raise Exception("The sum of degrees should be even!")
         k_tot = sum(seq)
         n = len(seq)
         G = GraphGenerator.empty(n)
         for i in range(n):
             for j in range(i):
-                if seq[i]*seq[j]/k_tot>random():
-                    G.add_edge(i,j)
+                if seq[i]*seq[j]/k_tot > random():
+                    G.add_edge(i, j)
         return G
 
     @staticmethod
@@ -124,7 +124,7 @@ class GraphGenerator:
         """
         TODO
         """
-        if sum(seq)%2!=0:
+        if sum(seq) % 2 != 0:
             raise Exception("The sum of degrees should be even!")
         n = len(seq)
         G = GraphGenerator.empty(n)
