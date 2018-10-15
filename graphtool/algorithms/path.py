@@ -25,9 +25,9 @@ def all_shortest_paths(graph):
         for j in range(n):
             if adj[i][j] == 0 and i != j:
                 adj[i][j] = float("inf")
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
                 adj[i][j] = min(adj[i][j], adj[i][k]+adj[k][j])
     return adj
 
