@@ -3,7 +3,8 @@ import os
 from graphtool.graph import *
 from graphtool.algorithms import *
 
-graph_files = ["graph_100n_1000m.txt","triangle_edge_list.txt"]
+#graph_files = ["graph_100n_1000m.txt","triangle_edge_list.txt"]
+graph_files = ["triangle_edge_list.txt"]
 
 def test_shortest_path():
     for g in graph_files:
@@ -12,10 +13,13 @@ def test_shortest_path():
         N = len(adj)
         for i in range(N):
             for j in range(i):
-                assert adj[i][j] == shortest_path(graph,
-                                                  Vertex(i),
-                                                  Vertex(j),
-                                                  lambda a, b: 1)[0]
+                print(i, j, adj[i][j])
+                krk = shortest_path(graph,
+                                Vertex(i),
+                                Vertex(j),
+                                lambda a, b: 0)
+                print(i, j, krk)
+                assert adj[i][j] == krk[0]
 
 
 def test_dijsktra():

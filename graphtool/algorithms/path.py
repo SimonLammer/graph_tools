@@ -55,23 +55,25 @@ def shortest_path(graph, v_start, v_end, heuristic):
         The length l and the sequence of vertices of (one of the) shortest
         paths from v_start to v_end
     """
-    heap = [(0, 0, v_start, None)]
+    heap = [(0, 0, 0, v_start, None)]
     dist = dict()
-    dist[v_start] = 0
     origin = dict()
     t = 0
     while len(heap) != 0 and v_end not in dist:
-        weight, _, node, father = heappop(heap)
+        _, weight, _, node, father = heappop(heap)
+        print(node)
         if node in dist:
             continue
         dist[node] = weight
         origin[node] = father
+        print(node, graph.get_neighbours_edge(node))
         for edge in graph.get_neighbours_edge(node):
             neighbour = edge.end
             if neighbour not in dist:
                 t += 1
-                newweight = weight + edge.weight + heuristic(neighbour, v_end)
-                heappush(heap, (newweight, t, neighbour, node))
+                realweight = weight + edge["weight"]
+                fakeweight = realweight + heuristic(neighbour, v_end)
+                heappush(heap, (fakeweight, realweight, t, neighbour, node))
 
     def recover(node):
         ans = []
@@ -79,6 +81,8 @@ def shortest_path(graph, v_start, v_end, heuristic):
             ans.append(node)
             node = origin[node]
         return ans
+    if v_end not in dist:
+        return float("inf"), []
     return dist[v_end], recover(v_end)
 
 
