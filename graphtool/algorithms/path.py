@@ -67,8 +67,6 @@ def shortest_path(graph, v_start, v_end, heuristic):
         origin[node] = father
         for edge in graph.get_neighbours_edge(node):
             neighbour = edge.other(node)
-            if neighbour == Vertex(39):
-                print(edge)
             if neighbour not in dist:
                 t += 1
                 realweight = weight + edge["weight"]
