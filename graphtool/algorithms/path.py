@@ -61,14 +61,14 @@ def shortest_path(graph, v_start, v_end, heuristic):
     t = 0
     while len(heap) != 0 and v_end not in dist:
         _, weight, _, node, father = heappop(heap)
-        print(node)
         if node in dist:
             continue
         dist[node] = weight
         origin[node] = father
-        print(node, graph.get_neighbours_edge(node))
         for edge in graph.get_neighbours_edge(node):
-            neighbour = edge.end
+            neighbour = edge.other(node)
+            if neighbour == Vertex(39):
+                print(edge)
             if neighbour not in dist:
                 t += 1
                 realweight = weight + edge["weight"]
@@ -77,10 +77,10 @@ def shortest_path(graph, v_start, v_end, heuristic):
 
     def recover(node):
         ans = []
-        while origin[node] is not None:
+        while node is not None:
             ans.append(node)
             node = origin[node]
-        return ans
+        return ans[::-1]
     if v_end not in dist:
         return float("inf"), []
     return dist[v_end], recover(v_end)
