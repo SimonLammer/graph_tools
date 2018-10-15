@@ -1,7 +1,8 @@
 from random import random, randint, uniform
-from .vertex_edge import Vertex,Edge
+from .vertex_edge import Vertex, Edge
 from .graph import Graph
 from .orientedGraph import OrientedGraph
+
 
 class GraphGenerator:
 
@@ -22,7 +23,7 @@ class GraphGenerator:
         return Graph(graph_dict)
 
     @staticmethod
-    def cycle(n: int, oriented:bool = False):
+    def cycle(n: int, oriented: bool = False):
         """
         Builds the cycle of size n, with vertex i being linked to
         vertices (i+1)%n and (i-1)%n
@@ -31,7 +32,7 @@ class GraphGenerator:
         -------
         A new Graph Object
         """
-        g = GraphGenerator.empty(n,oriented)
+        g = GraphGenerator.empty(n, oriented)
         for i in range(n):
             g.add_edge(i, (i+1) % n)
         return g
@@ -107,8 +108,8 @@ class GraphGenerator:
         """
         TODO
         """
-        assert 1==0
-        if sum(seq)%2!=0:
+        assert 1 == 0
+        if sum(seq) % 2 != 0:
             raise Exception("The sum of degrees should be even!")
         return Graph({})
 
@@ -117,7 +118,7 @@ class GraphGenerator:
         """
         TODO
         """
-        assert 1==0
-        if sum(seq)%2!=0:
+        assert 1 == 0
+        if sum(seq) % 2 != 0:
             raise Exception("The sum of degrees should be even!")
         return Graph({})

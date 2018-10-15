@@ -86,14 +86,14 @@ class Edge:
             return self.stat == other.start and self.end == other.end
         return {self.start, self.end} == {other.start, other.end}
 
-    def __lt__(self,other):
+    def __lt__(self, other):
         if "weight" in self.data and "weight" in other.data:
-            return self.data["weight"]<other.data["weight"]
+            return self.data["weight"] < other.data["weight"]
         return True
 
-    def __gt(self,other):
+    def __gt(self, other):
         if "weight" in self.data and "weight" in other.data:
-            return self.data["weight"]>other.data["weight"]
+            return self.data["weight"] > other.data["weight"]
         return True
 
     def __getitem__(self, attr):

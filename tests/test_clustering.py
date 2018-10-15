@@ -10,12 +10,12 @@ def triangle():
 
 
 def test_ergos_gallai():
-    assert is_erdos_gallai([2]) == False
-    assert is_erdos_gallai([1, 1]) == True
-    assert is_erdos_gallai([2, 2, 2]) == True
-    assert is_erdos_gallai([1, 2]) == False
-    assert is_erdos_gallai([2, 3, 3]) == False
-    assert is_erdos_gallai([3, 3, 4]) == False
+    assert is_erdos_gallai([2]) is False
+    assert is_erdos_gallai([1, 1]) is True
+    assert is_erdos_gallai([2, 2, 2]) is True
+    assert is_erdos_gallai([1, 2]) is False
+    assert is_erdos_gallai([2, 3, 3]) is False
+    assert is_erdos_gallai([3, 3, 4]) is False
 
 
 def test_clustering_coeff(triangle):
