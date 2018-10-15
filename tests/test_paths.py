@@ -16,7 +16,6 @@ def test_shortest_path():
                                 Vertex(i),
                                 Vertex(j),
                                 lambda a, b: 0)
-                #print(i, j, adj[i][j], length, fullpath)
                 assert adj[i][j] == length
 
 
