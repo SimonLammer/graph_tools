@@ -120,9 +120,9 @@ def topological_sort(graph):
         degrees[edge.end] += 1
     stack = [vertex for (vertex, degree) in degrees.items() if degree == 0]
     total_order = []
-    while not stack:
+    while len(stack) != 0:
         vertex = stack.pop()
-        for neighbour in grah.get_neighbours(vertex):
+        for neighbour in graph.get_neighbours(vertex):
             degrees[neighbour] -= 1
             if degrees[neighbour] == 0:
                 stack.append(neighbour)
