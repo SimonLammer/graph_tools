@@ -82,7 +82,7 @@ class Graph:
         for key in edges:
             edge = edges[key]
             if edge.start not in graph_dict:
-                    graph_dict[edge.start] = set([edge.end])
+                graph_dict[edge.start] = set([edge.end])
             else:
                 graph_dict[edge.start].add(edge.end)
             if edge.end not in graph_dict:
@@ -333,8 +333,8 @@ class Graph:
 
         Parameters:
             'v' : a Vertex object or a integer for a Vertex id
-                If an integer is provided, the method will build a Vertex with the
-                id field being v.
+                If an integer is provided, the method will build a Vertex
+                with the id field being v.
         """
         self._matrix = None  # reset adjacency matrix
         if not isinstance(v, Vertex):
@@ -350,8 +350,8 @@ class Graph:
 
         Parameters:
             'v' : a Vertex object or a integer for a Vertex id
-                If an integer is provided, the method will build a Vertex with the
-                id field being v.
+                If an integer is provided, the method will build a Vertex
+                with the id field being v.
         """
         self._edges = None  # reset edges set
         self._matrix = None  # reset adjacency
