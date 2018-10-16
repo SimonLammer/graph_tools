@@ -28,7 +28,7 @@ def global_clustering_coeff(graph):
     """
     Returns the clustering coefficient of a given graph.
     The clustering coefficient is defined by
-        3*{number of triangles}/{number of connected triplets}
+    3*{number of triangles}/{number of connected triplets}
     """
     v = graph.vertices()
     e = graph.edges()
