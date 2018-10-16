@@ -18,10 +18,11 @@ every data you can imagine, implemented as a python dictionnary ::
 
 The Edge class
 --------------
-An Edge is a link between two Vertex objects.
+An Edge is a link between two Vertex objects ::
 
     from graphtool.graph import Vertex,Edge
-    e1 = Edge(0,1) # between Vertex(0) and Vertex(1), created on the go
+
+    e1 = Edge(0,1) #between Vertex(0) and Vertex(1), created on the go
 
     e2 = Edge(3,4, data={"weight" : 0.45, "label" : "friend"})
 
@@ -41,16 +42,21 @@ Graphs are stored as an adjacency dictionnary over their
 
 A graph can be initialized from a file through the three classical ways:
 - With an edge list ::
+
     l = [Edge(0,1), Edge(1,2), Edge(2,0)]
     g = Graph.from_edge_list(l)
     # or alternatively, from a file:
     g = Graph.from_edge_list("file.txt")
+
 - With an adjacency list ::
+
    d = {Vertex(0) : set([Vertex(1), Vertex(2)])}
    g = Graph.from_adjacency_dict(d)
    # or alternatively, from a file:
    g = Graph.from_adjacency_dict("file.txt")
+
 - With an adjacency matrix ::
+
    m = [[0,1,1],[1,0,1],[1,1,0]]
    g = Graph.from_adjacency_matrix(m)
    # or alternatively, from a file:
@@ -72,6 +78,7 @@ considers each of its Edge objects as oriented (that is, e.start and e.end are n
 
 A graph can be initialized from a file through the three classical ways:
 - With an edge list ::
+-
     l = [Edge(0,1), Edge(1,2, oriented=True), Edge(2,0, oriented=True)]
     g = OrientedGraph.from_edge_list(l)
     # or alternatively, from a file:
@@ -81,11 +88,14 @@ For initializing a Graph with an Edge list, one has to specify if the Edge is or
 `Edge(0,1, oriented=True)` in the list will result in the insertion of both Edge(0,1) and Edge(1,0) edges in the graph
 
 - With an adjacency list ::
+-
    d = {Vertex(0) : set([Vertex(1), Vertex(2)])}
    g = OrientedGraph.from_adjacency_dict(d)
    # or alternatively, from a file:
    g = OrientedGraph.from_adjacency_dict("file.txt")
+
 - With an adjacency matrix ::
+
    m = [[0,1,1],[0,0,1],[1,0,0]]
    g = OrientedGraph.from_adjacency_matrix(m)
    # or alternatively, from a file:
