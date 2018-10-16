@@ -5,6 +5,16 @@ from heapq import *
 
 
 def MST(graph, algo='Kruskal'):
+    """
+    Minimal Spaning Tree.
+
+    Parameters
+    ----------
+    'graph' : Graph
+        The graph to explore
+    'algo' : "Kruskal" or "Prim"
+        The algo to use to get the MST. Default to Kruskal
+    """
     if algo.lower() == 'prim':
         return prim(graph)
     elif algo.lower() == "kruskal":
@@ -14,6 +24,13 @@ def MST(graph, algo='Kruskal'):
 
 
 def kruskal(graph):
+    """
+    Kruskal algorithm
+
+    Returns
+    -------
+    The minimal spanning tree on the graph
+    """
     father = {node: node for node in graph.vertices()}
     weight = {node: 0 for node in graph.vertices()}
 
@@ -43,6 +60,13 @@ def kruskal(graph):
 
 
 def prim(graph):
+    """
+    Prim algorithm
+
+    Returns
+    -------
+    The minimal spanning tree on the graph
+    """
     heap = [(0, 0, next(iter(graph.vertices())), None)]
     dist = dict()
     t = 0
