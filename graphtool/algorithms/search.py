@@ -13,12 +13,24 @@ def no_post_functor(state):
     return None
 
 
-def tree_builder():
+def tree_builder_functors():
     def pre_functor(node):
-        return graph.Vertex(data=node)
+        return node
 
     def neighbour_functor(state, answer):
         state.add_neighbour(answer)
+
+    def post_functor(state):
+        return state
+    return pre_functor, neighbour_functor, post_functor
+
+
+def count_nodes_functors():
+    def pre_functor(node):
+        return 1
+
+    def neighbour_functor(state, answer):
+        return state + answer
 
     def post_functor(state):
         return state
@@ -35,7 +47,7 @@ def depth_first_search(graph, init_node, functors):
         for neighbour in graph.get_neighbours(node):
             if neighbour not in visited:
                 answer = dfs(neighbour)
-                neighbour_functor(state, answer)
+                state = neighbour_functor(state, answer)
         return post_functor(state)
     return dfs(init_node)
 
@@ -43,10 +55,10 @@ def depth_first_search(graph, init_node, functors):
 def topological_sort(graph):
     degrees = {vertex: 0 for vertex in graph.vertices()}
     for edge in graph.edges():
-        degrees[edge.out] += 1
-    stack = [vertex for (vertex, degree) in degrees if degree == 0]
+        degrees[edge.end] += 1
+    stack = [vertex for (vertex, degree) in degrees.items() if degree == 0]
     total_order = []
-    while not stack.empty():
+    while not stack:
         vertex = stack.pop()
         for neighbour in grah.get_neighbours(vertex):
             degrees[neighbour] -= 1
@@ -54,7 +66,7 @@ def topological_sort(graph):
                 stack.append(neighbour)
         total_order.append(vertex)
     if len(graph.vertices()) != len(total_order):
-        raise "Cycles found in the graph"
+        raise Exception("Cycles found in the graph")
     return total_order
 
 
