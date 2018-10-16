@@ -1,12 +1,7 @@
 import pytest
+from utils import *
 from graphtool.graph import *
 from graphtool.algorithms import *
-
-
-@pytest.fixture
-def triangle():
-    a, b, c = Vertex(0), Vertex(1), Vertex(2)
-    return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
 
 
 def test_edge():
@@ -42,3 +37,14 @@ def test_remove_vertex_edges(triangle):
     graph1.remove_edge(0, 2)
     graph1.remove_vertex(2)
     assert graph1 == GraphGenerator.empty(2)
+
+
+def test_getters(triangle, oriented_triangle):
+    assert triangle.vertices() == set([Vertex(0), Vertex(1), Vertex(2)])
+    assert triangle.edges() == set([Edge(2, 0), Edge(1, 2), Edge(0, 1)])
+    assert oriented_triangle.vertices() == set([Vertex(0),
+                                                Vertex(1),
+                                                Vertex(2)])
+    assert oriented_triangle.edges() == set([Edge(0, 1, oriented=True),
+                                             Edge(1, 2, oriented=True),
+                                             Edge(2, 0, oriented=True)])

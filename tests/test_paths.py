@@ -3,6 +3,7 @@ import random
 import os
 from graphtool.graph import *
 from graphtool.algorithms import *
+from utils import *
 
 graph_files = ["graph_100n_1000m.txt", "triangle_edge_list.txt"]
 

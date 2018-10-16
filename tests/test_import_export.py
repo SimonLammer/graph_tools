@@ -1,17 +1,6 @@
 import pytest
 from graphtool.graph import *
-
-
-@pytest.fixture
-def triangle():
-    a, b, c = Vertex(0), Vertex(1), Vertex(2)
-    return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
-
-
-@pytest.fixture
-def oriented_triangle():
-    a, b, c = Vertex(0), Vertex(1), Vertex(2)
-    return OrientedGraph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
+from utils import *
 
 
 def test_edge():

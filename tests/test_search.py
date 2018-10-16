@@ -1,6 +1,7 @@
 import pytest
 from graphtool.graph import *
 from graphtool.algorithms.search import *
+from utils import *
 
 
 @pytest.fixture

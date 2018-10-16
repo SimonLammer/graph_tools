@@ -271,7 +271,7 @@ class OrientedGraph:
         """
         if self._edges is None:
             self._generate_edges()
-        return self._edges.values()
+        return set(self._edges.values())
 
     def _generate_adjacency(self):
         """

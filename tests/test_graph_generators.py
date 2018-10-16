@@ -1,16 +1,18 @@
 import pytest
 from graphtool.graph import *
 from graphtool.graph.generator import *
+from utils import *
 
 
-@pytest.fixture
-def triangle():
-    a, b, c = Vertex(0), Vertex(1), Vertex(2)
-    return Graph.from_edge_list([Edge(a, b), Edge(b, c), Edge(c, a)])
+def test_empty():
+    g = GraphGenerator.empty(10)
+    assert len(g) == 10
+    assert len(g.edges()) == 0
 
 
-def test_cycle(triangle):
+def test_cycle(triangle, oriented_triangle):
     assert GraphGenerator.cycle(3) == triangle
+    assert GraphGenerator.cycle(3, oriented=True) == oriented_triangle
 
 
 def test_clique(triangle):

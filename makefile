@@ -14,7 +14,7 @@ pep8:
 test: pep8
 	#pipenv install -e .
 	#pipenv run pytest tests/*.py
-	pytest tests/*.py
+	pytest tests/test_*.py
 	pycodestyle graphtool/*.py
 	pycodestyle graphtool/graph/*.py
 	pycodestyle graphtool/algorithms/*.py

@@ -83,7 +83,7 @@ class Edge:
 
     def __eq__(self, other):
         if self.oriented:
-            return self.stat == other.start and self.end == other.end
+            return self.start == other.start and self.end == other.end
         return {self.start, self.end} == {other.start, other.end}
 
     def __lt__(self, other):
