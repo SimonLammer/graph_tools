@@ -1,6 +1,8 @@
 install:
+	pip3 install --user --force-reinstall .
+
+uninstall:
 	pip3 uninstall -y graphtool
-	pip3 install --user .
 
 pep8:
 	autopep8 --in-place graphtool/*.py

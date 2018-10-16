@@ -415,8 +415,8 @@ class Graph:
         self._dict[e.start].discard(e.end)
         self._dict[e.end].discard(e.start)
         if self._edges is not None:
-            del self._edges[(e.start, e.end)]
-            del self._edges[(e.end, e.start)]
+            self._edges.pop((e.start, e.end), None)
+            self._edges.pop((e.end, e.start), None)
 
     # ---------------- Stats computations -----------------------------
     def vertex_degree(self):
