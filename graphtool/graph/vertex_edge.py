@@ -1,3 +1,6 @@
+from copy import copy
+
+
 class Vertex:
     """
     'id' : integer
@@ -112,3 +115,23 @@ class Edge:
             return self.start
         raise Exception("Error in Edge.other method : \n\
             Vertex {} is not incident to edge {}".format(v, self))
+
+    @staticmethod
+    def revert(edge):
+        """
+        For oriented edges : returns the reversed edge
+        For non oriented edges : does nothing
+
+        Parameters
+        ----------
+        'edge' : An Edge object
+
+        Returns
+        -------
+        The reversed Edge object
+        """
+        if not edge.oriented:
+            return edge
+        d = copy(edge.data)
+        d["end"], d["start"] = d["start"], d["end"]
+        return Edge(d["start"], d["end"], oriented=True, data=d)

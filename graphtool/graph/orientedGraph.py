@@ -69,7 +69,7 @@ class OrientedGraph:
                     else:
                         a, b = vertex_data[xa], vertex_data[xb]
                     if edge_data is None:
-                        e = Edge(a, b)
+                        e = Edge(a, b, oriented=True)
                         edges[(a, b)] = e
                     else:
                         e = edge_data.get((a, b), None)
@@ -78,6 +78,8 @@ class OrientedGraph:
             for e in l:
                 e = Edge(e)
                 edges[(e["start"], e["end"])] = e
+                if not e.oriented:
+                    edges[(e["end"], e["start"])] = Edge.revert(e)
         graph_dict = dict()
         for key in edges:
             edge = edges[key]

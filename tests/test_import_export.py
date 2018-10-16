@@ -12,6 +12,14 @@ def test_edge():
     assert edge1 == edge3
 
 
+def test_edge_revert():
+    edge = Edge(0, 1, oriented=True, data={"name": "toto"})
+    edge2 = Edge.revert(edge)
+    assert edge2.start == Vertex(1)
+    assert edge2.end == Vertex(0)
+    assert edge2["name"] == "toto"
+
+
 def test_graph_from_edge_list(triangle):
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert (graph1 == triangle)
