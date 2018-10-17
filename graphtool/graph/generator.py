@@ -11,9 +11,8 @@ class GraphGenerator:
         """
         Builds the graph of n vertices an no edges
 
-        Returns
-        -------
-        A new Graph Object
+        Returns:
+            A new Graph Object
         """
         graph_dict = dict()
         for i in range(n):
@@ -28,9 +27,8 @@ class GraphGenerator:
         Builds the cycle of size n, with vertex i being linked to
         vertices (i+1)%n and (i-1)%n
 
-        Returns
-        -------
-        A new Graph Object
+        Returns:
+            A new Graph Object
         """
         g = GraphGenerator.empty(n, oriented)
         for i in range(n):
@@ -43,9 +41,8 @@ class GraphGenerator:
         Builds the fully connected graph of size n, that is the graph of n
         vertices and all possible n(n-1)/2 edges
 
-        Returns
-        -------
-        A new Graph Object
+        Returns:
+            A new Graph Object
         """
         g = GraphGenerator.empty(n)
         for i in range(n):
@@ -58,17 +55,15 @@ class GraphGenerator:
         """
         Generates a graph through the Erdös-Renyi model.
 
-        Parameters
-        ----------
-        'n' : int
-            Number of vertices
+        Parameters:
+            'n' : int
+                Number of vertices
 
-        'p' : float between 0 and 1
-            The probability for each edge to be present in the graph
+            'p' : float between 0 and 1
+                The probability for each edge to be present in the graph
 
-        Returns
-        -------
-        A new Graph Object
+        Returns:
+            A new Graph Object
         """
         p = min(max(p, 0), 1)
         g = GraphGenerator.empty(n)
@@ -84,17 +79,15 @@ class GraphGenerator:
         Generates a graph through the Erdös-Renyi model with fixed number
         of edges
 
-        Parameters
-        ----------
-        'n' : int
-            Number of vertices
+        Parameters:
+            'n' : int
+                Number of vertices
 
-        'l' : int
-            Number of edges
+            'l' : int
+                Number of edges
 
-        Returns
-        -------
-        A new Graph Object
+        Returns:
+            A new Graph Object
         """
         adj = [[0 for i in range(n)] for j in range(n)]
         possible_edges = [(i, j) for j in range(n) for i in range(j)]

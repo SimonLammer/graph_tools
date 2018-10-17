@@ -1,2 +1,0 @@
-Minimal Spanning Tree computations
-==================================

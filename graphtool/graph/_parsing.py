@@ -7,8 +7,7 @@ def parse_node_data(filename: str):
     Reads a csv file containing data about the nodes.
     This file's first column must be the id of a node (a integer from 0 to N)
 
-    Returns
-    -------
+    Returns:
     The list of Vertex objects L where L[i] is the object of id i.
     """
     assert ".csv" in filename

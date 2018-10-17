@@ -3,33 +3,28 @@ from ..graph import *
 
 def no_pre_functor(node):
     """
-    Simple functor doing nothing on the node
+    Empty functor that does nothing when visiting a node
     """
     return None
 
 
 def no_neighbour_functor(state, answer):
     """
-    Simple functor doing nothing with the neighbours data
+    Empty functor that does nothing with neighbour data
     """
     return None
 
 
 def no_post_functor(state):
     """
-    Simple functor doing nothing after the exploration of neighbours
+    Empty functor that does nothing when leaving a node
     """
     return None
 
 
 def tree_builder_functors():
     """
-    Returns three functors allowing to generate a covering tree with a DFS
-    rooted in the starting node
-
-    Returns
-    -------
-    Three functors
+    Set of functors building the DFS tree when called on a graph
     """
     def pre_functor(node):
         return node
@@ -44,12 +39,8 @@ def tree_builder_functors():
 
 def count_nodes_functors():
     """
-    Returns three functors allowing to count the number of nodes in the
-    connected component of the starting node of a DFS
-
-    Returns
-    -------
-    Three functors
+    Set of functors counting the number of nodes in the connected component of
+    the starting node
     """
     def pre_functor(node):
         return 1
@@ -64,29 +55,23 @@ def count_nodes_functors():
 
 def depth_first_search(graph, init_node, functors):
     """
-    Explores the graph. The functors argument contains three functors :
-    pre_functor, neighbour_functor, post_functor. When exploring, when the
-    explorer reaches a node, it calls pre_functor on the node. Then, calls
-    recursively each neighbour. Each neighbour returns a value. Each value
-    returned by a neighbour is given to neighbour_functor, updating the state
-    of the node, initialized by the pre_functor call. Then, when all neighbours
-    returned, the node returns the value of post_functor.
-    This allows to do very adaptative operations during the exploration
+    Generic Depth First Search algorithm, using functors to describe what to do
+    at each node
 
-    Parameters
-    ----------
-    'graph' : Graph
-        the graph to explore
-    'init_node' : Vertex
-        the node where to start the exploration
-    'functors' : {functor, functor, functor}
-        pre_functor : called when reaching a node for the first time
-        neighbour_functor : called on each neighbour return value
-        post_functor : called when leaving the node
+    Parameters:
+        'graph': Graph
+            The graph to explore
 
-    Returns
-    -------
-    The return value of the initial node
+        'init_node' : Vertex
+            The starting node
+
+        'functors' : set of 3 functors
+            'pre_functor' : called on each node when first visiting it
+            'neighbour_functor' : process the data returned by each neighbour
+            'post_functor' : what the actual node will return
+
+    Returns:
+        The return value of the init node
     """
     pre_functor, neighbour_functor, post_functor = functors
     visited = set()
@@ -104,16 +89,10 @@ def depth_first_search(graph, init_node, functors):
 
 def topological_sort(graph):
     """
-    On an oriented graph, does a topological exploration of the graph
+    Topological Sort on the graph
 
-    Parameters
-    ----------
-    'graph' : Graph
-        the graph to explore
-
-    Returns
-    -------
-    A list of the nodes, sorted by topological order
+    Returns:
+        The list of the vertices ordered
     """
     degrees = {vertex: 0 for vertex in graph.vertices()}
     for edge in graph.edges():
@@ -134,17 +113,10 @@ def topological_sort(graph):
 
 def get_connected_components(graph):
     """
-    Explores the graph and returns all connected components.
+    Get the connected components of the graph
 
-    Parameters
-    ----------
-    'graph' : Graph
-        the graph to explore
-
-    Returns
-    -------
-    A list components. Each component is the list of all vertices in the
-    component
+    Returns:
+        List of components. Each component is the list of the vertices in it
     """
     seen = set()
     components = []
@@ -166,4 +138,7 @@ def get_connected_components(graph):
 
 
 def breath_first_search():
+    """
+    TODO
+    """
     pass

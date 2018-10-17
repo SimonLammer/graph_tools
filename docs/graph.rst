@@ -65,9 +65,11 @@ A graph can be initialized from a file through the three classical ways:
 **Getters and Setters**
 
 `my_graph.vertices()` returns the set of vertices of the graph
+
 `my_graph.edges()` returns the set of edges of the graph
 
 **Manipulation on Graphs**
+
 Graph and OrientedGraph implement various methods to modify their data:
 `add_edge`, `remove_edge`, `add_vertex`, `remove_edge`
 
@@ -88,7 +90,7 @@ For initializing a Graph with an Edge list, one has to specify if the Edge is or
 `Edge(0,1, oriented=True)` in the list will result in the insertion of both Edge(0,1) and Edge(1,0) edges in the graph
 
 - With an adjacency list ::
--
+
    d = {Vertex(0) : set([Vertex(1), Vertex(2)])}
    g = OrientedGraph.from_adjacency_dict(d)
    # or alternatively, from a file:
