@@ -156,4 +156,4 @@ def biggest_component_diameter(graph):
         if len(comp_list[i]) > n:
             n = len(comp_list[i])
             biggest = i
-    return 0  # diameter(comp_list[biggest])
+    return diameter(Graph.renumber(comp_list[biggest]))

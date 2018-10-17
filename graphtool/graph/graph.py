@@ -241,7 +241,8 @@ class Graph:
         -------
         A new Graph object
         """
-        vertices = set([Vertex(v) for v in vertices])
+        vertices = set([Vertex(v) if isinstance(v, int)
+                        else v for v in vertices])
         graph_dict = {v: set() for v in vertices}
         edges = None
         if self._edges is not None:
@@ -255,6 +256,25 @@ class Graph:
                         edges[(u, v)] = self._edges[(u, v)]
                         edges[(v, u)] = self._edges[(v, u)]
         return Graph(graph_dict, _edges=edges)
+
+    def renumber(self):
+        """
+        Returns a copy of the graph where all the vertices have been renumbered
+        from 0 to n. Does not copy edge or vertex data, but only
+        the combinatorial structure
+
+        Returns
+        -------
+        A Graph Object
+        """
+        graph_dict = dict()
+        vertices = {x: Vertex(i)
+                    for (i, x) in enumerate(list(self.vertices()))}
+        for v in self._dict:
+            graph_dict[vertices[v]] = set()
+            for u in self._dict[v]:
+                graph_dict[vertices[v]].add(vertices[u])
+        return Graph(graph_dict)
 
     # ---------------- Getters and setters -----------------------------
 
@@ -308,8 +328,8 @@ class Graph:
                     self._matrix[u.id][v.id] = 1
                     self._matrix[v.id][u.id] = 1
         except Exception as e:
-            print(e)
             self._matrix = None
+            raise e
 
     def adjacency_matrix(self):
         """

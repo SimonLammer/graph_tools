@@ -65,7 +65,11 @@ def test_diameter(triangle):
     assert diameter(GraphGenerator.empty(2)) == float("inf")
 
 
-"""
-def test_diameter2(triangle):
-    assert diameter(triangle)==biggest_component_diameter(triangle)
-"""
+def test_diameter2():
+    g = GraphGenerator.empty(4)
+    g.add_edge(1, 2)
+    assert biggest_component_diameter(g) == 1
+    g = GraphGenerator.empty(42)
+    g.add_edge(40, 35)
+    g.add_edge(35, 12)
+    assert biggest_component_diameter(g) == 2

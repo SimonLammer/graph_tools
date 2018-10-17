@@ -236,7 +236,8 @@ class OrientedGraph:
         -------
         A new OrientedGraph object
         """
-        vertices = set([Vertex(v) for v in vertices])
+        vertices = set([Vertex(v) if isinstance(v, int)
+                        else v for v in vertices])
         graph_dict = {v: set() for v in vertices}
         edges = None
         if self._edges is not None:
@@ -522,7 +523,9 @@ class OrientedGraph:
         return [x for x in self._dict_out if len(self._dict_out[x]) == 0]
 
     def get_in_degrees(self):
-        return {vertex: len(self._dict_in[vertex]) for vertex in self._dict_in}
+        return {vertex: len(self._dict_in[vertex])
+                for vertex in self._dict_in}
 
     def get_out_degrees(self):
-        return {vertex: len(self._dict_out[vertex]) for vertex in self._dict_out}
+        return {vertex: len(self._dict_out[vertex])
+                for vertex in self._dict_out}
