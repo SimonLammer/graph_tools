@@ -51,6 +51,13 @@ def test_edges():
         1, 2, oriented=True), Edge(2, 0, oriented=True)}
 
 
+def test_vertex_degree():
+    graph1 = GraphGenerator.cycle(5)
+    graph1.add_edge(0, 3)
+    assert graph1.vertex_degree() == [3, 2, 2, 3, 2]
+    assert graph1.degree_sequence() == [3, 3, 2, 2, 2]
+
+
 def test_density():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert graph1.density() == 1

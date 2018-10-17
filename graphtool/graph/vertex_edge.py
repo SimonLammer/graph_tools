@@ -119,8 +119,7 @@ class Edge:
             return self.end
         elif self.end == v:
             return self.start
-        raise Exception("Error in Edge.other method : \n\
-            Vertex {} is not incident to edge {}".format(v, self))
+        raise Exception("Vertex {} is not incident".format(v))
 
     @staticmethod
     def revert(edge):

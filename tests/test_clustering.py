@@ -22,6 +22,7 @@ def test_clustering_coeff(triangle):
 def test_local_clust_coeff(triangle):
     assert local_clustering_coeff(triangle, Vertex(0)) == 1
     assert local_clustering_coeff(triangle, 0) == 1
+    assert local_clustering_coeff(GraphGenerator.empty(5), 0) == 0
 
 
 def test_avg_local_clust_coeff(triangle):
