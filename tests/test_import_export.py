@@ -51,6 +51,9 @@ def test_export_as_adjacency_matrix():
 def test_graph_from_adjacency_dict(triangle):
     graph1 = Graph.from_adjacency_dict("graph_examples/triangle_adjacency.txt")
     assert (graph1 == triangle)
+    d = graph1._dict
+    graph2 = Graph.from_adjacency_dict(d)
+    assert graph2 == graph1
 
 
 def test_graph_from_adjacency_matrix(triangle):
@@ -86,7 +89,14 @@ def test_all_import_with_data():
     assert graph_adj == graph_mat
     assert graph_mat == graph_edge
 
-    # ---- Oriented tests ------
+
+def test_str_conversion():
+    g = GraphGenerator.clique(3)
+    txt = '{V(0): {V(1), V(2)}, V(1): {V(0), V(2)}, V(2): {V(0), V(1)}}'
+    assert str(g) == txt
+
+
+# ---- Oriented tests ------
 
 
 def test_len(triangle, oriented_triangle):

@@ -6,14 +6,19 @@ from heapq import *
 
 def MST(graph, algo='Kruskal'):
     """
-    Minimal Spaning Tree.
+    Minimal Spanning Tree.
 
     Parameters
     ----------
     'graph' : Graph
         The graph to explore
+
     'algo' : "Kruskal" or "Prim"
         The algo to use to get the MST. Default to Kruskal
+
+    Returns
+    -------
+        A minimal spanning tree of the graph
     """
     if algo.lower() == 'prim':
         return prim(graph)

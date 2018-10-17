@@ -1,10 +1,7 @@
-graphtool.algorithms package
-============================
+graphtool.algorithms
+====================
 
-Submodules
-----------
-
-graphtool.algorithms.clustering module
+graphtool.algorithms.clustering
 --------------------------------------
 
 .. automodule:: graphtool.algorithms.clustering
@@ -12,7 +9,7 @@ graphtool.algorithms.clustering module
     :undoc-members:
     :show-inheritance:
 
-graphtool.algorithms.flow module
+graphtool.algorithms.flow
 --------------------------------
 
 .. automodule:: graphtool.algorithms.flow
@@ -20,7 +17,7 @@ graphtool.algorithms.flow module
     :undoc-members:
     :show-inheritance:
 
-graphtool.algorithms.mst module
+graphtool.algorithms.mst
 -------------------------------
 
 .. automodule:: graphtool.algorithms.mst
@@ -28,7 +25,7 @@ graphtool.algorithms.mst module
     :undoc-members:
     :show-inheritance:
 
-graphtool.algorithms.path module
+graphtool.algorithms.path
 --------------------------------
 
 .. automodule:: graphtool.algorithms.path
@@ -36,7 +33,7 @@ graphtool.algorithms.path module
     :undoc-members:
     :show-inheritance:
 
-graphtool.algorithms.search module
+graphtool.algorithms.search
 ----------------------------------
 
 .. automodule:: graphtool.algorithms.search

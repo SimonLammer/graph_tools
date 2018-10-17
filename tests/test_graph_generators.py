@@ -34,8 +34,20 @@ def test_chung_lu():
     assert len(GraphGenerator.chung_lu(seq)) == 2
     seq = [2, 2, 2]
     assert len(GraphGenerator.chung_lu(seq)) == 3
+    seq = [1, 2]
+    try:
+        GraphGenerator.chung_lu(seq)
+        assert False
+    except Exception as e:
+        assert str(e) == "The sum of degrees should be even!"
 
 
 def test_molloy_reed():
     seq = [1, 1, 2, 2, 4]
     assert len(GraphGenerator.molloy_reed(seq)) == 5
+    seq = [1, 2]
+    try:
+        GraphGenerator.molloy_reed(seq)
+        assert False
+    except Exception as e:
+        assert str(e) == "The sum of degrees should be even!"
