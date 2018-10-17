@@ -14,11 +14,14 @@ def test_ergos_gallai():
 
 
 def test_clustering_coeff(triangle):
-    assert global_clustering_coeff(triangle) == 0
+    assert global_clustering_coeff(GraphGenerator.empty(10)) == 0
+    assert global_clustering_coeff(triangle) == 1
+    assert global_clustering_coeff(GraphGenerator.clique(10)) == 1
 
 
 def test_local_clust_coeff(triangle):
     assert local_clustering_coeff(triangle, Vertex(0)) == 1
+    assert local_clustering_coeff(triangle, 0) == 1
 
 
 def test_avg_local_clust_coeff(triangle):

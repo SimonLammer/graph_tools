@@ -24,8 +24,9 @@ def test_dfs():
 
 
 def test_topological_sort():
-    g = GraphGenerator.empty(4)
+    g = GraphGenerator.empty(4, oriented=True)
     g.add_edge(0, 1)
     g.add_edge(1, 2)
     g.add_edge(2, 3)
-    assert topological_sort(g) == [Vertex(0), Vertex(1), Vertex(2), Vertex(3)]
+    assert topological_sort(g) == [Vertex(3),
+                                   Vertex(2), Vertex(1), Vertex(0)]

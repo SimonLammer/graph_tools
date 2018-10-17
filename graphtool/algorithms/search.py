@@ -94,20 +94,18 @@ def topological_sort(graph):
     Returns:
         The list of the vertices ordered
     """
-    degrees = {vertex: 0 for vertex in graph.vertices()}
-    for edge in graph.edges():
-        degrees[edge.end] += 1
-    stack = [vertex for (vertex, degree) in degrees.items() if degree == 0]
+    degrees = graph.get_out_degrees()
+    stack = list(graph.get_sinks())
     total_order = []
-    while len(stack) != 0:
+    while stack:
         vertex = stack.pop()
-        for neighbour in graph.get_neighbours(vertex):
+        for neighbour in graph.get_neighbours_in(vertex):
             degrees[neighbour] -= 1
             if degrees[neighbour] == 0:
                 stack.append(neighbour)
         total_order.append(vertex)
-    if len(graph.vertices()) != len(total_order):
-        raise Exception("Cycles found in the graph")
+    if len(graph) != len(total_order):
+        raise Exception("Topological sort error : cycles found graph")
     return total_order
 
 
@@ -134,7 +132,7 @@ def get_connected_components(graph):
             component = []
             explore_components(vertex)
             components.append(component)
-    return components
+    return [graph.subgraph(comp) for comp in components]
 
 
 def breath_first_search():

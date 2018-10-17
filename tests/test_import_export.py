@@ -172,3 +172,12 @@ def test_oriented_all_import_with_data():
 
 def test_symetrization(triangle, oriented_triangle):
     assert oriented_triangle.symetrize() == triangle
+
+
+def test_subgraph(triangle, oriented_triangle):
+    assert triangle.subgraph([Vertex(0), Vertex(1), Vertex(2)]) == triangle
+    assert triangle.subgraph([0]) == GraphGenerator.empty(1)
+    assert oriented_triangle.subgraph(
+        [Vertex(0), Vertex(1), Vertex(2)]) == oriented_triangle
+    assert oriented_triangle.subgraph(
+        [0]) == GraphGenerator.empty(1, oriented=True)

@@ -221,6 +221,35 @@ class OrientedGraph:
                 string += "\n"
                 f.write(string)
 
+    def subgraph(self, vertices):
+        """
+        Extract a subgraph of the graph, containing the relevant vertices
+        and edges
+
+        Parameters
+        ----------
+        'vertices' : a container
+            Contains the relevant vertices. If it is not a set, is converted
+            into a set
+
+        Returns
+        -------
+        A new OrientedGraph object
+        """
+        vertices = set([Vertex(v) if isinstance(v, int)
+                        else v for v in vertices])
+        graph_dict = {v: set() for v in vertices}
+        edges = None
+        if self._edges is not None:
+            edges = dict()
+        for v in vertices:
+            for u in vertices:
+                if v != u and u in self._dict_out[v]:
+                    graph_dict[v].add(u)
+                    if edges is not None:
+                        edges[(v, u)] = self._edges[(v, u)]
+        return OrientedGraph(graph_dict, _edges=edges)
+
     # ---------------- Getters and setters -----------------------------
 
     def symetrize(self):
@@ -408,7 +437,7 @@ class OrientedGraph:
         if not isinstance(v, Vertex):
             assert isinstance(v, int)
             v = Vertex(v)
-        if v not in self._dict:
+        if v not in self._dict_out:
             self._dict_out[v] = set()
             self._dict_in[v] = set()
 
@@ -434,10 +463,12 @@ class OrientedGraph:
 
         self._matrix = None  # reset adjacency
 
-        if v in self._dict:
-            self._dict.pop(v, None)
-        for x in self._dict:
-            self._dict[x].discard(v)
+        if v in self._dict_in:
+            self._dict_in.pop(v, None)
+            self._dict_out.pop(v, None)
+        for x in self._dict_out:
+            self._dict_out[x].discard(v)
+            self._dict_in[x].discard(v)
 
     def add_edge(self, *args) -> None:
         """
@@ -450,7 +481,7 @@ class OrientedGraph:
             The data needed to generate the edge. Can be directly an Edge
             object, or any pair of Vertex or vertex names.
         """
-        e = Edge(args)
+        e = Edge(args, oriented=True)
         if e.start not in self._dict_out:
             self._dict_out[e.start] = set([e.end])
         else:
@@ -483,12 +514,18 @@ class OrientedGraph:
         """
         Gets the list of vertices that have in-degree 0
         """
-        assert 1 == 0
-        return []
+        return [x for x in self._dict_in if len(self._dict_in[x]) == 0]
 
     def get_sinks(self):
         """
         Gets the list of vertices that have out degree 0
         """
-        assert 1 == 0
-        return []
+        return [x for x in self._dict_out if len(self._dict_out[x]) == 0]
+
+    def get_in_degrees(self):
+        return {vertex: len(self._dict_in[vertex])
+                for vertex in self._dict_in}
+
+    def get_out_degrees(self):
+        return {vertex: len(self._dict_out[vertex])
+                for vertex in self._dict_out}
