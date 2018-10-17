@@ -14,9 +14,10 @@ class Graph:
         """
         Initialization function. Is not meant to be called as it is.
 
-        self._dict : Vertex -> set of neighbours vertices
-        self._edges : Vertex pair -> corresponding Edge
-        self._matrix : adjacency matrix
+        Parameters:
+            self._dict : Vertex -> set of neighbours vertices
+            self._edges : Vertex pair -> corresponding Edge
+            self._matrix : adjacency matrix
         """
         self._dict = _graph_dict
         self._edges = _edges
@@ -41,9 +42,8 @@ class Graph:
         """
         Imports a graph from a txt file containing an edge list
 
-        Returns
-        -------
-        A new Graph object
+        Returns:
+            A new Graph object
         """
         if vertex_data is not None:
             vertex_data = parse_node_data(vertex_data)
@@ -96,9 +96,8 @@ class Graph:
         """
         Imports a graph from a txt file containing an adjacency list
 
-        Returns
-        -------
-        A new Graph object
+        Returns:
+            A new Graph object
         """
         if vertex_data is not None:
             vertex_data = parse_node_data(vertex_data)
@@ -132,9 +131,8 @@ class Graph:
         """
         Imports a graph from a txt file containing an adjacency matrx
 
-        Returns
-        -------
-        A new Graph object
+        Returns:
+            A new Graph object
         """
         if vertex_data is not None:
             vertex_data = parse_node_data(vertex_data)
@@ -182,10 +180,9 @@ class Graph:
         """
         Exports the graph in form of an edge list
 
-        Parameters
-        ----------
-        'filename' : string
-            the relative path of the file to write back the data
+        Parameters:
+            'filename' : string
+                the relative path of the file to write back the data
         """
         with open(filename, 'w') as f:
             for e in self.edges():
@@ -195,10 +192,9 @@ class Graph:
         """
         Exports the graph in form of an adjacency list
 
-        Parameters
-        ----------
-        'filename' : string
-            the relative path of the file to write back the data
+        Parameters:
+            'filename' : string
+                the relative path of the file to write back the data
         """
         with open(filename, 'w') as f:
             for v in self._dict:
@@ -211,10 +207,9 @@ class Graph:
         """
         Exports the graph in form of an adjacency matrix
 
-        Parameters
-        ----------
-        'filename' : string
-            the relative path of the file to write back the data
+        Parameters:
+            'filename' : string
+                the relative path of the file to write back the data
         """
         with open(filename, 'w') as f:
             mat = self.adjacency_matrix()
@@ -232,9 +227,8 @@ class Graph:
         """
         Getter on the vertices of the graph
 
-        Returns
-        -------
-        An iterator over the vertices of the graph
+        Returns:
+            An iterator over the vertices of the graph
         """
         return self._dict.keys()
 
@@ -256,9 +250,8 @@ class Graph:
         """
         Getter on the edges of the graph
 
-        Returns
-        -------
-        An iterator over the edges of a the graph
+        Returns:
+            An iterator over the edges of a the graph
         """
         if self._edges is None:
             self._generate_edges()
@@ -285,10 +278,9 @@ class Graph:
         """
         Computes and return the adjacency matrix of the graph.
 
-        Returns
-        -------
-        A numpy array of shape (N*N) where N is the number of vertices
-        in the graph
+        Returns:
+            A numpy array of shape (N*N) where N is the number of vertices
+            in the graph
         """
         if self._matrix is None:
             self._generate_adjacency()
@@ -298,14 +290,12 @@ class Graph:
         """
         Returns the vertices that are adjacent to v
 
-        Parameters
-        ----------
-        'v' : A Vertex object or an integer (vertex id)
-            The vertex from which to extract the neighbourhood
+        Parameters:
+            'v' : A Vertex object or an integer (vertex id)
+                The vertex from which to extract the neighbourhood
 
-        Returns
-        -------
-        The set of neighbours of v
+        Returns:
+            The set of neighbours of v
         """
 
         if not isinstance(v, Vertex):
@@ -317,14 +307,12 @@ class Graph:
         """
         Returns the edges of the graph that are incident to v
 
-        Parameters
-        ----------
-        'v' : A Vertex object or an integer (vertex id)
-            The vertex from which to extract the neighbourhood
+        Parameters:
+            'v' : A Vertex object or an integer (vertex id)
+                The vertex from which to extract the neighbourhood
 
-        Returns
-        -------
-        The set of neighbours of v
+        Returns:
+            The set of neighbours of v
         """
         if not isinstance(v, Vertex):
             assert isinstance(v, int)
@@ -343,11 +331,10 @@ class Graph:
         """
         Adds a new vertex to the graph
 
-        Parameters
-        ----------
-        'v' : a Vertex object or a integer for a Vertex id
-            If an integer is provided, the method will build a Vertex with the
-            id field being v.
+        Parameters:
+            'v' : a Vertex object or a integer for a Vertex id
+                If an integer is provided, the method will build a Vertex
+                with the id field being v.
         """
         self._matrix = None  # reset adjacency matrix
         if not isinstance(v, Vertex):
@@ -361,11 +348,10 @@ class Graph:
         Removes a vertex from the graph. If the given vertex is not present,
         this method does not do anything.
 
-        Parameters
-        ----------
-        'v' : a Vertex object or a integer for a Vertex id
-            If an integer is provided, the method will build a Vertex with the
-            id field being v.
+        Parameters:
+            'v' : a Vertex object or a integer for a Vertex id
+                If an integer is provided, the method will build a Vertex
+                with the id field being v.
         """
         self._edges = None  # reset edges set
         self._matrix = None  # reset adjacency
@@ -382,11 +368,10 @@ class Graph:
         Adds an edge in the graph. If one or both ends of the edge are not
         present in the graph, the coresponding vertices are added.
 
-        Parameters
-        ----------
-        'args' : Edge | (Vertex, Vertex) | (name, name)
-            The data needed to generate the edge. Can be directly an Edge
-            object, or any pair of Vertex or vertex names.
+        Parameters:
+            'args' : Edge | (Vertex, Vertex) | (name, name)
+                The data needed to generate the edge. Can be directly an Edge
+                object, or any pair of Vertex or vertex names.
         """
         e = Edge(args)
         if e.start not in self._dict:
@@ -405,11 +390,10 @@ class Graph:
         """
         Removes an edge from the graph.
 
-        Parameters
-        ----------
-        'args' : Edge | (Vertex, Vertex) | (name, name)
-            The data needed to generate the edge. Can be directly an Edge
-            object, or any pair of Vertex or vertex names.
+        Parameters:
+            'args' : Edge | (Vertex, Vertex) | (name, name)
+                The data needed to generate the edge. Can be directly an Edge
+                object, or any pair of Vertex or vertex names.
         """
         e = Edge(args)
         self._dict[e.start].discard(e.end)
@@ -423,9 +407,8 @@ class Graph:
         """
         Returns the list of degrees of the vertices in the graph.
 
-        Returns
-        -------
-        A list of integers
+        Returns:
+            A list of integers
         """
         return [len(self._dict[v]) for v in self.vertices()]
 
@@ -434,9 +417,8 @@ class Graph:
         Returns the list of degrees of the vertices in the graph sorted in
         decreasing order
 
-        Returns
-        -------
-        A list of integers sorted in decreasing order
+        Returns:
+            A list of integers sorted in decreasing order
         """
         degree_list = self.vertex_degree()
         degree_list.sort(reverse=True)
@@ -446,21 +428,19 @@ class Graph:
         """
         Returns the list of isolated vertices, that is vertices with degree 0
 
-        Returns
-        -------
-        A list of the names of vertices that have zero degree
+        Returns:
+            A list of the names of vertices that have zero degree
         """
         return [v for v in self.vertices() if len(self._dict[v]) == 0]
 
     def density(self):
         """
         Computes the density of the graph, defined as the proportion of edges
-            = {number of edges}/{total possible number of edges}
-            = 2*{number of edges}/(N(N-1))
+        = {number of edges}/{total possible number of edges}
+        = 2*{number of edges}/(N(N-1))
 
-        Returns
-        -------
-        The density of the graph
+        Returns:
+            The density of the graph
         """
         e_nb = len(self.edges())
         v_nb = len(self.vertices())
