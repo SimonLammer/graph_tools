@@ -513,12 +513,16 @@ class OrientedGraph:
         """
         Gets the list of vertices that have in-degree 0
         """
-        assert 1 == 0
-        return []
+        return [x for x in self._dict_in if len(self._dict_in[x]) == 0]
 
     def get_sinks(self):
         """
         Gets the list of vertices that have out degree 0
         """
-        assert 1 == 0
-        return []
+        return [x for x in self._dict_out if len(self._dict_out[x]) == 0]
+
+    def get_in_degrees(self):
+        return {vertex: len(self._dict_in[vertex]) for vertex in self._dict_in}
+
+    def get_out_degrees(self):
+        return {vertex: len(self._dict_out[vertex]) for vertex in self._dict_out}

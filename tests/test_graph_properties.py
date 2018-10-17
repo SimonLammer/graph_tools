@@ -16,8 +16,14 @@ def test_find_isolated_vertices():
     assert set(graph2.find_isolated_vertices()) == {Vertex(0), Vertex(1)}
 
 
-def test_sources_sink():
-    assert True
+def test_sources_sink(oriented_triangle):
+    g = GraphGenerator.empty(3, oriented=True)
+    g.add_edge(0, 1)
+    g.add_edge(1, 2)
+    assert g.get_sinks() == [Vertex(2)]
+    assert g.get_sources() == [Vertex(0)]
+    assert oriented_triangle.get_sinks() == []
+    assert oriented_triangle.get_sources() == []
 
 
 def test_neighbours():

@@ -115,20 +115,17 @@ def topological_sort(graph):
     -------
     A list of the nodes, sorted by topological order
     """
-    degrees = {vertex: 0 for vertex in graph.vertices()}
-    for edge in graph.edges():
-        degrees[edge.end] += 1
-    stack = [vertex for (vertex, degree) in degrees.items() if degree == 0]
+    degrees = graph.get_out_degrees()
+    stack = list(graph.get_sinks())
     total_order = []
-    while not stack:
+    while stack:
         vertex = stack.pop()
-        for neighbour in graph.get_neighbours_out(vertex):
+        for neighbour in graph.get_neighbours_in(vertex):
             degrees[neighbour] -= 1
             if degrees[neighbour] == 0:
                 stack.append(neighbour)
         total_order.append(vertex)
     if len(graph) != len(total_order):
-        print(len(graph), len(total_order))
         raise Exception("Topological sort error : cycles found graph")
     return total_order
 
