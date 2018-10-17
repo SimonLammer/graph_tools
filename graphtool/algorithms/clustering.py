@@ -1,4 +1,5 @@
 from ..graph import *
+from copy import copy
 
 
 def is_erdos_gallai(sequence):
@@ -37,17 +38,18 @@ def global_clustering_coeff(graph):
     for v1 in v:
         for v2 in graph.get_neighbours(v1):
             for v3 in graph.get_neighbours(v1):
-                a = Edge(v1, v2)
-                b = Edge(v2, v3)
-                c = Edge(v1, v3)
-                intersect = e.intersection({a, b, c})
-                if len(intersect) >= 2:
-                    connected_triplets += 1
-                if len(intersect) == 3:
-                    triangles += 1
+                if (v2 != v3):
+                    a = Edge(v1, v2)
+                    b = Edge(v2, v3)
+                    c = Edge(v1, v3)
+                    intersect = e.intersection(set((a, b, c)))
+                    if len(intersect) >= 2:
+                        connected_triplets += 1
+                    if len(intersect) == 3:
+                        triangles += 1
     if connected_triplets == 0:
         return 0
-    return 3*triangles/connected_triplets
+    return triangles/connected_triplets
 
 
 def local_clustering_coeff(graph, v):
@@ -71,17 +73,3 @@ def average_local_clustering_coeff(graph):
         c += local_clustering_coeff(graph, v)
         n += 1
     return c/n
-
-
-def get_core_k(graph, k):
-    """
-    TODO
-    """
-    return Graph({})
-
-
-def get_core_all(graph):
-    """
-    TODO
-    """
-    return []

@@ -23,12 +23,30 @@ def test_add_vertex_edges(triangle):
     assert graph1 == triangle
 
 
+def test_add_vertex_edges_oriented(oriented_triangle):
+    graph1 = GraphGenerator.empty(1, oriented=True)
+    graph1.add_vertex(1)
+    graph1.add_vertex(2)
+    graph1.add_edge(0, 1)
+    graph1.add_edge(1, 2)
+    graph1.add_edge(2, 0)
+    assert graph1 == oriented_triangle
+
+
 def test_add_only_edges(triangle):
     graph1 = GraphGenerator.empty(1)
     graph1.add_edge(0, 1)
     graph1.add_edge(1, 2)
     graph1.add_edge(0, 2)
     assert graph1 == triangle
+
+
+def test_add_only_edges_oriented(oriented_triangle):
+    graph1 = GraphGenerator.empty(1, oriented=True)
+    graph1.add_edge(0, 1)
+    graph1.add_edge(1, 2)
+    graph1.add_edge(2, 0)
+    assert graph1 == oriented_triangle
 
 
 def test_remove_vertex_edges(triangle):

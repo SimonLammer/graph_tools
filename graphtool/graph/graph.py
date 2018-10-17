@@ -226,6 +226,36 @@ class Graph:
                 string += "\n"
                 f.write(string)
 
+    def subgraph(self, vertices):
+        """
+        Extract a subgraph of the graph, containing the relevant vertices
+        and edges
+
+        Parameters
+        ----------
+        'vertices' : a container
+            Contains the relevant vertices. If it is not a set, is converted
+            into a set
+
+        Returns
+        -------
+        A new Graph object
+        """
+        vertices = set([Vertex(v) for v in vertices])
+        graph_dict = {v: set() for v in vertices}
+        edges = None
+        if self._edges is not None:
+            edges = dict()
+        for v in vertices:
+            for u in vertices:
+                if v != u and u in self._dict[v]:
+                    graph_dict[v].add(u)
+                    graph_dict[u].add(v)
+                    if edges is not None:
+                        edges[(u, v)] = self._edges[(u, v)]
+                        edges[(v, u)] = self._edges[(v, u)]
+        return Graph(graph_dict, _edges=edges)
+
     # ---------------- Getters and setters -----------------------------
 
     def vertices(self):

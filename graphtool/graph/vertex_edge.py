@@ -21,9 +21,13 @@ class Vertex:
             self.id = self.data.get("id", self.id)
 
     def __eq__(self, other):
+        if isinstance(other, int):
+            return self.id == other
         return self.id == other.id
 
     def __lt__(self, other):
+        if isinstance(other, int):
+            return self.id < other
         return self.id < other.id
 
     def __str__(self):
@@ -106,7 +110,9 @@ class Edge:
         return "Edge("+str(self.start)+", "+str(self.end)+")"
 
     def __hash__(self):
-        return hash((self.start, self.end, self.oriented))
+        if self.oriented or self.start < self.end:
+            return hash((self.start, self.end, self.oriented))
+        return hash((self.end, self.start, self.oriented))
 
     def other(self, v):
         if self.start == v:

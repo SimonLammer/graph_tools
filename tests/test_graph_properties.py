@@ -16,9 +16,33 @@ def test_find_isolated_vertices():
     assert set(graph2.find_isolated_vertices()) == {Vertex(0), Vertex(1)}
 
 
+def test_sources_sink():
+    assert True
+
+
 def test_neighbours():
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    graph2 = OrientedGraph.from_edge_list(
+        "graph_examples/triangle_edge_list.txt")
     assert {v for v in graph1.get_neighbours(0)} == {Vertex(1), Vertex(2)}
+    assert {v for v in graph2.get_neighbours(0)} == {Vertex(1)}
+
+
+def test_neighbours_edge():
+    graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    graph2 = OrientedGraph.from_edge_list(
+        "graph_examples/triangle_edge_list.txt")
+    assert graph1.get_neighbours_edge(0) == {Edge(0, 1), Edge(0, 2)}
+    assert graph2.get_neighbours_edge(0) == {Edge(0, 1, oriented=True)}
+
+
+def test_edges():
+    graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
+    graph2 = OrientedGraph.from_edge_list(
+        "graph_examples/triangle_edge_list.txt")
+    assert graph1.edges() == {Edge(0, 1), Edge(1, 2), Edge(2, 0)}
+    assert graph2.edges() == {Edge(0, 1, oriented=True), Edge(
+        1, 2, oriented=True), Edge(2, 0, oriented=True)}
 
 
 def test_density():
@@ -26,6 +50,8 @@ def test_density():
     assert graph1.density() == 1
     graph2 = GraphGenerator.empty(2)
     assert graph2.density() == 0
+    graph3 = GraphGenerator.clique(10)
+    assert graph3.density() == 1
 
 
 def test_diameter(triangle):
