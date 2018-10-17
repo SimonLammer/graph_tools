@@ -1,10 +1,7 @@
-graphtool.geometry package
+graphtool.geometry
 ==========================
 
-Submodules
-----------
-
-graphtool.geometry.drawer module
+graphtool.geometry.drawer
 --------------------------------
 
 .. automodule:: graphtool.geometry.drawer

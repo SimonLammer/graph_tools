@@ -1,10 +1,7 @@
-graphtool.graph package
+graphtool.graph
 =======================
 
-Submodules
-----------
-
-graphtool.graph.generator module
+graphtool.graph.generator
 --------------------------------
 
 .. automodule:: graphtool.graph.generator
@@ -12,7 +9,7 @@ graphtool.graph.generator module
     :undoc-members:
     :show-inheritance:
 
-graphtool.graph.graph module
+graphtool.graph.graph
 ----------------------------
 
 .. automodule:: graphtool.graph.graph
@@ -20,7 +17,7 @@ graphtool.graph.graph module
     :undoc-members:
     :show-inheritance:
 
-graphtool.graph.orientedGraph module
+graphtool.graph.orientedGraph
 ------------------------------------
 
 .. automodule:: graphtool.graph.orientedGraph
@@ -28,7 +25,7 @@ graphtool.graph.orientedGraph module
     :undoc-members:
     :show-inheritance:
 
-graphtool.graph.vertex\_edge module
+graphtool.graph.vertex\_edge
 -----------------------------------
 
 .. automodule:: graphtool.graph.vertex_edge

@@ -1,7 +1,7 @@
-graphtool
-=========
+Graphtool API documentation
+===========================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
    graphtool

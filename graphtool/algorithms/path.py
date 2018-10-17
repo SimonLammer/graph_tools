@@ -10,10 +10,13 @@ def all_shortest_paths(graph):
     """
     Floyd-Warshall algorithm.
 
-    Parameters:
+    Parameters
+    ----------
         'graph' : a Graph object
+            graph on which to perform the algorithm
 
-    Returns:
+    Returns
+    -------
         A matrix M (list of list) where M[i][j] = the length of the
         shortest path from vertex i to vertex j
     """
@@ -34,7 +37,8 @@ def shortest_path(graph, v_start, v_end, heuristic):
     """
     A* algorithm
 
-    Parameters:
+    Parameters
+    ----------
         'graph' : a Graph object
             graph on which to perform the search
 
@@ -47,7 +51,8 @@ def shortest_path(graph, v_start, v_end, heuristic):
         'heuristic' : a function (Vertex a, Vertex b) -> weight
             Evaluate the remaining distance from a to b
 
-    Returns:
+    Returns
+    -------
         The length l and the sequence of vertices of (one of the) shortest
         paths from v_start to v_end
     """
@@ -84,7 +89,8 @@ def dijkstra(graph, v_start, v_end):
     """
     Dijkstra's algorithm
 
-    Parameters:
+    Parameters
+    ----------
         'graph' : a Graph object
             graph on which to perform the search
 
@@ -94,7 +100,8 @@ def dijkstra(graph, v_start, v_end):
         'v_end' : a Vertex object
             Target point of the algorithm
 
-    Returns:
+    Returns
+    -------
         The length l and the sequence of vertices of (one of the) shortest
         paths from v_start to v_end
     """
@@ -108,11 +115,13 @@ def diameter(graph):
     The diameter is defined as the longest shortest path among all pairs
     of vertices. It is by convention infinite for non-connected graphs
 
-    Parameters:
+    Parameters
+    ----------
         'graph' : a Graph object
             The graph on which to perform the algorithm
 
-    Returns:
+    Returns
+    -------
         The diameter of the graph.
     """
     paths = all_shortest_paths(graph)
@@ -127,16 +136,15 @@ def diameter(graph):
 
 def biggest_component_diameter(graph):
     """
-
-    TODO
-
     Computes the diameter of the biggest component of the graph
 
-    Parameters:
+    Parameters
+    ----------
         'graph' : a Graph object
             The graph on which to perform the algorithm
 
-    Returns:
+    Returns
+    -------
         The diameter of the biggest component of the graph
     """
     comp_list = get_connected_components(graph)

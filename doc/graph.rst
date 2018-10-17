@@ -36,11 +36,12 @@ An Edge is a link between two Vertex objects ::
 The Graph class
 ---------------
 
-Graphs are stored as an adjacency dictionnary over their
+Graphs are stored as an adjacency dictionnary over their vertices. Each value of the dictionnary is the set of neighbours of the vertex that serves as a key.
 
 **Initialize a Graph**
 
 A graph can be initialized from a file through the three classical ways:
+
 - With an edge list ::
 
     l = [Edge(0,1), Edge(1,2), Edge(2,0)]
@@ -64,14 +65,14 @@ A graph can be initialized from a file through the three classical ways:
 
 **Getters and Setters**
 
-`my_graph.vertices()` returns the set of vertices of the graph
+``my_graph.vertices()`` returns the set of vertices of the graph
 
-`my_graph.edges()` returns the set of edges of the graph
+``my_graph.edges()`` returns the set of edges of the graph
 
 **Manipulation on Graphs**
 
 Graph and OrientedGraph implement various methods to modify their data:
-`add_edge`, `remove_edge`, `add_vertex`, `remove_edge`
+``add_edge``, ``remove_edge``, ``add_vertex``, ``remove_edge``
 
 The OrientedGraph class
 -----------------------
@@ -79,8 +80,9 @@ The OrientedGraph class is almost similar to the Graph class in terms of API, bu
 considers each of its Edge objects as oriented (that is, e.start and e.end are no longer symetrical)
 
 A graph can be initialized from a file through the three classical ways:
+
 - With an edge list ::
--
+
     l = [Edge(0,1), Edge(1,2, oriented=True), Edge(2,0, oriented=True)]
     g = OrientedGraph.from_edge_list(l)
     # or alternatively, from a file:
@@ -115,5 +117,6 @@ some graphs ::
     g2 = GraphGenerator.clique(10) # a full graph
     g3 = GraphGenerator.cycle(10, oriented=True) # an oriented cycle
     g4 = GraphGenerator.erdos_renyi_proba(100,0.1)
-    g4 = GraphGenerator.chung_lu([1,1,2,2,3])
-    g5 = GraphGenerator.molloy_reed([1,1,2,2,3])
+    g5 = GraphGenerator.erdos_renyi_edge(100,10)
+    g6 = GraphGenerator.chung_lu([1,1,2,2,3])
+    g7 = GraphGenerator.molloy_reed([1,1,2,2,3])

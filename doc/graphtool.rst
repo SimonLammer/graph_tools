@@ -1,8 +1,5 @@
-graphtool package
+graphtool
 =================
-
-Subpackages
------------
 
 .. toctree::
 
