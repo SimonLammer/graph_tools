@@ -22,19 +22,19 @@ def no_post_functor(state):
     return None
 
 
-def tree_builder_functors():
-    """
-    Set of functors building the DFS tree when called on a graph
-    """
-    def pre_functor(node):
-        return node
+# def tree_builder_functors():
+#     """
+#     Set of functors building the DFS tree when called on a graph
+#     """
+#     def pre_functor(node):
+#         return node
 
-    def neighbour_functor(state, answer):
-        state.add_neighbour(answer)
+#     def neighbour_functor(state, answer):
+#         state.add_neighbour(answer)
 
-    def post_functor(state):
-        return state
-    return pre_functor, neighbour_functor, post_functor
+#     def post_functor(state):
+#         return state
+#     return pre_functor, neighbour_functor, post_functor
 
 
 def count_nodes_functors():

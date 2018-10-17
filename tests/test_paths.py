@@ -5,7 +5,8 @@ from graphtool.graph import *
 from graphtool.algorithms import *
 from utils import *
 
-graph_files = ["graph_100n_1000m.txt", "triangle_edge_list.txt"]
+graph_files = ["graph_100n_1000m.txt",
+               "triangle_edge_list.txt", "not_connex_10n.txt"]
 
 
 def test_shortest_path():

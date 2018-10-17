@@ -23,6 +23,12 @@ def test_dfs():
     assert depth_first_search(g, Vertex(0), functors) == 100
 
 
+def test_no_prefunctor_dfs():
+    g = Graph.from_edge_list("graph_examples/graph_100n_1000m.txt")
+    functors = (no_pre_functor, no_neighbour_functor, no_post_functor)
+    assert depth_first_search(g, Vertex(0), functors) is None
+
+
 def test_topological_sort():
     g = GraphGenerator.empty(4, oriented=True)
     g.add_edge(0, 1)
@@ -30,3 +36,10 @@ def test_topological_sort():
     g.add_edge(2, 3)
     assert topological_sort(g) == [Vertex(3),
                                    Vertex(2), Vertex(1), Vertex(0)]
+
+    g.add_edge(3, 0)
+    try:
+        topological_sort(g)
+        assert False
+    except Exception as e:
+        assert str(e) == "Topological sort error : cycles found graph"
