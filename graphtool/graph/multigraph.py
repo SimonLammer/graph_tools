@@ -1,13 +1,13 @@
 from .vertex_edge import Vertex, Edge
+from .graph import Graph
 from ._parsing import *
 
 
-class Graph:
+class MultiGraph(Graph):
     """
     A class representing a graph.
     Data are stored as adjacency lists stored in a dictionnary
-    Edges in the class graph are not oriented. For oriented edges, please use
-    the class OrientedGraph
+
     """
 
     def __init__(self, _graph_dict, _edges=None, _matrix=None):

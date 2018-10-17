@@ -113,20 +113,42 @@ class GraphGenerator:
         return G
 
     @staticmethod
-    def molloy_reed(seq):
+    def molloy_reed(seq, allow_multiple=False):
         """
-        TODO
+        Returns a graph built by the Molloy-Reed generation process.
+        In this process, we feed the degree distribution. Each node is asigned
+        a given degree according to this distribution.
+        We then merge half-edges uniformly until there is no half-edge left.
+
+        Parameters
+        ---------
+            'seq' : container
+            The degree sequence
+
+            'allow_multiple' : boolean (default to False)
+                If set to False, will merge multiple edges between the same
+                pair of vertices into a single one
+
+        Returns
+        -------
+        A new Graph object
         """
         if sum(seq) % 2 != 0:
             raise Exception("The sum of degrees should be even!")
         n = len(seq)
-        G = GraphGenerator.empty(n)
+        if allow_multiple:
+            graph_dict = {Vertex(i) : [] for i in range(n)}
+        else:
+            graph_dict = {Vertex(i) : set() for i in range(n)}
         seq2 = []
         for i in range(n):
             seq2 += [i]*seq[i]
         m = len(seq2)//2
         shuffle(seq2)
+        seq2 = [Vertex(x) for x in seq2]
         for i in range(m):
-            if seq2[2*i] != seq2[2*i+1]:
-                G.add_edge(seq2[2*i], seq2[2*i+1])
-        return G
+            if allow_multiple:
+                graph_dict[seq2[2*i]].append(seq2[2*i+1])
+            else:
+                graph_dict[seq2[2*i]].add(seq2[2*i+1])
+        return Graph(graph_dict)
