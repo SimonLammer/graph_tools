@@ -101,9 +101,10 @@ class Graph:
         """
         if vertex_data is not None:
             vertex_data = parse_node_data(vertex_data)
+        edges = None
         if edge_data is not None:
             edge_data = parse_edge_data(edge_data)
-
+            edges = {e: edge_data[e][0] for e in edge_data}
         if isinstance(d, str):  # Load from a file
             graph_dict = dict()
             with open(d, 'r') as f:
@@ -122,11 +123,10 @@ class Graph:
                         else:
                             graph_dict[adj] = set([v])
             if edge_data is not None:
-                return Graph(graph_dict, _edges={e: edge_data[e][0]
-                                                 for e in edge_data})
+                return Graph(graph_dict, _edges=edges)
             return Graph(graph_dict)
         else:
-            return Graph(d, _edges={e: edge_data[e][0] for e in edge_data})
+            return Graph(d, _edges=edges)
 
     @staticmethod
     def from_adjacency_matrix(m, vertex_data: str = None,

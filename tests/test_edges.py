@@ -2,6 +2,7 @@ import pytest
 from graphtool.graph import *
 from utils import *
 
+
 def test_vertex_eq():
     vertex1 = Vertex(0)
     assert vertex1 == 0
@@ -64,6 +65,7 @@ def test_edge_other():
     except Exception as e:
         assert str(e) == "Vertex 0 is not incident"
 
+
 def test_edge_fail():
     try:
         edge = Edge(start=None, end=None)
@@ -76,6 +78,7 @@ def test_edge_fail():
         assert False
     except Exception as e:
         assert str(e) == "Too many arguments : only 2 were expected"
+
 
 def test_edge_revert():
     edge = Edge(2, 3)
