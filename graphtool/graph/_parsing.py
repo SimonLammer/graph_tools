@@ -57,7 +57,13 @@ def parse_edge_data(filename: str, oriented: bool = True):
                     d[name] = bool(row[i])
                 else:
                     raise Exception("Unknown data type: "+str(t))
-            output[(d["start"], d["end"])] = Edge(oriented=oriented, data=d)
+            if (d["start"], d["end"]) not in output:
+                output[(d["start"], d["end"])] = [
+                    Edge(oriented=oriented, data=d)]
+            else:
+                output[(d["start"], d["end"])].append(
+                    Edge(oriented=oriented, data=d))
+
     return output
 
 

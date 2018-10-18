@@ -3,23 +3,6 @@ from graphtool.graph import *
 from utils import *
 
 
-def test_edge():
-    edge1 = Edge(0, 1)
-    edge2 = Edge(Vertex(0), Vertex(1))
-    edge3 = Edge(edge1)
-    assert edge1 == edge2
-    assert edge2 == edge3
-    assert edge1 == edge3
-
-
-def test_edge_revert():
-    edge = Edge(0, 1, oriented=True, data={"name": "toto"})
-    edge2 = Edge.revert(edge)
-    assert edge2.start == Vertex(1)
-    assert edge2.end == Vertex(0)
-    assert edge2["name"] == "toto"
-
-
 def test_graph_from_edge_list(triangle):
     graph1 = Graph.from_edge_list("graph_examples/triangle_edge_list.txt")
     assert (graph1 == triangle)
@@ -87,11 +70,6 @@ def test_all_import_with_data():
     assert graph_mat == graph_edge
 
     # ---- Oriented tests ------
-
-
-def test_len(triangle, oriented_triangle):
-    assert len(triangle) == 3
-    assert len(oriented_triangle) == 3
 
 
 def test_oriented_graph_from_edge_list(oriented_triangle):
@@ -174,10 +152,99 @@ def test_symetrization(triangle, oriented_triangle):
     assert oriented_triangle.symetrize() == triangle
 
 
-def test_subgraph(triangle, oriented_triangle):
+def test_subgraph(triangle, oriented_triangle, multi_triangle):
     assert triangle.subgraph([Vertex(0), Vertex(1), Vertex(2)]) == triangle
     assert triangle.subgraph([0]) == GraphGenerator.empty(1)
     assert oriented_triangle.subgraph(
         [Vertex(0), Vertex(1), Vertex(2)]) == oriented_triangle
     assert oriented_triangle.subgraph(
         [0]) == GraphGenerator.empty(1, oriented=True)
+
+# ----------- Multigraph tests --------------------
+
+
+def test_init_multigraph(multi_triangle):
+    assert len(multi_triangle) == 3
+    assert len(multi_triangle.edges()) == 4
+
+
+def test_multiple_graph_from_edge_list(multi_triangle):
+    graph1 = MultiGraph.from_edge_list(
+        "graph_examples/multigraphs/triangle_edge_list_duplicate.txt")
+    assert len(graph1) == 3
+    assert len(graph1.edges()) == 4
+
+
+def test_multiple_export_as_edge_list():
+    graph1 = MultiGraph.from_edge_list(
+        "graph_examples/multigraphs/triangle_edge_list_duplicate.txt")
+    graph1.export_as_edge_list(
+        "graph_examples/multigraphs/triangle_edge_list_duplicate.txt")
+    graph2 = MultiGraph.from_edge_list(
+        "graph_examples/multigraphs/triangle_edge_list_duplicate.txt")
+    assert graph1 == graph2
+
+
+def test_multiple_export_as_adjacency_list():
+    graph1 = MultiGraph.from_adjacency_dict(
+        "graph_examples/multigraphs/triangle_adjacency_duplicate.txt")
+    graph1.export_as_adjacency_dict(
+        "graph_examples/multigraphs/triangle_adjacency_duplicate.txt")
+    graph2 = MultiGraph.from_adjacency_dict(
+        "graph_examples/multigraphs/triangle_adjacency_duplicate.txt")
+    assert len(graph1.edges()) == 4
+    assert graph1 == graph2
+
+
+def test_multiple_export_as_adjacency_matrix():
+    graph1 = MultiGraph.from_adjacency_matrix(
+        "graph_examples/multigraphs/triangle_matrix_duplicate.txt")
+    graph1.export_as_adjacency_matrix(
+        "graph_examples/multigraphs/triangle_matrix_duplicate.txt")
+    graph2 = MultiGraph.from_adjacency_matrix(
+        "graph_examples/multigraphs/triangle_matrix_duplicate.txt")
+    assert graph1 == graph2
+
+
+def test_multiple_graph_from_adjacency_dict(multi_triangle):
+    graph1 = MultiGraph.from_adjacency_dict(
+        "graph_examples/multigraphs/triangle_adjacency_duplicate.txt")
+    assert (graph1 == multi_triangle)
+
+
+def test_multiple_graph_from_adjacency_matrix(multi_triangle):
+    graph1 = MultiGraph.from_adjacency_matrix(
+        "graph_examples/multigraphs/triangle_matrix_duplicate.txt")
+    assert (graph1 == multi_triangle)
+
+
+def test_multiple_all_import():
+    graph_edge = MultiGraph.from_edge_list(
+        "graph_examples/multigraphs/triangle_edge_list_duplicate.txt")
+    graph_adj = MultiGraph.from_adjacency_dict(
+        "graph_examples/multigraphs/triangle_adjacency_duplicate.txt")
+    graph_mat = MultiGraph.from_adjacency_matrix(
+        "graph_examples/multigraphs/triangle_matrix_duplicate.txt")
+    assert graph_edge == graph_adj
+    assert graph_adj == graph_mat
+    assert graph_mat == graph_edge
+
+
+def test_multiple_all_import_with_data():
+    graph_edge = MultiGraph.from_edge_list(
+        "graph_examples/multigraphs/triangle_edge_list_duplicate.txt",
+        vertex_data="graph_examples/multigraphs/triangle_vertex_data.csv",
+        edge_data="graph_examples/multigraphs/triangle_edge_data.csv")
+    graph_adj = MultiGraph.from_adjacency_dict(
+        "graph_examples/multigraphs/triangle_adjacency_duplicate.txt",
+        vertex_data="graph_examples/multigraphs/triangle_vertex_data.csv",
+        edge_data="graph_examples/multigraphs/triangle_edge_data.csv")
+    graph_mat = MultiGraph.from_adjacency_matrix(
+        "graph_examples/multigraphs/triangle_matrix_duplicate.txt",
+        vertex_data="graph_examples/multigraphs/triangle_vertex_data.csv",
+        edge_data="graph_examples/multigraphs/triangle_edge_data.csv")
+    print(graph_edge.edges())
+    print(graph_adj.edges())
+    assert graph_edge == graph_adj
+    assert graph_adj == graph_mat
+    assert graph_mat == graph_edge

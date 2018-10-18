@@ -42,7 +42,8 @@ class Graph:
         """
         Imports a graph from a txt file containing an edge list
 
-        Returns:
+        Returns
+        -------
             A new Graph object
         """
         if vertex_data is not None:
@@ -68,11 +69,9 @@ class Graph:
                     else:
                         e = edge_data.get((a, b), None)
                         if e is None:
-                            e = edge_data.get((b, a), None)
-                        if e is None:
-                            e = Edge(a, b)
-                        edges[(a, b)] = e
-                        edges[(b, a)] = e
+                            e = edge_data.get((b, a), [Edge(a, b)])
+                        edges[(a, b)] = e[0]
+                        edges[(b, a)] = e[0]
         else:
             for e in l:
                 e = Edge(e)
@@ -96,13 +95,14 @@ class Graph:
         """
         Imports a graph from a txt file containing an adjacency list
 
-        Returns:
+        Returns
+        -------
             A new Graph object
         """
         if vertex_data is not None:
             vertex_data = parse_node_data(vertex_data)
         if edge_data is not None:
-            edges_data = parse_edge_data(edge_data)
+            edge_data = parse_edge_data(edge_data)
 
         if isinstance(d, str):  # Load from a file
             graph_dict = dict()
@@ -121,9 +121,12 @@ class Graph:
                             graph_dict[adj].add(v)
                         else:
                             graph_dict[adj] = set([v])
+            if edge_data is not None:
+                return Graph(graph_dict, _edges={e: edge_data[e][0]
+                                                 for e in edge_data})
             return Graph(graph_dict)
         else:
-            return Graph(d)
+            return Graph(d, _edges={e: edge_data[e][0] for e in edge_data})
 
     @staticmethod
     def from_adjacency_matrix(m, vertex_data: str = None,
@@ -157,17 +160,15 @@ class Graph:
                     vi, vj = Vertex(i), Vertex(j)
                 else:
                     vi, vj = vertex_data[i], vertex_data[j]
-                if float(adj_mat[i][j]) != 0:
+                if int(adj_mat[i][j]) != 0:
                     graph_dict[vi].add(vj)
                     graph_dict[vj].add(vi)
                     if edge_data is not None:
                         e = edge_data.get((vi, vj), None)
                         if e is None:
-                            e = edge_data.get((vj, vi), None)
-                        if e is None:
-                            e = Edge(vi, vj)
-                        edges[(i, j)] = e
-                        edges[(j, i)] = e
+                            e = edge_data.get((vj, vi), [Edge(vi, vj)])
+                        edges[(i, j)] = e[0]
+                        edges[(j, i)] = e[0]
                     else:
                         e = Edge(vi, vj)
                         edges[(i, j)] = e
@@ -192,7 +193,8 @@ class Graph:
         """
         Exports the graph in form of an adjacency list
 
-        Parameters:
+        Parameters
+        ----------
             'filename' : string
                 the relative path of the file to write back the data
         """
@@ -207,7 +209,8 @@ class Graph:
         """
         Exports the graph in form of an adjacency matrix
 
-        Parameters:
+        Parameters
+        ----------
             'filename' : string
                 the relative path of the file to write back the data
         """

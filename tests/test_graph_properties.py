@@ -4,6 +4,12 @@ from graphtool.algorithms import *
 from utils import *
 
 
+def test_len(triangle, oriented_triangle, multi_triangle):
+    assert len(triangle) == 3
+    assert len(oriented_triangle) == 3
+    assert len(multi_triangle) == 3
+
+
 def test_adjacency(triangle):
     expected = [[0, 1, 1], [1, 0, 1], [1, 1, 0]]
     assert triangle.adjacency_matrix() == expected

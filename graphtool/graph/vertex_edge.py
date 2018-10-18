@@ -30,14 +30,34 @@ class Vertex:
             return self.id < other
         return self.id < other.id
 
+    def __le__(self, other):
+        if isinstance(other, int):
+            return self.id <= other
+        return self.id <= other.id
+
+    def __gt__(self, other):
+        if isinstance(other, int):
+            return self.id > other
+        return self.id > other.id
+
+    def __ge__(self, other):
+        if isinstance(other, int):
+            return self.id >= other
+        return self.id >= other.id
+
     def __str__(self):
         return self.data["name"]
 
     def __repr__(self):
         return "V("+str(self.id)+")"
 
-    def __getitem__(self, attr):
-        return self.data[attr]
+    def __getitem__(self, key):
+        return self.data[key]
+
+    def __setitem__(self, key, item):
+        if key == "id":
+            self.id = item
+        self.data[key] = item
 
     def __hash__(self):
         return hash(self.id)
@@ -93,18 +113,42 @@ class Edge:
             return self.start == other.start and self.end == other.end
         return {self.start, self.end} == {other.start, other.end}
 
+    def _get_comp(self, other):
+        if self.oriented and other.oriented:
+            a = (self.data["weight"], self.start, self.end)
+            b = (other.data["weight"], other.start, other.end)
+        else:
+            a = (self.data["weight"], min(self.start, self.end),
+                 max(self.start, self.end))
+            b = (other.data["weight"], min(other.start, other.end),
+                 max(other.start, other.end))
+        return a, b
+
     def __lt__(self, other):
-        if "weight" in self.data and "weight" in other.data:
-            return self.data["weight"] < other.data["weight"]
-        return True
+        a, b = self._get_comp(other)
+        return a < b
 
-    def __gt(self, other):
-        if "weight" in self.data and "weight" in other.data:
-            return self.data["weight"] > other.data["weight"]
-        return True
+    def __le__(self, other):
+        a, b = self._get_comp(other)
+        return a <= b
 
-    def __getitem__(self, attr):
-        return self.data[attr]
+    def __gt__(self, other):
+        a, b = self._get_comp(other)
+        return a > b
+
+    def __ge__(self, other):
+        a, b = self._get_comp(other)
+        return a >= b
+
+    def __getitem__(self, key):
+        return self.data[key]
+
+    def __setitem__(self, key, item):
+        if key == "start":
+            self.start = item
+        elif key == "end":
+            self.end = item
+        self.data[key] = item
 
     def __repr__(self):
         return "Edge("+str(self.start)+", "+str(self.end)+")"
