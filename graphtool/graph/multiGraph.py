@@ -192,7 +192,8 @@ class MultiGraph(Graph):
         """
         Exports the graph in form of an edge list
 
-        Parameters:
+        Parameters
+        ----------
             'filename' : string
                 the relative path of the file to write back the data
         """
@@ -368,7 +369,8 @@ class MultiGraph(Graph):
         """
         Returns the edges of the graph that are incident to v
 
-        Parameters:
+        Parameters
+        ----------
             'v' : A Vertex object or an integer (vertex id)
                 The vertex from which to extract the neighbourhood
 
@@ -392,7 +394,8 @@ class MultiGraph(Graph):
         """
         Adds a new vertex to the graph
 
-        Parameters:
+        Parameters
+        ----------
             'v' : a Vertex object or a integer for a Vertex id
                 If an integer is provided, the method will build a Vertex
                 with the id field being v.
@@ -409,7 +412,8 @@ class MultiGraph(Graph):
         Removes a vertex from the graph. If the given vertex is not present,
         this method does not do anything.
 
-        Parameters:
+        Parameters
+        ----------
             'v' : a Vertex object or a integer for a Vertex id
                 If an integer is provided, the method will build a Vertex
                 with the id field being v.
@@ -429,7 +433,8 @@ class MultiGraph(Graph):
         Adds an edge in the graph. If one or both ends of the edge are not
         present in the graph, the coresponding vertices are added.
 
-        Parameters:
+        Parameters
+        ----------
             'args' : Edge | (Vertex, Vertex) | (name, name)
                 The data needed to generate the edge. Can be directly an Edge
                 object, or any pair of Vertex or vertex names.
@@ -455,7 +460,8 @@ class MultiGraph(Graph):
         """
         Removes an edge from the graph.
 
-        Parameters:
+        Parameters
+        ----------
             'args' : Edge | (Vertex, Vertex) | (name, name)
                 The data needed to generate the edge. Can be directly an Edge
                 object, or any pair of Vertex or vertex names.
