@@ -137,9 +137,9 @@ class GraphGenerator:
             raise Exception("The sum of degrees should be even!")
         n = len(seq)
         if allow_multiple:
-            graph_dict = {Vertex(i) : [] for i in range(n)}
+            graph_dict = {Vertex(i): [] for i in range(n)}
         else:
-            graph_dict = {Vertex(i) : set() for i in range(n)}
+            graph_dict = {Vertex(i): set() for i in range(n)}
         seq2 = []
         for i in range(n):
             seq2 += [i]*seq[i]

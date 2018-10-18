@@ -1,4 +1,5 @@
 start(INT), end(INT), name(STR), weight(FLOAT), testbool(BOOL)
 0, 1, tata, 1.2, 1
+0, 1, tata_bis, 1.3, 0
 1, 2, toto, 3.14, 0
 2, 0, tutu, 59.666, 1
