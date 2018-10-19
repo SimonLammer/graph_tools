@@ -72,8 +72,8 @@ class OrientedGraph:
                         e = Edge(a, b, oriented=True)
                         edges[(a, b)] = e
                     else:
-                        e = edge_data.get((a, b), None)
-                        edges[(a, b)] = e
+                        e = edge_data.get((a, b), [Edge(a, b, oriented=True)])
+                        edges[(a, b)] = e[0]
         else:
             for e in l:
                 e = Edge(e)
@@ -124,7 +124,8 @@ class OrientedGraph:
                         else:
                             graph_dict[v] = set([adj])
                         if edge_data is not None:
-                            edges[(v, adj)] = edge_data[(v, adj)]
+                            edges[(v, adj)] = edge_data.get(
+                                (v, adj), [Edge(v, adj, oriented=True)])[0]
             return OrientedGraph(graph_dict, _edges=edges)
         else:
             return OrientedGraph(d)
@@ -165,8 +166,8 @@ class OrientedGraph:
                     else:
                         graph_dict[vi].add(vj)
                     if edge_data is not None:
-                        e = edge_data.get((vi, vj), Edge(vi, vj))
-                        edges[(i, j)] = e
+                        e = edge_data.get((vi, vj), [Edge(vi, vj)])
+                        edges[(i, j)] = e[0]
                     else:
                         edges[(i, j)] = Edge(vi, vj)
         return OrientedGraph(graph_dict, _edges=edges)
