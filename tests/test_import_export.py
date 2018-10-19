@@ -168,7 +168,10 @@ def test_subgraph(triangle, oriented_triangle, multi_triangle):
     assert oriented_triangle.subgraph(
         [Vertex(0), Vertex(1), Vertex(2)]) == oriented_triangle
     assert oriented_triangle.subgraph(
-        [0]) == GraphGenerator.empty(1, oriented=True)
+        [0]) == GraphGenerator.empty(1, type="oriented")
+    assert multi_triangle.subgraph(
+        [Vertex(0)]) == GraphGenerator.empty(1, type="multiple")
+    assert multi_triangle.subgraph([0, 1, 2]) == multi_triangle
 
 # ----------- Multigraph tests --------------------
 

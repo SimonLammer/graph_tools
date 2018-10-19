@@ -30,7 +30,7 @@ def test_no_prefunctor_dfs():
 
 
 def test_topological_sort():
-    g = GraphGenerator.empty(4, oriented=True)
+    g = GraphGenerator.empty(4, type="oriented")
     g.add_edge(0, 1)
     g.add_edge(1, 2)
     g.add_edge(2, 3)

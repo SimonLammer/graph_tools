@@ -63,15 +63,14 @@ class Graph:
                     else:
                         a, b = vertex_data[xa], vertex_data[xb]
                     if edge_data is None:
-                        e = Edge(a, b)
-                        edges[(a, b)] = e
-                        edges[(b, a)] = e
+                        edges[(a, b)] = Edge(a, b)
+                        edges[(b, a)] = Edge(b, a)
                     else:
                         e = edge_data.get((a, b), None)
                         if e is None:
                             e = edge_data.get((b, a), [Edge(a, b)])
                         edges[(a, b)] = e[0]
-                        edges[(b, a)] = e[0]
+                        edges[(b, a)] = Edge.revert(e[0])
         else:
             for e in l:
                 e = Edge(e)
@@ -168,11 +167,10 @@ class Graph:
                         if e is None:
                             e = edge_data.get((vj, vi), [Edge(vi, vj)])
                         edges[(i, j)] = e[0]
-                        edges[(j, i)] = e[0]
+                        edges[(j, i)] = Edge.revert(e[0])
                     else:
-                        e = Edge(vi, vj)
-                        edges[(i, j)] = e
-                        edges[(j, i)] = e
+                        edges[(i, j)] = Edge(vi, vj)
+                        edges[(j, i)] = Edge(vj, vi)
         return Graph(graph_dict, _edges=edges)
 
     # ------------- Exportation methods -----------------
@@ -295,9 +293,8 @@ class Graph:
             for b in self._dict[a]:
                 if(hash(b) < hash(a)):
                     continue
-                e = Edge(a, b)
-                self._edges[(a, b)] = e
-                self._edges[(b, a)] = e
+                self._edges[(a, b)] = Edge(a, b)
+                self._edges[(b, a)] = Edge(b, a)
 
     def edges(self, erase_multiple=True):
         """

@@ -26,13 +26,24 @@ def test_add_vertex_to_non_existing():
 
 
 def test_add_vertex_edges_oriented(oriented_triangle):
-    graph1 = GraphGenerator.empty(1, oriented=True)
+    graph1 = GraphGenerator.empty(1, type="oriented")
     graph1.add_vertex(1)
     graph1.add_vertex(2)
     graph1.add_edge(0, 1)
     graph1.add_edge(1, 2)
     graph1.add_edge(2, 0)
     assert graph1 == oriented_triangle
+
+
+def test_add_vertex_edges_multiple(multi_triangle):
+    graph1 = GraphGenerator.empty(1, type="multiple")
+    graph1.add_vertex(1)
+    graph1.add_vertex(2)
+    graph1.add_edge(0, 1)
+    graph1.add_edge(0, 1)
+    graph1.add_edge(1, 2)
+    graph1.add_edge(2, 0)
+    assert graph1 == multi_triangle
 
 
 def test_add_only_edges(triangle):
@@ -44,11 +55,20 @@ def test_add_only_edges(triangle):
 
 
 def test_add_only_edges_oriented(oriented_triangle):
-    graph1 = GraphGenerator.empty(1, oriented=True)
+    graph1 = GraphGenerator.empty(1, type="oriented")
     graph1.add_edge(0, 1)
     graph1.add_edge(1, 2)
     graph1.add_edge(2, 0)
     assert graph1 == oriented_triangle
+
+
+def test_add_only_edges_multiple(multi_triangle):
+    graph1 = GraphGenerator.empty(1, type="multiple")
+    graph1.add_edge(0, 1)
+    graph1.add_edge(0, 1)
+    graph1.add_edge(1, 2)
+    graph1.add_edge(2, 0)
+    assert graph1 == multi_triangle
 
 
 def test_remove_vertex_edges(triangle):
@@ -59,7 +79,24 @@ def test_remove_vertex_edges(triangle):
     assert graph1 == GraphGenerator.empty(2)
 
 
-def test_getters(triangle, oriented_triangle):
+def test_remove_vertex_edges_oriented(oriented_triangle):
+    graph1 = oriented_triangle
+    graph1.remove_edge(0, 1)
+    graph1.remove_edge(2, 0)
+    graph1.remove_vertex(2)
+    assert graph1 == GraphGenerator.empty(2, type="oriented")
+
+
+def test_remove_vertex_edges_multi(multi_triangle):
+    graph1 = multi_triangle
+    graph1.remove_edge(0, 1)
+    graph1.remove_edge(0, 1)
+    graph1.remove_edge(2, 0)
+    graph1.remove_vertex(2)
+    assert graph1 == GraphGenerator.empty(2, type="multiple")
+
+
+def test_getters(triangle, oriented_triangle, multi_triangle):
     assert triangle.vertices() == set([Vertex(0), Vertex(1), Vertex(2)])
     assert triangle.edges() == set([Edge(2, 0), Edge(1, 2), Edge(0, 1)])
     assert oriented_triangle.vertices() == set([Vertex(0),
@@ -68,3 +105,35 @@ def test_getters(triangle, oriented_triangle):
     assert oriented_triangle.edges() == set([Edge(0, 1, oriented=True),
                                              Edge(1, 2, oriented=True),
                                              Edge(2, 0, oriented=True)])
+    assert multi_triangle.vertices() == set([Vertex(0),
+                                             Vertex(1),
+                                             Vertex(2)])
+    edge_list = multi_triangle.edges()
+    for e in [Edge(2, 0), Edge(1, 2), Edge(0, 1), Edge(0, 1)]:
+        assert e in edge_list
+        edge_list.remove(e)
+
+
+def test_renumber(triangle, oriented_triangle, multi_triangle):
+    g = GraphGenerator.empty(0, type="simple")
+    g.add_edge(4, 5)
+    g.add_edge(5, 6)
+    g.add_edge(6, 4)
+    assert g.renumber() == triangle
+
+
+def test_renumber_oriented(oriented_triangle):
+    g = GraphGenerator.empty(0, type="oriented")
+    g.add_edge(4, 5)
+    g.add_edge(5, 6)
+    g.add_edge(6, 4)
+    assert g.renumber() == oriented_triangle
+
+
+def test_renumber_multi(multi_triangle):
+    g = GraphGenerator.empty(0, type="multiple")
+    g.add_edge(4, 5)
+    g.add_edge(4, 5)
+    g.add_edge(5, 6)
+    g.add_edge(6, 4)
+    assert g.renumber() == multi_triangle

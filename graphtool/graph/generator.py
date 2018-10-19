@@ -2,52 +2,89 @@ from random import random, randint, uniform, shuffle
 from .vertex_edge import Vertex, Edge
 from .graph import Graph
 from .orientedGraph import OrientedGraph
+from .multiGraph import MultiGraph
 
 
 class GraphGenerator:
 
     @staticmethod
-    def empty(n: int, oriented: bool = False):
+    def empty(n: int, type: str = None):
         """
-        Builds the graph of n vertices an no edges
+        Builds the graph of n vertices an no edges.
 
-        Returns:
+        Parameters
+        ----------
+            'n' : int
+                The number of vertices of the graph
+            'type' : str
+                The type of the graph to be returned.
+                Type can be "simple", "oriented" or "multiple"
+
+        Returns
+        -------
             A new Graph Object
         """
+        if type is None:
+            type = "simple"
+
         graph_dict = dict()
         for i in range(n):
-            graph_dict[Vertex(i)] = set()
-        if oriented:
+            if type == "multiple":
+                graph_dict[Vertex(i)] = []
+            else:
+                graph_dict[Vertex(i)] = set()
+        if type == "oriented":
             return OrientedGraph(graph_dict)
+        elif type == "multiple":
+            return MultiGraph(graph_dict)
         return Graph(graph_dict)
 
     @staticmethod
-    def cycle(n: int, oriented: bool = False):
+    def cycle(n: int, type: str = None):
         """
         Builds the cycle of size n, with vertex i being linked to
         vertices (i+1)%n and (i-1)%n
 
-        Returns:
+        Parameters
+        ----------
+            'n' : int
+                The number of vertices of the graph
+            'type' : str
+                The type of the graph to be returned.
+                Type can be "simple", "oriented" or "multiple"
+
+        Returns
+        -------
             A new Graph Object
         """
-        g = GraphGenerator.empty(n, oriented)
+        g = GraphGenerator.empty(n, type=type)
         for i in range(n):
             g.add_edge(i, (i+1) % n)
         return g
 
     @staticmethod
-    def clique(n: int, oriented: bool = False):
+    def clique(n: int, type: str = None):
         """
         Builds the fully connected graph of size n, that is the graph of n
         vertices and all possible n(n-1)/2 edges
 
-        Returns:
+        Parameters
+        ----------
+            'n' : int
+                The number of vertices of the graph
+            'type' : str
+                The type of the graph to be returned.
+                Type can be "simple", "oriented" or "multiple"
+
+        Returns
+        -------
             A new Graph Object
         """
-        g = GraphGenerator.empty(n)
+        g = GraphGenerator.empty(n, type=type)
         for i in range(n):
             for j in range(i):
                 g.add_edge(i, j)
+                g.add_edge(j, i)
         return g
 
     @staticmethod
