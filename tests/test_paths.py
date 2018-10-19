@@ -21,7 +21,6 @@ def test_shortest_path():
                                              Vertex(i),
                                              Vertex(j),
                                              lambda a, b: 0)
-            # print(i, j, adj[i][j], length, fullpath)
             assert adj[i][j] == length
 
 
@@ -36,3 +35,17 @@ def test_dijsktra():
             assert adj[i][j] == dijkstra(graph,
                                          Vertex(i),
                                          Vertex(j))[0]
+
+
+def test_bellman_ford():
+    for g in graph_files:
+        graph = Graph.from_edge_list("graph_examples/"+g)
+        adj = all_shortest_paths(graph)
+        N = len(adj)
+        for a in range(10):
+            i = random.randint(0, N-1)
+            j = random.randint(0, N-1)
+            dist = bellman_ford(graph, Vertex(i))
+            if adj[i][j] != dist[Vertex(j)]:
+                print(g, i, j)
+            assert adj[i][j] == dist[Vertex(j)]
