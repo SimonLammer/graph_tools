@@ -115,10 +115,10 @@ def bellman_ford(graph, s):
     dist = {vertex: float("inf") for vertex in graph.vertices()}
     dist[s] = 0
     for _ in range(nbnodes-1):
-        for edge in graph.edges(False):
+        for edge in graph.edges(erase_multiple=False):
             dist[edge.end] = min(
                 dist[edge.end], dist[edge.start] + edge["weight"])
-    for edge in graph.edges(False):
+    for edge in graph.edges(erase_multiple=False):
         if dist[edge.start] + edge["weight"] < dist[edge.end]:
             raise Exception("Negative cycle has been found")
     return dist

@@ -46,6 +46,4 @@ def test_bellman_ford():
             i = random.randint(0, N-1)
             j = random.randint(0, N-1)
             dist = bellman_ford(graph, Vertex(i))
-            if adj[i][j] != dist[Vertex(j)]:
-                print(g, i, j)
             assert adj[i][j] == dist[Vertex(j)]
