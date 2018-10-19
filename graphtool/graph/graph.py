@@ -295,9 +295,8 @@ class Graph:
             for b in self._dict[a]:
                 if(hash(b) < hash(a)):
                     continue
-                e = Edge(a, b)
-                self._edges[(a, b)] = e
-                self._edges[(b, a)] = e
+                self._edges[(a, b)] = Edge(a, b)
+                self._edges[(b, a)] = Edge(b, a)
 
     def edges(self, erase_multiple=True):
         """
