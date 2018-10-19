@@ -29,3 +29,9 @@ def test_vertex_comp():
 def test_vertex_init():
     vertex1 = Vertex(0, data={})
     assert vertex1["name"] == "0"
+
+
+def test_vertex_setitem():
+    vertex1 = Vertex(0, data={})
+    vertex1["field"] = 42
+    assert vertex1["field"] == 42

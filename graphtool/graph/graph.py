@@ -70,7 +70,7 @@ class Graph:
                         if e is None:
                             e = edge_data.get((b, a), [Edge(a, b)])
                         edges[(a, b)] = e[0]
-                        edges[(b, a)] = e[0]
+                        edges[(b, a)] = Edge.revert(e[0])
         else:
             for e in l:
                 e = Edge(e)
@@ -167,11 +167,10 @@ class Graph:
                         if e is None:
                             e = edge_data.get((vj, vi), [Edge(vi, vj)])
                         edges[(i, j)] = e[0]
-                        edges[(j, i)] = e[0]
+                        edges[(j, i)] = Edge.revert(e[0])
                     else:
-                        e = Edge(vi, vj)
-                        edges[(i, j)] = e
-                        edges[(j, i)] = e
+                        edges[(i, j)] = Edge(vi, vj)
+                        edges[(j, i)] = Edge(vj, vi)
         return Graph(graph_dict, _edges=edges)
 
     # ------------- Exportation methods -----------------

@@ -23,7 +23,7 @@ def test_find_isolated_vertices():
 
 
 def test_sources_sink(oriented_triangle):
-    g = GraphGenerator.empty(3, oriented=True)
+    g = GraphGenerator.empty(3, type="oriented")
     g.add_edge(0, 1)
     g.add_edge(1, 2)
     assert g.get_sinks() == [Vertex(2)]

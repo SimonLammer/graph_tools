@@ -251,6 +251,25 @@ class OrientedGraph:
                         edges[(v, u)] = self._edges[(v, u)]
         return OrientedGraph(graph_dict, _edges=edges)
 
+    def renumber(self):
+        """
+        Returns a copy of the graph where all the vertices have been renumbered
+        from 0 to n. Does not copy edge or vertex data, but only
+        the combinatorial structure
+
+        Returns
+        -------
+        A Graph Object
+        """
+        graph_dict = dict()
+        vertices = {x: Vertex(i)
+                    for (i, x) in enumerate(list(self.vertices()))}
+        for v in self._dict_out:
+            graph_dict[vertices[v]] = set()
+            for u in self._dict_out[v]:
+                graph_dict[vertices[v]].add(vertices[u])
+        return OrientedGraph(graph_dict)
+
     # ---------------- Getters and setters -----------------------------
 
     def symetrize(self):
@@ -458,8 +477,9 @@ class OrientedGraph:
             v = Vertex(v)
 
         if self._edges is not None:
-            for e in self._edges:
-                if self._edges[e].start == v or self._edges[e].end == v:
+            for e in list(self._edges.values()):
+                if e in self._edges and (self._edges[e].start == v
+                                         or self._edges[e].end == v):
                     self._edges.pop(e, None)
 
         self._matrix = None  # reset adjacency

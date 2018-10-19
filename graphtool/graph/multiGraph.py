@@ -23,6 +23,8 @@ class MultiGraph(Graph):
         self._matrix = _matrix
 
     def __eq__(self, other):
+        if (self._dict.keys() != other._dict.keys()):
+            return False
         a = self.edges()
         b = other.edges()
         a.sort()
@@ -426,7 +428,10 @@ class MultiGraph(Graph):
         if v in self._dict:
             self._dict.pop(v, None)
         for x in self._dict:
-            self._dict[x].remove(v)
+            try:
+                self._dict[x].remove(v)
+            except ValueError:
+                continue
 
     def add_edge(self, *args):
         """
@@ -467,8 +472,14 @@ class MultiGraph(Graph):
                 object, or any pair of Vertex or vertex names.
         """
         e = Edge(args)
-        self._dict[e.start].remove(e.end)
-        self._dict[e.end].remove(e.start)
+        try:
+            self._dict[e.start].remove(e.end)
+        except ValueError:
+            pass
+        try:
+            self._dict[e.end].remove(e.start)
+        except ValueError:
+            pass
         if self._edges is not None:
             self._edges[(e.start, e.end)] = self._edges[(e.start, e.end)][1:]
             self._edges[(e.end, e.start)] = self._edges[(e.end, e.start)][1:]

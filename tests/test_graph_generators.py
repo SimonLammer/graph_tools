@@ -5,14 +5,20 @@ from utils import *
 
 
 def test_empty():
-    g = GraphGenerator.empty(10)
-    assert len(g) == 10
-    assert len(g.edges()) == 0
+    g1 = GraphGenerator.empty(10, type="simple")
+    g2 = GraphGenerator.empty(10, type="simple")
+    g3 = GraphGenerator.empty(10, type="simple")
+    assert len(g1) == 10
+    assert len(g2) == 10
+    assert len(g3) == 10
+    assert len(g1.edges()) == 0
+    assert len(g2.edges()) == 0
+    assert len(g3.edges()) == 0
 
 
 def test_cycle(triangle, oriented_triangle):
     assert GraphGenerator.cycle(3) == triangle
-    assert GraphGenerator.cycle(3, oriented=True) == oriented_triangle
+    assert GraphGenerator.cycle(3, type="oriented") == oriented_triangle
 
 
 def test_clique(triangle):

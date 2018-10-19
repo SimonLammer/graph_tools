@@ -179,8 +179,6 @@ class Edge:
         -------
         The reversed Edge object
         """
-        if not edge.oriented:
-            return edge
         d = copy(edge.data)
         d["end"], d["start"] = d["start"], d["end"]
-        return Edge(d["start"], d["end"], oriented=True, data=d)
+        return Edge(d["start"], d["end"], oriented=edge.oriented, data=d)
