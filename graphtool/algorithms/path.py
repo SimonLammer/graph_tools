@@ -110,6 +110,20 @@ def dijkstra(graph, v_start, v_end):
     return shortest_path(graph, v_start, v_end, no_heuristic)
 
 
+def bellman_ford(graph, s):
+    nbnodes = len(graph.vertices())
+    dist = {vertex: float("inf") for vertex in graph.vertices()}
+    dist[s] = 0
+    for _ in range(nbnodes-1):
+        for edge in graph.edges(False):
+            dist[edge.end] = min(
+                dist[edge.end], dist[edge.start] + edge["weight"])
+    for edge in graph.edges(False):
+        if dist[edge.start] + edge["weight"] < dist[edge.end]:
+            raise Exception("Negative cycle has been found")
+    return dist
+
+
 def diameter(graph):
     """
     The diameter is defined as the longest shortest path among all pairs
