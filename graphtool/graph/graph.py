@@ -63,9 +63,8 @@ class Graph:
                     else:
                         a, b = vertex_data[xa], vertex_data[xb]
                     if edge_data is None:
-                        e = Edge(a, b)
-                        edges[(a, b)] = e
-                        edges[(b, a)] = e
+                        edges[(a, b)] = Edge(a, b)
+                        edges[(b, a)] = Edge(b, a)
                     else:
                         e = edge_data.get((a, b), None)
                         if e is None:
