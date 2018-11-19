@@ -513,13 +513,12 @@ class MultiGraph(Graph):
         -------
             An integer equal to the number of multiple loops.
         """
-        seen = {(a, b): False for a in self.vertices()
-                for b in self.vertices()}
         n = 0
+        seen = set()
         for e in self.edges():
             v = [e.start, e.end]
             v.sort()
-            if seen[(v[0], v[1])]:
+            if (v[0], v[1]) in seen:
                 n += 1
-            seen[(v[0], v[1])] = True
+            seen.add((v[0], v[1]))
         return n

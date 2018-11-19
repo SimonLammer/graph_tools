@@ -25,6 +25,14 @@ graphtool.graph.orientedGraph
     :undoc-members:
     :show-inheritance:
 
+graphtool.graph.multipleGraph
+------------------------------------
+
+.. automodule:: graphtool.graph.multipleGraph
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 graphtool.graph.vertex\_edge
 -----------------------------------
 

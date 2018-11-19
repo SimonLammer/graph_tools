@@ -105,6 +105,15 @@ For initializing a Graph with an Edge list, one has to specify if the Edge is or
    # or alternatively, from a file:
    g = OrientedGraph.from_adjacency_matrix("file.txt")
 
+The MultiGraph class
+-----------------------
+The MultiGraph class is also almost similar to the Graph class in terms of API, but
+allows the user to define loops and multiple edges.
+
+The MultiGraph class can be initialized through the same methods as the Graph class or the OrientedGraph class.
+
+MultiGraph implements additionnal methods to retrieve the number of loops (`.number_of_loops()`) and the number of multiple edges (`.number_of_multiple_edges()`) in the graph :
+
 A note on graph generators
 --------------------------
 
@@ -119,4 +128,4 @@ some graphs ::
     g4 = GraphGenerator.erdos_renyi_proba(100,0.1)
     g5 = GraphGenerator.erdos_renyi_edge(100,10)
     g6 = GraphGenerator.chung_lu([1,1,2,2,3])
-    g7 = GraphGenerator.molloy_reed([1,1,2,2,3])
+    g7 = GraphGenerator.configuration_model([1,1,2,2,3])
