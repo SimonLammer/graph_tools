@@ -14,6 +14,26 @@ def test_add_vertex_edges(triangle):
     assert graph1 == triangle
 
 
+def test_add_loop():
+    graph = GraphGenerator.empty(1)
+    graph_or = GraphGenerator.empty(1, type="oriented")
+    graph_mul = GraphGenerator.empty(1, type="multiple")
+    try:
+        graph.add_edge(0, 0)
+        assert False
+    except Exception as e:
+        assert True
+    try:
+        graph_or.add_edge(0, 0)
+        assert False
+    except Exception as e:
+        assert True
+    graph_mul.add_edge(0, 0)
+    assert len(graph.edges()) == 0
+    assert len(graph_or.edges()) == 0
+    assert len(graph_mul.edges()) == 1
+
+
 def test_add_vertex_to_non_existing():
     g = GraphGenerator.empty(4)
     g.add_edge(1, 2)

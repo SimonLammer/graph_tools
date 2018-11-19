@@ -449,17 +449,19 @@ class MultiGraph(Graph):
             self._dict[e.start] = [e.end]
         else:
             self._dict[e.start].append(e.end)
-        if e.end not in self._dict:
+        if e.start != e.end and e.end not in self._dict:
             self._dict[e.end] = [e.start]
-        else:
+        elif e.start != e.end:
             self._dict[e.end].append(e.start)
         if self._edges is not None:
             if (e.start, e.end) not in self._edges:
                 self._edges[(e.start, e.end)] = [e]
-                self._edges[(e.end, e.start)] = [e]
+                if e.start != e.end:
+                    self._edges[(e.end, e.start)] = [e]
             else:
                 self._edges[(e.start, e.end)].append(e)
-                self._edges[(e.start, e.end)].append(e)
+                if e.start != e.end:
+                    self._edges[(e.end, e.start)].append(e)
 
     def remove_edge(self, *args):
         """
@@ -496,7 +498,7 @@ class MultiGraph(Graph):
             An integer equal to the number of loops in the graph
         """
         n = 0
-        for e in g.edges():
+        for e in self.edges():
             if e.start == e.end:
                 n += 1
         return n
@@ -504,11 +506,20 @@ class MultiGraph(Graph):
     def number_of_multiple_edges(self):
         """
         Computes the number of multiple edges in the graph, that is the
-        additionnal number of edges compared to the simple graph that has
-        the same structure.
+        number of edges we can delete from the graph without changing
+        any connectivity relationships.
 
         Returns
         -------
-            An integer equal to the number of multiple loops
+            An integer equal to the number of multiple loops.
         """
-        return 0
+        seen = {(a, b): False for a in self.vertices()
+                for b in self.vertices()}
+        n = 0
+        for e in self.edges():
+            v = [e.start, e.end]
+            v.sort()
+            if seen[(v[0], v[1])]:
+                n += 1
+            seen[(v[0], v[1])] = True
+        return n

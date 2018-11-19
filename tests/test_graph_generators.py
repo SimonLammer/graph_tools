@@ -48,12 +48,12 @@ def test_chung_lu():
         assert str(e) == "The sum of degrees should be even!"
 
 
-def test_molloy_reed():
+def test_configuration_model():
     seq = [1, 1, 2, 2, 4]
-    assert len(GraphGenerator.molloy_reed(seq)) == 5
+    assert len(GraphGenerator.configuration_model(seq)) == 5
     seq = [1, 2]
     try:
-        GraphGenerator.molloy_reed(seq)
+        GraphGenerator.configuration_model(seq)
         assert False
     except Exception as e:
         assert str(e) == "The sum of degrees should be even!"

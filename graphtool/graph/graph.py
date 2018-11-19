@@ -426,12 +426,18 @@ class Graph:
         Adds an edge in the graph. If one or both ends of the edge are not
         present in the graph, the coresponding vertices are added.
 
+        NOTE : If the edge is a loop (that is, links a vertex to itself),
+        will raise an exception as loops are forbidden.
+
         Parameters:
             'args' : Edge | (Vertex, Vertex) | (name, name)
                 The data needed to generate the edge. Can be directly an Edge
                 object, or any pair of Vertex or vertex names.
         """
         e = Edge(args)
+        if e.start == e.end:
+            raise Exception("Loops are forbidden in the Graph class.\
+                             Use the MultiGraph class instead.")
         if e.start not in self._dict:
             self._dict[e.start] = set([e.end])
         else:

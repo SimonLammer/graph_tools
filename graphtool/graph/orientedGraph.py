@@ -503,6 +503,9 @@ class OrientedGraph:
             object, or any pair of Vertex or vertex names.
         """
         e = Edge(args, oriented=True)
+        if e.start == e.end:
+            raise Exception("Loops are forbidden in the OrientedGraph class.\
+                             Use the MultiGraph class instead.")
         if e.start not in self._dict_out:
             self._dict_out[e.start] = set([e.end])
         else:

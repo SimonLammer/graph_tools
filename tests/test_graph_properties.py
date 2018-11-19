@@ -86,3 +86,20 @@ def test_diameter2():
     g.add_edge(40, 35)
     g.add_edge(35, 12)
     assert biggest_component_diameter(g) == 2
+
+
+def test_multigraph_loops():
+    g = GraphGenerator.empty(3, type="multiple")
+    g.add_edge(0, 0)
+    assert g.number_of_loops() == 1
+    g.add_edge(0, 0)
+    assert g.number_of_loops() == 2
+
+
+def test_multigraph_multi_edges():
+    g = GraphGenerator.empty(3, type="multiple")
+    g.add_edge(0, 0)
+    g.add_edge(0, 1)
+    g.add_edge(0, 1)
+    g.add_edge(0, 1)
+    assert g.number_of_multiple_edges() == 2

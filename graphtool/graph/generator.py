@@ -150,7 +150,7 @@ class GraphGenerator:
         return G
 
     @staticmethod
-    def molloy_reed(seq, allow_multiple=False):
+    def configuration_model(seq, allow_multiple=False):
         """
         Returns a graph built by the Molloy-Reed generation process.
         In this process, we feed the degree distribution. Each node is asigned
@@ -188,4 +188,6 @@ class GraphGenerator:
                 graph_dict[seq2[2*i]].append(seq2[2*i+1])
             else:
                 graph_dict[seq2[2*i]].add(seq2[2*i+1])
+        if allow_multiple:
+            return MultiGraph(graph_dict)
         return Graph(graph_dict)
