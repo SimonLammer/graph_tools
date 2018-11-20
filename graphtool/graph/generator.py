@@ -1,4 +1,4 @@
-from random import random, randint, uniform, shuffle
+from random import random, randint, uniform, shuffle, choice
 from .vertex_edge import Vertex, Edge
 from .graph import Graph
 from .orientedGraph import OrientedGraph
@@ -40,15 +40,17 @@ class GraphGenerator:
         return Graph(graph_dict)
 
     @staticmethod
-    def cycle(n: int, type: str = None):
+    def cycle(n: int, k: int = 1, type: str = None):
         """
-        Builds the cycle of size n, with vertex i being linked to
-        vertices (i+1)%n and (i-1)%n
+        Builds the cycle of size n, with vertex i being linked to its k closest
+        neighbours, k on each side
 
         Parameters
         ----------
             'n' : int
                 The number of vertices of the graph
+            'k' : int
+                How many edges on each side of each node
             'type' : str
                 The type of the graph to be returned.
                 Type can be "simple", "oriented" or "multiple"
@@ -59,7 +61,8 @@ class GraphGenerator:
         """
         g = GraphGenerator.empty(n, type=type)
         for i in range(n):
-            g.add_edge(i, (i+1) % n)
+            for j in range(k):
+                g.add_edge(i, (i+j+1) % n)
         return g
 
     @staticmethod
@@ -160,7 +163,7 @@ class GraphGenerator:
         Parameters
         ---------
             'seq' : container
-            The degree sequence
+                The degree sequence
 
             'allow_multiple' : boolean (default to False)
                 If set to False, will merge multiple edges between the same
@@ -191,3 +194,44 @@ class GraphGenerator:
         if allow_multiple:
             return MultiGraph(graph_dict)
         return Graph(graph_dict)
+
+    @staticmethod
+    def watts_strogatz(N: int, k: int, beta: float):
+        """
+        Returns a graph built by the Watts-Strogatz method.
+        In this process, we build a regular ring lattice, and move edges with probability Beta
+
+        Paremeters
+        ----------
+            'N' : int
+                The number of nodes in the graph
+
+            'k' : int
+                The mean degree
+
+            'beta' : float
+                The probability of moving each edge
+
+        Returns
+        -------
+            A new Graph object
+        """
+        if k % 2 != 0:
+            raise Exception("The mean degree must be even")
+        G = GraphGenerator.cycle(N, int(k / 2))
+
+        for i in range(N):
+            neigh = G.get_neighbours(i)
+            for j in neigh:
+                if i < j:
+                    if random() <= beta:
+                        # List all possible edges
+                        targets = [t for t in range(
+                            N) if t != i and t not in neigh]
+                        # Select the one to add
+                        t = choice(targets)
+                        # Remove it
+                        G.remove_edge(i, j)
+                        # Add the new one
+                        G.add_edge(i, t)
+        return G
