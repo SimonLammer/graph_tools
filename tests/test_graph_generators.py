@@ -45,16 +45,16 @@ def test_configuration_model():
     except Exception as e:
         assert str(e) == "The sum of degrees should be even!"
 
-   
+
 def test_barabasi_albert():
-    graph = GraphGenerator.barabasi_albert(100, 0.1)
+    graph = GraphGenerator.barabasi_albert(100, 10)
     assert len(graph.vertices()) == 100
-    graph = GraphGenerator.barabasi_albert(100, 0.1)
+    graph = GraphGenerator.barabasi_albert(100, 10)
     assert len(graph.vertices()) == 100
-    graph = GraphGenerator.barabasi_albert(100, 0.1)
+    graph = GraphGenerator.barabasi_albert(100, 10)
     assert len(graph.vertices()) == 100
-    
-    
+
+
 def test_watts_strogatz():
     N = 20
     k = 8

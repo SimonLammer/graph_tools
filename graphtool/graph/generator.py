@@ -137,7 +137,7 @@ class GraphGenerator:
         return Graph.from_adjacency_matrix(adj)
 
     @staticmethod
-    def barabasi_albert(n, p, m=None):
+    def barabasi_albert(n, m, s=None):
         """
         Returns a graph built by the Barabasi-Albert model.
 
@@ -146,22 +146,21 @@ class GraphGenerator:
             'n' : int
                 total number of nodes
 
-            'p' : float in [0;1]
-                probability of joining two nodes in the initial small random
-                graph. This small graph has size m
-
             'm' : int
-                number of nodes in the small initial erdos-renyi graph.
-                If not specified, it will take value n//10
+                minimum number of edges for each newly inserted node
+
+            's' : int
+                size of the small random graph used as initializer
+                if unspecified, default to 2*m
 
         Returns
         -------
         A new Graph object
         """
         from graphtool.algorithms.search import get_connected_components
-        if m is None:
-            m = n//10
-        G = GraphGenerator.erdos_renyi_proba(m, p)
+        if s is None:
+            s = max(2*m, 1)
+        G = GraphGenerator.erdos_renyi_edge(s, s*m // 2)
         comp = get_connected_components(G)
         if len(comp) > 1:
             v1 = list(comp[0].vertices())[0]
@@ -169,13 +168,18 @@ class GraphGenerator:
                 v = list(comp[i].vertices())[0]
                 G.add_edge(v1, v)
         assert (len(get_connected_components(G)) == 1)
-        for i in range(m, n):
+        degdistribution = sum(([j]*len(G._dict[j]) for j in G._dict), [])
+        for i in range(s, n):
             G.add_vertex(i)
-            deg = {j: len(G._dict[j]) for j in G._dict}
-            deg_tot = sum(G.vertex_degree())
-            for j in range(i):
-                if random() < deg[j]/deg_tot:
-                    G.add_edge(i, j)
+            mult = 0
+            for _ in range(m):
+                neighbour = degdistribution[randint(
+                    0, len(degdistribution) - 1)]
+                if neighbour not in G.get_neighbours(i):
+                    G.add_edge(Vertex(i), Vertex(neighbour))
+                    degdistribution.append(neighbour)
+                    mult += 1
+            degdistribution += [i] * mult
         return G
 
     @staticmethod
