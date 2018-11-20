@@ -57,3 +57,17 @@ def test_configuration_model():
         assert False
     except Exception as e:
         assert str(e) == "The sum of degrees should be even!"
+
+
+def test_watts_strogatz():
+    N = 20
+    k = 8
+    beta = 0.25
+    G = GraphGenerator.watts_strogatz(N, k, beta)
+    assert sum(G.degree_sequence()) == N*k
+    k = 3
+    try:
+        G = GraphGenerator.watts_strogatz(N, k, beta)
+        assert False
+    except Exception as e:
+        assert str(e) == "The mean degree must be even"
