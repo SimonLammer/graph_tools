@@ -35,19 +35,6 @@ def test_random_graph_generator():
     assert len(graph2.vertices()) == 100
 
 
-def test_chung_lu():
-    seq = [1, 1]
-    assert len(GraphGenerator.chung_lu(seq)) == 2
-    seq = [2, 2, 2]
-    assert len(GraphGenerator.chung_lu(seq)) == 3
-    seq = [1, 2]
-    try:
-        GraphGenerator.chung_lu(seq)
-        assert False
-    except Exception as e:
-        assert str(e) == "The sum of degrees should be even!"
-
-
 def test_configuration_model():
     seq = [1, 1, 2, 2, 4]
     assert len(GraphGenerator.configuration_model(seq)) == 5
@@ -57,3 +44,12 @@ def test_configuration_model():
         assert False
     except Exception as e:
         assert str(e) == "The sum of degrees should be even!"
+
+
+def test_barabasi_albert():
+    graph = GraphGenerator.barabasi_albert(100, 0.1)
+    assert len(graph.vertices()) == 100
+    graph = GraphGenerator.barabasi_albert(100, 0.1)
+    assert len(graph.vertices()) == 100
+    graph = GraphGenerator.barabasi_albert(100, 0.1)
+    assert len(graph.vertices()) == 100

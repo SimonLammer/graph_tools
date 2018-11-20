@@ -134,18 +134,44 @@ class GraphGenerator:
         return Graph.from_adjacency_matrix(adj)
 
     @staticmethod
-    def chung_lu(seq):
+    def barabasi_albert(n, p, m=None):
         """
-        TODO
+        Returns a graph built by the Barabasi-Albert model.
+
+        Parameters
+        ---------
+            'n' : int
+                total number of nodes
+
+            'p' : float in [0;1]
+                probability of joining two nodes in the initial small random
+                graph. This small graph has size m
+
+            'm' : int
+                number of nodes in the small initial erdos-renyi graph.
+                If not specified, it will take value n//10
+
+        Returns
+        -------
+        A new Graph object
         """
-        if sum(seq) % 2 != 0:
-            raise Exception("The sum of degrees should be even!")
-        k_tot = sum(seq)
-        n = len(seq)
-        G = GraphGenerator.empty(n)
-        for i in range(n):
+        from graphtool.algorithms.search import get_connected_components
+        if m is None:
+            m = n//10
+        G = GraphGenerator.erdos_renyi_proba(m, p)
+        comp = get_connected_components(G)
+        if len(comp) > 1:
+            v1 = list(comp[0].vertices())[0]
+            for i in range(1, len(comp)):
+                v = list(comp[i].vertices())[0]
+                G.add_edge(v1, v)
+        assert (len(get_connected_components(G)) == 1)
+        for i in range(m, n):
+            G.add_vertex(i)
+            deg = {j: len(G._dict[j]) for j in G._dict}
+            deg_tot = sum(G.vertex_degree())
             for j in range(i):
-                if seq[i]*seq[j]/k_tot > random():
+                if random() < deg[j]/deg_tot:
                     G.add_edge(i, j)
         return G
 
