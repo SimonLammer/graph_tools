@@ -199,7 +199,8 @@ class GraphGenerator:
     def watts_strogatz(N: int, k: int, beta: float):
         """
         Returns a graph built by the Watts-Strogatz method.
-        In this process, we build a regular ring lattice, and move edges with probability Beta
+        In this process, we build a regular ring lattice, and move edges with
+        probability Beta
 
         Paremeters
         ----------
