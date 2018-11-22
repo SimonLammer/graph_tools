@@ -137,19 +137,49 @@ class GraphGenerator:
         return Graph.from_adjacency_matrix(adj)
 
     @staticmethod
-    def chung_lu(seq):
+    def barabasi_albert(n, m, s=None):
         """
-        TODO
+        Returns a graph built by the Barabasi-Albert model.
+
+        Parameters
+        ---------
+            'n' : int
+                total number of nodes
+
+            'm' : int
+                minimum number of edges for each newly inserted node
+
+            's' : int
+                size of the small random graph used as initializer
+                if unspecified, default to 2*m
+
+        Returns
+        -------
+        A new Graph object
         """
-        if sum(seq) % 2 != 0:
-            raise Exception("The sum of degrees should be even!")
-        k_tot = sum(seq)
-        n = len(seq)
-        G = GraphGenerator.empty(n)
-        for i in range(n):
-            for j in range(i):
-                if seq[i]*seq[j]/k_tot > random():
-                    G.add_edge(i, j)
+        from graphtool.algorithms.search import get_connected_components
+        if s is None:
+            s = max(2*m, 1)
+        G = GraphGenerator.erdos_renyi_edge(s, s*m // 2)
+        comp = get_connected_components(G)
+        if len(comp) > 1:
+            v1 = list(comp[0].vertices())[0]
+            for i in range(1, len(comp)):
+                v = list(comp[i].vertices())[0]
+                G.add_edge(v1, v)
+        assert (len(get_connected_components(G)) == 1)
+        degdistribution = sum(([j]*len(G._dict[j]) for j in G._dict), [])
+        for i in range(s, n):
+            G.add_vertex(i)
+            mult = 0
+            for _ in range(m):
+                neighbour = degdistribution[randint(
+                    0, len(degdistribution) - 1)]
+                if neighbour not in G.get_neighbours(i):
+                    G.add_edge(Vertex(i), Vertex(neighbour))
+                    degdistribution.append(neighbour)
+                    mult += 1
+            degdistribution += [i] * mult
         return G
 
     @staticmethod
