@@ -7,7 +7,7 @@ from ._parsing import *
 class OrientedGraph:
     """
     A class representing an oriented graph.
-    Data are stored as adjacency lists stored in a dictionnaryself.
+    Data are stored as adjacency lists stored in a dictionaryself.
     Edges in this class are oriented.
     """
 

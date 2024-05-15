@@ -7,7 +7,7 @@ Graph and OrientedGraph are relations between vertices.
 The Vertex class
 ----------------
 The Vertex class is build around an integer, called the vertex id. It can contain
-every data you can imagine, implemented as a python dictionnary ::
+every data you can imagine, implemented as a python dictionary ::
 
     from graphtool.graph import Vertex
     u = Vertex(0) # 0 is the id of the vertex
@@ -36,7 +36,7 @@ An Edge is a link between two Vertex objects ::
 The Graph class
 ---------------
 
-Graphs are stored as an adjacency dictionnary over their vertices. Each value of the dictionnary is the set of neighbours of the vertex that serves as a key.
+Graphs are stored as an adjacency dictionary over their vertices. Each value of the dictionary is the set of neighbours of the vertex that serves as a key.
 
 **Initialize a Graph**
 

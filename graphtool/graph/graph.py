@@ -5,7 +5,7 @@ from ._parsing import *
 class Graph:
     """
     A class representing a graph.
-    Data are stored as adjacency lists stored in a dictionnary
+    Data are stored as adjacency lists stored in a dictionary
     Edges in the class graph are not oriented. For oriented edges, please use
     the class OrientedGraph
     """

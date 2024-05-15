@@ -6,7 +6,7 @@ from ._parsing import *
 class MultiGraph(Graph):
     """
     A class representing a graph.
-    Data are stored as adjacency lists stored in a dictionnary
+    Data are stored as adjacency lists stored in a dictionary
     """
 
     def __init__(self, _graph_dict, _edges=None, _matrix=None):
